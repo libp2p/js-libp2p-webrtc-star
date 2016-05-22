@@ -51,6 +51,11 @@ function WebRTCStar () {
 
       conn.on('connect', () => {
         pt.wrapStream(conn)
+
+        conn.getObservedAddrs = () => {
+          return [multiaddr]
+        }
+
         options.ready(null, pt)
       })
       conn.signal(offer.signal)
@@ -93,6 +98,9 @@ function WebRTCStar () {
       const conn = new SimplePeer({ trickle: false })
 
       conn.on('connect', () => {
+        conn.getObservedAddrs = () => {
+          return []
+        }
         handler(conn)
       })
 
