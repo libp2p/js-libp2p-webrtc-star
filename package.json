@@ -65,5 +65,8 @@
         }
       }
     }
-  }
+  },
+  "contributors": [
+    "David Dias <daviddias.p@gmail.com>"
+  ]
 }
