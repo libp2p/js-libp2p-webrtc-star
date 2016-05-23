@@ -52,7 +52,7 @@ function WebRTCStar () {
       conn.on('connect', () => {
         pt.wrapStream(conn)
 
-        conn.getObservedAddrs = () => {
+        pt.getObservedAddrs = () => {
           return [multiaddr]
         }
 
