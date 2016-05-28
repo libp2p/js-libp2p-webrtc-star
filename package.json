@@ -1,6 +1,6 @@
 {
   "name": "libp2p-webrtc-star",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
