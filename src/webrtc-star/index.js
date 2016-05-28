@@ -52,10 +52,15 @@ function WebRTCStar () {
       conn.on('connect', () => {
         pt.wrapStream(conn)
 
+        pt.destroy = conn.destroy.bind(conn)
+
+        conn.on('close', () => {
+          pt.emit('close')
+        })
+
         pt.getObservedAddrs = () => {
           return [multiaddr]
         }
-
         options.ready(null, pt)
       })
       conn.signal(offer.signal)
@@ -101,6 +106,7 @@ function WebRTCStar () {
         conn.getObservedAddrs = () => {
           return []
         }
+
         handler(conn)
       })
 
