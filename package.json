@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "duplex-passthrough": "github:diasdavid/duplex-passthrough",
+    "duplexify": "^3.4.3",
     "hapi": "^13.4.1",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",

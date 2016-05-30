@@ -8,7 +8,7 @@ const parallel = require('run-parallel')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
 const SimplePeer = require('simple-peer')
-const DuplexPassThrough = require('duplex-passthrough')
+const Duplexify = require('duplexify')
 const peerId = require('peer-id')
 const PeerInfo = require('peer-info')
 
@@ -29,7 +29,7 @@ function WebRTCStar () {
     }
 
     options.ready = options.ready || function noop () {}
-    const pt = new DuplexPassThrough()
+    const pt = new Duplexify()
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[0]
@@ -50,7 +50,8 @@ function WebRTCStar () {
       }
 
       conn.on('connect', () => {
-        pt.wrapStream(conn)
+        pt.setReadable(conn)
+        pt.setWritable(conn)
 
         pt.destroy = conn.destroy.bind(conn)
 
