@@ -1,7 +1,7 @@
 'use strict'
 
-// const config = require('../config')
-// const log = config.log
+const config = require('../config')
+const log = config.log
 const SocketIO = require('socket.io')
 
 module.exports = (http) => {
@@ -12,6 +12,16 @@ module.exports = (http) => {
 
   this.peers = () => {
     return peers
+  }
+
+  function safeEmit (addr, event, arg) {
+    const peer = peers[addr]
+    if (!peer) {
+      log('trying to emit %s but peer is gone', event)
+      return
+    }
+
+    peer.emit(event, arg)
   }
 
   function handle (socket) {
@@ -28,7 +38,7 @@ module.exports = (http) => {
       if (mh === multiaddr) {
         return
       }
-      peers[mh].emit('ws-peer', multiaddr)
+      safeEmit(mh, 'ws-peer', multiaddr)
     })
   }
 
@@ -49,13 +59,13 @@ module.exports = (http) => {
   // forward an WebRTC offer to another peer
   function forwardHandshake (offer) {
     if (offer.answer) {
-      peers[offer.srcMultiaddr].emit('ws-handshake', offer)
+      safeEmit(offer.srcMultiaddr, 'ws-handshake', offer)
     } else {
       if (peers[offer.dstMultiaddr]) {
-        peers[offer.dstMultiaddr].emit('ws-handshake', offer)
+        safeEmit(offer.dstMultiaddr, 'ws-handshake', offer)
       } else {
         offer.err = 'peer is not available'
-        peers[offer.srcMultiaddr].emit('ws-handshake', offer)
+        safeEmit(offer.srcMultiaddr, 'ws-handshake', offer)
       }
     }
   }
