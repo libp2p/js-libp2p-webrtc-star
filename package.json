@@ -58,6 +58,7 @@
     "socket.io-client": "^1.4.6"
   },
   "contributors": [
-    "David Dias <daviddias.p@gmail.com>"
+    "David Dias <daviddias.p@gmail.com>",
+    "dignifiedquire <dignifiedquire@gmail.com>"
   ]
 }
