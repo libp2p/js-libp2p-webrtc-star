@@ -9,15 +9,16 @@ const WebRTCStar = require('../../src/webrtc-star')
 
 describe('peer discovery', () => {
   let ws1
-  const mh1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
+  const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3A')
 
   let ws2
-  const mh2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooB')
+  const ma2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3B')
 
   it('listen on the first', (done) => {
     ws1 = new WebRTCStar()
 
-    ws1.createListener(mh1, (conn) => {}, (err) => {
+    const listener = ws1.createListener((conn) => {})
+    listener.listen(ma1, (err) => {
       expect(err).to.not.exist
       done()
     })
@@ -27,11 +28,12 @@ describe('peer discovery', () => {
     ws2 = new WebRTCStar()
 
     ws1.discovery.on('peer', (peerInfo) => {
-      expect(peerInfo.multiaddrs[0]).to.deep.equal(mh2)
+      expect(peerInfo.multiaddrs[0]).to.deep.equal(ma2)
       done()
     })
 
-    ws2.createListener(mh2, (conn) => {}, (err) => {
+    const listener = ws2.createListener((conn) => {})
+    listener.listen(ma2, (err) => {
       expect(err).to.not.exist
     })
   })
