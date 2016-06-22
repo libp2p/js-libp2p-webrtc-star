@@ -4,44 +4,61 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star')
 const multiaddr = require('multiaddr')
 const mafmt = require('mafmt')
-const parallel = require('run-parallel')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
 const SimplePeer = require('simple-peer')
-const Duplexify = require('duplexify')
 const peerId = require('peer-id')
 const PeerInfo = require('peer-info')
+const Connection = require('interface-connection').Connection
 
 exports = module.exports = WebRTCStar
+
+const sioOptions = {
+  transports: ['websocket'],
+  'force new connection': true
+}
 
 function WebRTCStar () {
   if (!(this instanceof WebRTCStar)) {
     return new WebRTCStar()
   }
 
-  const listeners = []
-  let mhSelf
+  let maSelf
+  const listeners = {}
   this.discovery = new EE()
 
-  this.dial = function (multiaddr, options) {
-    if (!options) {
+  this.dial = function (ma, options, callback) {
+    if (typeof options === 'function') {
+      callback = options
       options = {}
     }
 
-    options.ready = options.ready || function noop () {}
-    const pt = new Duplexify()
+    if (!callback) {
+      callback = function noop () {}
+    }
+
+    const conn = new Connection()
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = listeners[0]
-    const conn = new SimplePeer({ initiator: true, trickle: false })
+    const sioClient = listeners[Object.keys(listeners)[0]].io
+    const channel = new SimplePeer({ initiator: true, trickle: false })
 
-    conn.on('signal', function (signal) {
+    channel.on('signal', function (signal) {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
-        srcMultiaddr: mhSelf.toString(),
-        dstMultiaddr: multiaddr.toString(),
+        srcMultiaddr: maSelf.toString(),
+        dstMultiaddr: ma.toString(),
         signal: signal
       })
+    })
+
+    channel.on('timeout', () => {
+      conn.emit('timeout')
+    })
+
+    channel.on('error', (err) => {
+      callback(err)
+      conn.emit('error', err)
     })
 
     sioClient.on('ws-handshake', (offer) => {
@@ -49,90 +66,99 @@ function WebRTCStar () {
         return
       }
 
-      conn.on('connect', () => {
-        pt.setReadable(conn)
-        pt.setWritable(conn)
+      channel.on('connect', () => {
+        conn.setInnerConn(channel)
 
-        pt.destroy = conn.destroy.bind(conn)
+        conn.destroy = channel.destroy.bind(channel)
 
-        conn.on('close', () => {
-          pt.emit('close')
+        channel.on('close', () => {
+          conn.emit('close')
         })
 
-        pt.getObservedAddrs = () => {
-          return [multiaddr]
-        }
-        options.ready(null, pt)
-      })
-      conn.signal(offer.signal)
-    })
-
-    return pt
-  }
-
-  this.createListener = (multiaddrs, handler, callback) => {
-    if (!Array.isArray(multiaddrs)) {
-      multiaddrs = [multiaddrs]
-    }
-
-    const sioOptions = {
-      transports: ['websocket'],
-      'force new connection': true
-    }
-    // for now it only supports listening in one signalling server
-    // no technical limitation why not to do more :)
-    const mh = multiaddrs[0]
-    mhSelf = mh
-    // I know.. "websockets connects on a http endpoint, but through a
-    // tcp port"
-    const sioUrl = 'http://' + mh.toString().split('/')[3] + ':' + mh.toString().split('/')[5]
-    const sioClient = io.connect(sioUrl, sioOptions)
-    sioClient.on('connect_error', callback)
-    sioClient.on('connect', () => {
-      sioClient.emit('ss-join', multiaddrs[0].toString())
-      sioClient.on('ws-handshake', incommingDial)
-      sioClient.on('ws-peer', peerDiscovered.bind(this))
-      listeners.push(sioClient)
-      callback()
-    })
-
-    function incommingDial (offer) {
-      if (offer.answer) {
-        return
-      }
-
-      const conn = new SimplePeer({ trickle: false })
-
-      conn.on('connect', () => {
         conn.getObservedAddrs = () => {
-          return []
+          return [ma]
         }
 
-        handler(conn)
+        conn.emit('connect')
+        callback(null, conn)
       })
 
-      conn.on('signal', function (signal) {
-        offer.signal = signal
-        offer.answer = true
-        sioClient.emit('ss-handshake', offer)
-      })
+      channel.signal(offer.signal)
+    })
 
-      conn.signal(offer.signal)
-    }
+    return conn
   }
 
-  this.close = (callback) => {
-    if (listeners.length === 0) {
-      log('Called close with no active listeners')
-      return callback()
+  this.createListener = (options, handler) => {
+    if (typeof options === 'function') {
+      handler = options
+      options = {}
     }
 
-    parallel(listeners.map((listener) => {
-      return (cb) => {
-        listener.emit('ss-leave')
-        cb()
+    const listener = new EE()
+
+    listener.listen = (ma, callback) => {
+      if (!callback) {
+        callback = function noop () {}
       }
-    }), callback)
+      maSelf = ma
+
+      const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
+
+      listener.io = io.connect(sioUrl, sioOptions)
+      listener.io.on('connect_error', callback)
+      listener.io.on('connect', () => {
+        listener.io.emit('ss-join', ma.toString())
+        listener.io.on('ws-handshake', incommingDial)
+        listener.io.on('ws-peer', peerDiscovered.bind(this))
+        listener.emit('listening')
+        callback()
+      })
+
+      function incommingDial (offer) {
+        if (offer.answer) { return }
+
+        const channel = new SimplePeer({ trickle: false })
+        const conn = Connection(channel)
+
+        channel.on('connect', () => {
+          conn.getObservedAddrs = () => {
+            return [offer.srcMultiaddr]
+          }
+
+          listener.emit('connection', conn)
+          handler(conn)
+        })
+
+        channel.on('signal', (signal) => {
+          offer.signal = signal
+          offer.answer = true
+          listener.io.emit('ss-handshake', offer)
+        })
+
+        channel.signal(offer.signal)
+      }
+    }
+
+    listener.close = (callback) => {
+      if (!callback) {
+        callback = function noop () {}
+      }
+      listener.io.emit('ss-leave')
+      setTimeout(() => {
+        listener.emit('close')
+        callback()
+      }, 100)
+    }
+
+    listener.getAddrs = (callback) => {
+      process.nextTick(() => {
+        callback(null, [maSelf])
+      })
+    }
+
+    listeners[multiaddr.toString()] = listener
+    return listener
   }
 
   this.filter = (multiaddrs) => {
@@ -144,10 +170,11 @@ function WebRTCStar () {
     })
   }
 
-  function peerDiscovered (mh) {
-    const id = peerId.createFromB58String(mh.split('/')[8])
+  function peerDiscovered (maStr) {
+    log('Peer Discovered:', maStr)
+    const id = peerId.createFromB58String(maStr.split('/')[8])
     const peer = new PeerInfo(id)
-    peer.multiaddr.add(multiaddr(mh))
+    peer.multiaddr.add(multiaddr(maStr))
     this.discovery.emit('peer', peer)
   }
 }
