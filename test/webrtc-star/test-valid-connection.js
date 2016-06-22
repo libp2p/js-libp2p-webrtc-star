@@ -7,7 +7,7 @@ const series = require('run-series')
 
 const WebRTCStar = require('../../src/webrtc-star')
 
-describe.skip('valid Connection', () => {
+describe('valid Connection', () => {
   let ws1
   const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo5a')
 
