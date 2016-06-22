@@ -50,10 +50,11 @@ describe('valid Connection', () => {
   it('get observed addrs', (done) => {
     conn.getObservedAddrs((err, addrs) => {
       expect(err).to.not.exist
-      expect(addrs[0]).to.deep.equal(ma2)
+      expect(addrs[0].toString()).to.equal(ma2.toString())
       done()
     })
   })
+
   it('get Peer Info', (done) => {
     conn.getPeerInfo((err, peerInfo) => {
       expect(err).to.exist

@@ -37,11 +37,11 @@ function WebRTCStar () {
       callback = function noop () {}
     }
 
-    const conn = new Connection()
-
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
     const channel = new SimplePeer({ initiator: true, trickle: false })
+
+    const conn = new Connection(channel)
 
     channel.on('signal', function (signal) {
       sioClient.emit('ss-handshake', {
@@ -67,16 +67,14 @@ function WebRTCStar () {
       }
 
       channel.on('connect', () => {
-        conn.setInnerConn(channel)
-
         conn.destroy = channel.destroy.bind(channel)
 
         channel.on('close', () => {
           conn.emit('close')
         })
 
-        conn.getObservedAddrs = () => {
-          return [ma]
+        conn.getObservedAddrs = (callback) => {
+          return callback(null, [ma])
         }
 
         conn.emit('connect')
@@ -122,8 +120,8 @@ function WebRTCStar () {
         const conn = Connection(channel)
 
         channel.on('connect', () => {
-          conn.getObservedAddrs = () => {
-            return [offer.srcMultiaddr]
+          conn.getObservedAddrs = (callback) => {
+            return callback(null, [offer.srcMultiaddr])
           }
 
           listener.emit('connection', conn)

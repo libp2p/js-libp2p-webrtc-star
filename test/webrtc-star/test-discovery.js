@@ -27,7 +27,7 @@ describe('peer discovery', () => {
   it('listen on the second, discover the first', (done) => {
     ws2 = new WebRTCStar()
 
-    ws1.discovery.on('peer', (peerInfo) => {
+    ws1.discovery.once('peer', (peerInfo) => {
       expect(peerInfo.multiaddrs[0]).to.deep.equal(ma2)
       done()
     })
