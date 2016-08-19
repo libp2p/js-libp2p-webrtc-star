@@ -25,7 +25,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/diasdavid/js-libp2p-webrtc-star.git"
+    "url": "git+https://github.com/libp2p/js-libp2p-webrtc-star.git"
   },
   "keywords": [
     "IPFS",
@@ -34,11 +34,11 @@
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/js-libp2p-webrtc-star/issues"
+    "url": "https://github.com/libp2p/js-libp2p-webrtc-star/issues"
   },
-  "homepage": "https://github.com/diasdavid/js-libp2p-webrtc-star#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
-    "aegir": "^6.0.0",
+    "aegir": "^7.0.0",
     "bl": "^1.1.2",
     "chai": "^3.5.0",
     "pre-commit": "^1.1.3",
@@ -47,17 +47,18 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "duplexify": "^3.4.3",
     "hapi": "^15.0.2",
     "interface-connection": "^0.1.8",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",
     "peer-id": "^0.7.0",
     "peer-info": "^0.7.0",
+    "pull": "^2.1.1",
     "run-parallel": "^1.1.6",
     "simple-peer": "^6.0.4",
     "socket.io": "^1.4.6",
-    "socket.io-client": "^1.4.6"
+    "socket.io-client": "^1.4.6",
+    "stream-to-pull-stream": "^1.7.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",

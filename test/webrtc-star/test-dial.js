@@ -48,11 +48,6 @@ describe('dial', () => {
     })
   })
 
-  it('dial on IPv4, check for connect event', (done) => {
-    const conn = ws1.dial(ma2)
-    conn.on('connect', done)
-  })
-
   it.skip('dial on IPv6', (done) => {
     // TODO IPv6 not supported yet
   })
