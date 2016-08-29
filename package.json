@@ -48,7 +48,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "duplexify": "^3.4.3",
-    "hapi": "^14.1.0",
+    "hapi": "^15.0.2",
     "interface-connection": "^0.1.8",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",
