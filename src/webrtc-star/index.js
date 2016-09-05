@@ -10,6 +10,7 @@ const SimplePeer = require('simple-peer')
 const peerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
+const toPull = require('stream-to-pull-stream')
 
 exports = module.exports = WebRTCStar
 
@@ -41,7 +42,8 @@ function WebRTCStar () {
     const sioClient = listeners[Object.keys(listeners)[0]].io
     const channel = new SimplePeer({ initiator: true, trickle: false })
 
-    const conn = new Connection(channel)
+    const conn = new Connection(toPull.duplex(channel))
+    let connected = false
 
     channel.on('signal', function (signal) {
       sioClient.emit('ss-handshake', {
@@ -53,12 +55,13 @@ function WebRTCStar () {
     })
 
     channel.on('timeout', () => {
-      conn.emit('timeout')
+      callback(new Error('timeout'))
     })
 
     channel.on('error', (err) => {
-      callback(err)
-      conn.emit('error', err)
+      if (!connected) {
+        callback(err)
+      }
     })
 
     sioClient.on('ws-handshake', (offer) => {
@@ -67,6 +70,7 @@ function WebRTCStar () {
       }
 
       channel.on('connect', () => {
+        connected = true
         conn.destroy = channel.destroy.bind(channel)
 
         channel.on('close', () => {
@@ -77,7 +81,6 @@ function WebRTCStar () {
           return callback(null, [ma])
         }
 
-        conn.emit('connect')
         callback(null, conn)
       })
 
@@ -117,7 +120,7 @@ function WebRTCStar () {
         if (offer.answer) { return }
 
         const channel = new SimplePeer({ trickle: false })
-        const conn = Connection(channel)
+        const conn = new Connection(toPull.duplex(channel))
 
         channel.on('connect', () => {
           conn.getObservedAddrs = (callback) => {

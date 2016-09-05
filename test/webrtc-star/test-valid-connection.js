@@ -4,6 +4,7 @@
 const expect = require('chai').expect
 const multiaddr = require('multiaddr')
 const series = require('run-series')
+const pull = require('pull-stream')
 
 const WebRTCStar = require('../../src/webrtc-star')
 
@@ -26,7 +27,7 @@ describe('valid Connection', () => {
       ws1 = new WebRTCStar()
 
       const listener = ws1.createListener((conn) => {
-        conn.pipe(conn)
+        pull(conn, conn)
       })
 
       listener.listen(ma1, next)
@@ -36,14 +37,13 @@ describe('valid Connection', () => {
       ws2 = new WebRTCStar()
 
       const listener = ws2.createListener((conn) => {
-        conn.pipe(conn)
+        pull(conn, conn)
       })
       listener.listen(ma2, next)
     }
 
     function dial () {
-      conn = ws1.dial(ma2)
-      conn.on('connect', done)
+      conn = ws1.dial(ma2, done)
     }
   })
 
