@@ -49,7 +49,7 @@
     "debug": "^2.2.0",
     "duplexify": "^3.4.3",
     "hapi": "^15.0.2",
-    "interface-connection": "^0.1.8",
+    "interface-connection": "^0.2.0",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",
     "peer-id": "^0.7.0",
