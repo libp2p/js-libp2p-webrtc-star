@@ -47,8 +47,8 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "hapi": "^15.0.2",
-    "interface-connection": "^0.1.8",
+    "hapi": "^15.0.3",
+    "interface-connection": "^0.2.1",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",
     "peer-id": "^0.7.0",
