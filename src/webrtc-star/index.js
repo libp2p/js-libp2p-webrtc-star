@@ -73,6 +73,10 @@ function WebRTCStar () {
         connected = true
         conn.destroy = channel.destroy.bind(channel)
 
+        channel.on('close', () => {
+          conn.destroy()
+        })
+
         conn.getObservedAddrs = (callback) => {
           return callback(null, [ma])
         }
