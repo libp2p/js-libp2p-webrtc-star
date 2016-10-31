@@ -3,7 +3,7 @@
 
 const expect = require('chai').expect
 const io = require('socket.io-client')
-const parallel = require('run-parallel')
+const parallel = require('async/parallel')
 const multiaddr = require('multiaddr')
 
 const sigServer = require('../../src/signalling-server')

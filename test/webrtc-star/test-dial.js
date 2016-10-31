@@ -4,7 +4,7 @@
 
 const expect = require('chai').expect
 const multiaddr = require('multiaddr')
-const series = require('run-series')
+const series = require('async/series')
 const pull = require('pull-stream')
 
 const WebRTCStar = require('../../src/webrtc-star')
