@@ -1,5 +1,4 @@
-js-libp2p-webrtc-star
-=====================
+# js-libp2p-webrtc-star
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
@@ -7,6 +6,11 @@ js-libp2p-webrtc-star
 ![](https://img.shields.io/badge/coverage-%3F-yellow.svg?style=flat-square)
 [![Dependency Status](https://david-dm.org/libp2p/js-libp2p-webrtc-star.svg?style=flat-square)](https://david-dm.org/libp2p/js-libp2p-webrtc-star)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
+![](https://img.shields.io/badge/npm-%3E%3D3.0.0-orange.svg?style=flat-square)
+![](https://img.shields.io/badge/Node.js-%3E%3D4.0.0-orange.svg?style=flat-square)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/js-libp2p-webrtc-star.svg)](https://saucelabs.com/
+u/js-libp2p-webrtc-star)
 
 ![](https://raw.githubusercontent.com/libp2p/interface-connection/master/img/badge.png)
 ![](https://raw.githubusercontent.com/libp2p/interface-transport/master/img/badge.png)
