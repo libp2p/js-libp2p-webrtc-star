@@ -43,19 +43,14 @@ function WebRTCStar () {
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
 
-    let channel
-    if (isNode) {
-      channel = new SimplePeer({
-        initiator: true,
-        trickle: false,
-        wrtc: wrtc
-      })
-    } else {
-      channel = new SimplePeer({
-        initiator: true,
-        trickle: false
-      })
+    const spOptions = {
+      initiator: true,
+      trickle: false
     }
+    if (isNode) {
+      spOptions.wrtc = wrtc
+    }
+    const channel = new SimplePeer(spOptions)
 
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
@@ -144,17 +139,13 @@ function WebRTCStar () {
           return
         }
 
-        let channel
-        if (isNode) {
-          channel = new SimplePeer({
-            trickle: false,
-            wrtc: wrtc
-          })
-        } else {
-          channel = new SimplePeer({
-            trickle: false
-          })
+        const spOptions = {
+          trickle: false
         }
+        if (isNode) {
+          spOptions.wrtc = wrtc
+        }
+        const channel = new SimplePeer(spOptions)
 
         const conn = new Connection(toPull.duplex(channel))
 
