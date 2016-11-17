@@ -6,6 +6,9 @@
   "bin": {
     "star-sig": "src/signalling-server/bin.js"
   },
+  "browser": {
+    "wrtc": false
+  },
   "scripts": {
     "lint": "gulp lint",
     "build": "gulp build",
@@ -47,6 +50,7 @@
   "dependencies": {
     "async": "^2.1.2",
     "debug": "^2.3.2",
+    "detect-node": "^2.0.3",
     "hapi": "^15.0.3",
     "interface-connection": "^0.3.0",
     "mafmt": "^2.1.0",
@@ -57,7 +61,8 @@
     "simple-peer": "^6.0.4",
     "socket.io": "^1.4.6",
     "socket.io-client": "^1.4.6",
-    "stream-to-pull-stream": "^1.7.0"
+    "stream-to-pull-stream": "^1.7.0",
+    "wrtc": "0.0.61"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",

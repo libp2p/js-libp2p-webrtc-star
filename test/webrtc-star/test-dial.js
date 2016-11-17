@@ -45,7 +45,18 @@ describe('dial', () => {
   it('dial on IPv4, check callback', (done) => {
     ws1.dial(ma2, (err, conn) => {
       expect(err).to.not.exist
-      done()
+
+      const data = new Buffer('some data')
+
+      pull(
+        pull.values([data]),
+        conn,
+        pull.collect((err, values) => {
+          expect(err).to.not.exist
+          expect(values).to.be.eql([data])
+          done()
+        })
+      )
     })
   })
 

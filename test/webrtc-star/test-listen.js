@@ -17,6 +17,7 @@ describe('listen', () => {
 
   it('listen, check for callback', (done) => {
     const listener = ws.createListener((conn) => {})
+
     listener.listen(ma, (err) => {
       expect(err).to.not.exist
       listener.close(done)
@@ -25,6 +26,7 @@ describe('listen', () => {
 
   it('listen, check for listening event', (done) => {
     const listener = ws.createListener((conn) => {})
+
     listener.on('listening', () => {
       listener.close(done)
     })

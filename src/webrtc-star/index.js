@@ -6,6 +6,8 @@ const multiaddr = require('multiaddr')
 const mafmt = require('mafmt')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
+const wrtc = require('wrtc')
+const isNode = require('detect-node')
 const SimplePeer = require('simple-peer')
 const peerId = require('peer-id')
 const PeerInfo = require('peer-info')
@@ -40,7 +42,15 @@ function WebRTCStar () {
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
-    const channel = new SimplePeer({ initiator: true, trickle: false })
+
+    const spOptions = {
+      initiator: true,
+      trickle: false
+    }
+    if (isNode) {
+      spOptions.wrtc = wrtc
+    }
+    const channel = new SimplePeer(spOptions)
 
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
@@ -107,7 +117,15 @@ function WebRTCStar () {
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
       listener.io = io.connect(sioUrl, sioOptions)
+
       listener.io.on('connect_error', callback)
+      listener.io.on('error', (err) => {
+        console.log('got error')
+
+        listener.emit('error', err)
+        listener.emit('close')
+      })
+
       listener.io.on('connect', () => {
         listener.io.emit('ss-join', ma.toString())
         listener.io.on('ws-handshake', incommingDial)
@@ -117,9 +135,18 @@ function WebRTCStar () {
       })
 
       function incommingDial (offer) {
-        if (offer.answer) { return }
+        if (offer.answer) {
+          return
+        }
 
-        const channel = new SimplePeer({ trickle: false })
+        const spOptions = {
+          trickle: false
+        }
+        if (isNode) {
+          spOptions.wrtc = wrtc
+        }
+        const channel = new SimplePeer(spOptions)
+
         const conn = new Connection(toPull.duplex(channel))
 
         channel.on('connect', () => {

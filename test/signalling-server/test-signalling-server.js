@@ -29,7 +29,7 @@ describe('signalling server', () => {
   it('start and stop signalling server (default port)', (done) => {
     const sigS = sigServer.start((err, info) => {
       expect(err).to.not.exist
-      expect(info.port).to.equal(8134)
+      expect(info.port).to.equal(8135)
       expect(info.protocol).to.equal('http')
       expect(info.address).to.equal('0.0.0.0')
       sigS.stop(done)

@@ -12,14 +12,14 @@ exports.start = (port, callback) => {
     port = undefined
   }
 
-  if (port) {
-    config.hapi.port = port
+  if (!port) {
+    port = config.hapi.port
   }
 
   const http = new Hapi.Server(config.hapi.options)
 
   http.connection({
-    port: config.hapi.port
+    port: port
   })
 
   http.start((err) => {
