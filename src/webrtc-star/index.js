@@ -7,6 +7,7 @@ const mafmt = require('mafmt')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
 const wrtc = require('wrtc')
+const isNode = require('detect-node')
 const SimplePeer = require('simple-peer')
 const peerId = require('peer-id')
 const PeerInfo = require('peer-info')
@@ -42,11 +43,19 @@ function WebRTCStar () {
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
 
-    const channel = new SimplePeer({
-      initiator: true,
-      trickle: false,
-      wrtc: wrtc
-    })
+    let channel
+    if (isNode) {
+      channel = new SimplePeer({
+        initiator: true,
+        trickle: false,
+        wrtc: wrtc
+      })
+    } else {
+      channel = new SimplePeer({
+        initiator: true,
+        trickle: false
+      })
+    }
 
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
@@ -131,12 +140,22 @@ function WebRTCStar () {
       })
 
       function incommingDial (offer) {
-        if (offer.answer) { return }
+        if (offer.answer) {
+          return
+        }
 
-        const channel = new SimplePeer({
-          trickle: false,
-          wrtc: wrtc
-        })
+        let channel
+        if (isNode) {
+          channel = new SimplePeer({
+            trickle: false,
+            wrtc: wrtc
+          })
+        } else {
+          channel = new SimplePeer({
+            trickle: false
+          })
+        }
+
         const conn = new Connection(toPull.duplex(channel))
 
         channel.on('connect', () => {
