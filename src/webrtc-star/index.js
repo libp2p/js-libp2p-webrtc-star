@@ -75,6 +75,10 @@ function WebRTCStar () {
     })
 
     sioClient.on('ws-handshake', (offer) => {
+      if (offer.intentId === intentId && offer.err) {
+        return callback(new Error(offer.err))
+      }
+
       if (offer.intentId !== intentId || !offer.answer) {
         return
       }
@@ -135,7 +139,7 @@ function WebRTCStar () {
       })
 
       function incommingDial (offer) {
-        if (offer.answer) {
+        if (offer.answer || offer.err) {
           return
         }
 
