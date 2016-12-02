@@ -51,7 +51,7 @@
     "async": "^2.1.4",
     "debug": "^2.3.2",
     "detect-node": "^2.0.3",
-    "hapi": "^15.0.3",
+    "hapi": "^16.0.1",
     "interface-connection": "^0.3.0",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",
