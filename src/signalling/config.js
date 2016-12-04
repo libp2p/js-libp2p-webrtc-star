@@ -7,7 +7,8 @@ log.error = debug('signalling-server:error')
 module.exports = {
   log: log,
   hapi: {
-    port: process.env.PORT || 8135,
+    port: process.env.PORT || 13579,
+    host: '0.0.0.0',
     options: {
       connections: {
         routes: {
