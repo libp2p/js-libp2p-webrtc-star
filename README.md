@@ -24,17 +24,42 @@
 
 ## Example
 
-```
+```JavaScript
 TODO
 ```
 
-## Installation
+## Usage
 
-### npm
+### Installation
 
-```sh
-> npm i libp2p-webrtc-star
+```bash
+> npm install libp2p-webrtc-star
 ```
+
+### API
+
+Follows the interface defined by `interface-transport`
+
+[![](https://raw.githubusercontent.com/diasdavid/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
+
+### Signalling server
+
+`libp2p-webrtc-star` comes with its own signalling server, used for peers to handshake their signalling data and establish a connection. You can install it in your machine by installing the module globally:
+
+```bash
+> npm install --global libp2p-webrtc-star
+```
+
+This will expose a `star-sig` cli tool. To spawn a server do:
+
+```bash
+> star-sig --port=9090 --host=127.0.0.1
+```
+
+Defaults:
+
+- `port` - 13579
+- `host` - '0.0.0.0'
 
 ### This module uses `pull-streams`
 
@@ -51,7 +76,7 @@ You can learn more about pull-streams at:
 
 If you are a Node.js streams user, you can convert a pull-stream to a Node.js stream using the module [`pull-stream-to-stream`](https://github.com/pull-stream/pull-stream-to-stream), giving you an instance of a Node.js stream that is linked to the pull-stream. For example:
 
-```js
+```JavaScript
 const pullToStream = require('pull-stream-to-stream')
 
 const nodeStreamInstance = pullToStream(pullStreamInstance)
@@ -59,9 +84,3 @@ const nodeStreamInstance = pullToStream(pullStreamInstance)
 ```
 
 To learn more about this utility, visit https://pull-stream.github.io/#pull-stream-to-stream.
-
-
-
-## API
-
-[![](https://raw.githubusercontent.com/diasdavid/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
