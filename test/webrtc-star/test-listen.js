@@ -11,7 +11,7 @@ describe('listen', () => {
 
   const ma = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
 
-  beforeEach(() => {
+  before(() => {
     ws = new WebRTCStar()
   })
 
@@ -27,7 +27,7 @@ describe('listen', () => {
   it('listen, check for listening event', (done) => {
     const listener = ws.createListener((conn) => {})
 
-    listener.on('listening', () => {
+    listener.once('listening', () => {
       listener.close(done)
     })
     listener.listen(ma)
@@ -37,7 +37,7 @@ describe('listen', () => {
     const listener = ws.createListener((conn) => {})
     listener.listen(ma, (err) => {
       expect(err).to.not.exist
-      listener.on('close', done)
+      listener.once('close', done)
       listener.close()
     })
   })
