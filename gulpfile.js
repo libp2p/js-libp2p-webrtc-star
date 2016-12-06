@@ -1,7 +1,7 @@
 'use strict'
 
 const gulp = require('gulp')
-const sigServer = require('./src/signalling-server')
+const sigServer = require('./src/signalling')
 
 let sigS
 
@@ -11,11 +11,17 @@ gulp.task('test:browser:before', boot)
 gulp.task('test:browser:after', stop)
 
 function boot (done) {
-  sigS = sigServer.start(15555, (err, info) => {
+  const options = {
+    port: 15555,
+    host: '127.0.0.1'
+  }
+
+  sigServer.start(options, (err, server) => {
     if (err) {
       throw err
     }
-    console.log('sig-server started on:', info.uri)
+    sigS = server
+    console.log('signalling on:', server.info.uri)
     done()
   })
 }

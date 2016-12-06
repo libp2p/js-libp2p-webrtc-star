@@ -6,9 +6,9 @@ const io = require('socket.io-client')
 const parallel = require('async/parallel')
 const multiaddr = require('multiaddr')
 
-const sigServer = require('../../src/signalling-server')
+const sigServer = require('../../src/signalling')
 
-describe('signalling server', () => {
+describe('signalling', () => {
   const sioOptions = {
     transports: ['websocket'],
     'force new connection': true
@@ -27,32 +27,40 @@ describe('signalling server', () => {
   let c4mh = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo4')
 
   it('start and stop signalling server (default port)', (done) => {
-    const sigS = sigServer.start((err, info) => {
+    sigServer.start((err, server) => {
       expect(err).to.not.exist
-      expect(info.port).to.equal(8135)
-      expect(info.protocol).to.equal('http')
-      expect(info.address).to.equal('0.0.0.0')
-      sigS.stop(done)
+      expect(server.info.port).to.equal(13579)
+      expect(server.info.protocol).to.equal('http')
+      expect(server.info.address).to.equal('0.0.0.0')
+      server.stop(done)
     })
   })
 
   it('start and stop signalling server (custom port)', (done) => {
-    const sigS = sigServer.start(12345, (err, info) => {
+    const options = {
+      port: 12345
+    }
+    sigServer.start(options, (err, server) => {
       expect(err).to.not.exist
-      expect(info.port).to.equal(12345)
-      expect(info.protocol).to.equal('http')
-      expect(info.address).to.equal('0.0.0.0')
-      sigS.stop(done)
+      expect(server.info.port).to.equal(12345)
+      expect(server.info.protocol).to.equal('http')
+      expect(server.info.address).to.equal('0.0.0.0')
+      server.stop(done)
     })
   })
 
   it('start signalling server for client tests', (done) => {
-    sigS = sigServer.start(12345, (err, info) => {
+    const options = {
+      port: 12345
+    }
+
+    sigServer.start(options, (err, server) => {
       expect(err).to.not.exist
-      expect(info.port).to.equal(12345)
-      expect(info.protocol).to.equal('http')
-      expect(info.address).to.equal('0.0.0.0')
-      sioUrl = info.uri
+      expect(server.info.port).to.equal(12345)
+      expect(server.info.protocol).to.equal('http')
+      expect(server.info.address).to.equal('0.0.0.0')
+      sioUrl = server.info.uri
+      sigS = server
       done()
     })
   })

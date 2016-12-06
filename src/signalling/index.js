@@ -6,30 +6,32 @@ const log = config.log
 
 exports = module.exports
 
-exports.start = (port, callback) => {
-  if (typeof port === 'function') {
-    callback = port
-    port = undefined
+exports.start = (options, callback) => {
+  if (typeof options === 'function') {
+    callback = options
+    options = {}
   }
 
-  if (!port) {
-    port = config.hapi.port
-  }
+  const port = options.port || config.hapi.port
+  const host = options.host || config.hapi.host
 
   const http = new Hapi.Server(config.hapi.options)
 
   http.connection({
-    port: port
+    port: port,
+    host: host
   })
 
   http.start((err) => {
     if (err) {
       return callback(err)
     }
+
     log('signaling server has started on: ' + http.info.uri)
+
     http.peers = require('./routes-ws')(http).peers
 
-    callback(null, http.info)
+    callback(null, http)
   })
 
   return http
