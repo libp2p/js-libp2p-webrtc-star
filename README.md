@@ -61,6 +61,29 @@ Defaults:
 - `port` - 13579
 - `host` - '0.0.0.0'
 
+## Hosted Signalling Server
+
+We host a signalling server at `signalling.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
+
+Since multiaddr doesn't have support for `DNS` yet, you have to add your libp2p-webrtc-star multiaddr by using the IP address instead. To know the Signalling server address, you can do:
+
+```sh
+» dig +short webrtc-star-signalling.cloud.ipfs.team
+178.62.254.198
+```
+
+And so, a webrtc-star address should looking like: `/ip4/178.62.254.198/tcp/<port>/ws/ipfs/<your-peer-id>`
+
+### Deployment
+
+We have a [dokku](https://github.com/ipfs/ops-requests/issues/31) setup ready for this to be deployed, to deploy simple do (you have to have permission first):
+
+```sh
+# if you already have added the remote, you don't need to do it again
+> git remote add dokku dokku@cloud.ipfs.team:webrtc-star-signalling
+> git push dokku master
+```
+
 ### This module uses `pull-streams`
 
 We expose a streaming interface based on `pull-streams`, rather then on the Node.js core streams implementation (aka Node.js streams). `pull-streams` offers us a better mechanism for error handling and flow control guarantees. If you would like to know more about why we did this, see the discussion at this [issue](https://github.com/ipfs/js-ipfs/issues/362).

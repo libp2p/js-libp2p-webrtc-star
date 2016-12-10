@@ -10,6 +10,7 @@
     "wrtc": false
   },
   "scripts": {
+    "signalling": "node src/signalling/bin.js",
     "lint": "gulp lint",
     "build": "gulp build",
     "test": "gulp test",
@@ -25,6 +26,10 @@
     "lint",
     "test"
   ],
+  "engines": {
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/libp2p/js-libp2p-webrtc-star.git"
