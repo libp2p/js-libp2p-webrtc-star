@@ -8,8 +8,8 @@ const argv = require('minimist')(process.argv.slice(2))
 let server
 
 signalling.start({
-  port: argv.port || argv.p || 9090,
-  host: argv.host || argv.h || '0.0.0.0'
+  port: argv.port || argv.p || process.env.PORT || 9090,
+  host: argv.host || argv.h || process.env.HOST || '0.0.0.0'
 }, (err, _server) => {
   if (err) {
     throw err
