@@ -26,7 +26,6 @@ function WebRTCStar () {
     return new WebRTCStar()
   }
 
-  let maSelf
   const listeners = {}
   this.discovery = new EE()
 
@@ -58,7 +57,7 @@ function WebRTCStar () {
     channel.on('signal', function (signal) {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
-        srcMultiaddr: maSelf.toString(),
+        srcMultiaddr: listeners[Object.keys(listeners)[0]].ma.toString(),
         dstMultiaddr: ma.toString(),
         signal: signal
       })
@@ -116,11 +115,11 @@ function WebRTCStar () {
       if (!callback) {
         callback = function noop () {}
       }
-      maSelf = ma
 
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
       listener.io = io.connect(sioUrl, sioOptions)
+      listener.ma = ma
 
       listener.io.on('connect_error', callback)
       listener.io.on('error', (err) => {
@@ -135,8 +134,26 @@ function WebRTCStar () {
         listener.io.on('ws-handshake', incommingDial)
         listener.io.on('ws-peer', peerDiscovered.bind(this))
         listener.emit('listening')
+        listeners[ma.toString()] = listener
         callback()
       })
+      listener.close = (callback) => {
+        if (!callback) {
+          callback = function noop () {}
+        }
+        listener.io.emit('ss-leave', ma.toString())
+        setTimeout(() => {
+          listener.io.disconnect()
+          delete listeners[ma.toString()]
+          listener.emit('close')
+          callback()
+        }, 100)
+      }
+      listener.getAddrs = (callback) => {
+        process.nextTick(() => {
+          callback(null, [ma])
+        })
+      }
 
       function incommingDial (offer) {
         if (offer.answer || offer.err) {
@@ -172,24 +189,6 @@ function WebRTCStar () {
       }
     }
 
-    listener.close = (callback) => {
-      if (!callback) {
-        callback = function noop () {}
-      }
-      listener.io.emit('ss-leave')
-      setTimeout(() => {
-        listener.emit('close')
-        callback()
-      }, 100)
-    }
-
-    listener.getAddrs = (callback) => {
-      process.nextTick(() => {
-        callback(null, [maSelf])
-      })
-    }
-
-    listeners[multiaddr.toString()] = listener
     return listener
   }
 
