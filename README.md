@@ -69,10 +69,10 @@ Since multiaddr doesn't have support for `DNS` yet, you have to add your libp2p-
 
 ```sh
 » dig +short webrtc-star-signalling.cloud.ipfs.team
-178.62.254.198
+188.166.203.82
 ```
 
-And so, a webrtc-star address should looking like: `/ip4/178.62.254.198/tcp/<port>/ws/ipfs/<your-peer-id>`
+And so, a webrtc-star address should looking like: `/ip4/188.166.203.82/tcp/<port>/ws/ipfs/<your-peer-id>`
 
 ### Deployment
 
@@ -83,6 +83,8 @@ We have a [dokku](https://github.com/ipfs/ops-requests/issues/31) setup ready fo
 > git remote add dokku dokku@cloud.ipfs.team:webrtc-star-signalling
 > git push dokku master
 ```
+
+[Notes](https://github.com/libp2p/js-libp2p-webrtc-star/pull/48#issuecomment-266235955)
 
 ### This module uses `pull-streams`
 
