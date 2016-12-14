@@ -35,9 +35,7 @@ function WebRTCStar () {
       options = {}
     }
 
-    if (!callback) {
-      callback = function noop () {}
-    }
+      callback = callback || function () {}
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
@@ -112,9 +110,7 @@ function WebRTCStar () {
     const listener = new EE()
 
     listener.listen = (ma, callback) => {
-      if (!callback) {
-        callback = function noop () {}
-      }
+      callback = callback || function () {}
 
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
@@ -138,9 +134,8 @@ function WebRTCStar () {
         callback()
       })
       listener.close = (callback) => {
-        if (!callback) {
-          callback = function noop () {}
-        }
+        callback = callback || function () {}
+
         listener.io.emit('ss-leave', ma.toString())
         setTimeout(() => {
           listener.io.disconnect()
@@ -150,7 +145,7 @@ function WebRTCStar () {
         }, 100)
       }
       listener.getAddrs = (callback) => {
-        process.nextTick(() => {
+        setImmediate(() => {
           callback(null, [ma])
         })
       }
