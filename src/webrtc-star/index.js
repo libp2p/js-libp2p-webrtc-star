@@ -35,7 +35,7 @@ function WebRTCStar () {
       options = {}
     }
 
-      callback = callback || function () {}
+    callback = callback || function () {}
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
