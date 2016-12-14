@@ -72,7 +72,7 @@ Since multiaddr doesn't have support for `DNS` yet, you have to add your libp2p-
 188.166.203.82
 ```
 
-And so, a webrtc-star address should looking like: `/ip4/188.166.203.82/tcp/<port>/ws/ipfs/<your-peer-id>`
+And so, a webrtc-star address should looking like: `/ip4/188.166.203.82/tcp/20000/ws/ipfs/<your-peer-id>`
 
 ### Deployment
 
