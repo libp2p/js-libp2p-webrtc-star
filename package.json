@@ -49,7 +49,7 @@
     "bl": "^1.1.2",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "pre-commit": "^1.2.1",
+    "pre-commit": "^1.2.2",
     "webrtcsupport": "^2.2.0"
   },
   "dependencies": {
