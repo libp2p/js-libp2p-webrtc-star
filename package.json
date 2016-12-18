@@ -60,7 +60,7 @@
     "interface-connection": "^0.3.0",
     "mafmt": "^2.1.0",
     "minimist": "^1.2.0",
-    "peer-id": "^0.8.0",
+    "peer-id": "^0.8.1",
     "peer-info": "^0.8.0",
     "pull-stream": "^3.4.3",
     "simple-peer": "^6.1.0",
