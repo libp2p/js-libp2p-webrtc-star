@@ -38,7 +38,11 @@ function WebRTCStar () {
     callback = callback || function () {}
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = listeners[Object.keys(listeners)[0]].io
+    const keys = Object.keys(listeners)
+                      .filter((key) => key.startsWith(ma.toString().substring(0, ma.toString().lastIndexOf('/'))))
+    const listener = listeners[keys[0]]
+    if (!listener) return callback(new Error('signalling server not connected'))
+    const sioClient = listener.io
 
     const spOptions = {
       initiator: true,
@@ -55,7 +59,7 @@ function WebRTCStar () {
     channel.on('signal', function (signal) {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
-        srcMultiaddr: listeners[Object.keys(listeners)[0]].ma.toString(),
+        srcMultiaddr: listener.ma.toString(),
         dstMultiaddr: ma.toString(),
         signal: signal
       })
