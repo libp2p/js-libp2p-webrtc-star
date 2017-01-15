@@ -6921,9 +6921,9 @@
       "resolved": "https://registry.npmjs.org/signed-varint/-/signed-varint-2.0.1.tgz"
     },
     "simple-peer": {
-      "version": "6.1.3",
+      "version": "6.1.0",
       "from": "simple-peer@>=6.1.0 <7.0.0",
-      "resolved": "https://registry.npmjs.org/simple-peer/-/simple-peer-6.1.3.tgz"
+      "resolved": "https://registry.npmjs.org/simple-peer/-/simple-peer-6.1.0.tgz"
     },
     "slash": {
       "version": "1.0.0",
