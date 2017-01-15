@@ -77,20 +77,6 @@ describe('dial', () => {
   })
 })
 describe('complex dial scenarios', () => {
-<<<<<<< HEAD
-  let ws1, ws2, listenerToClose
-  const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA1')
-  const ma1b = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA2')
-  const ma2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooB1')
-  before((done) => {
-    series([
-      first,
-      second,
-      third,
-      fourth
-    ], done)
-
-=======
   let ws1, ws2, ws3, sigS2
   const ma1a = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA1')
   const ma1b = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA2')
@@ -122,7 +108,6 @@ describe('complex dial scenarios', () => {
         done()
       })
     }
->>>>>>> err/callbackisAlreadyCalled
     function first (next) {
       ws1 = new WebRTCStar()
 
@@ -130,15 +115,10 @@ describe('complex dial scenarios', () => {
         pull(conn, conn)
       })
 
-<<<<<<< HEAD
-      listenerToClose = listener
-      listener.listen(ma1, next)
-=======
       // close immediately
       listener.listen(ma1a, () => {
         listener.close(next)
       })
->>>>>>> err/callbackisAlreadyCalled
     }
 
     function second (next) {
@@ -149,15 +129,11 @@ describe('complex dial scenarios', () => {
       listener.listen(ma1b, next)
     }
     function third (next) {
-<<<<<<< HEAD
-      listenerToClose.close(next)
-=======
       const listener = ws1.createListener((conn) => {
         pull(conn, conn)
       })
 
       listener.listen(ma1c, next)
->>>>>>> err/callbackisAlreadyCalled
     }
 
     function fourth (next) {
@@ -168,12 +144,6 @@ describe('complex dial scenarios', () => {
       })
       listener.listen(ma2, next)
     }
-<<<<<<< HEAD
-  })
-
-  it('dial closed listener should error', (done) => {
-    ws2.dial(ma1, (err, conn) => {
-=======
     function fifth (next) {
       ws3 = new WebRTCStar()
 
@@ -187,7 +157,6 @@ describe('complex dial scenarios', () => {
 
   it('dial closed listener should error', (done) => {
     ws2.dial(ma1a, (err, conn) => {
->>>>>>> err/callbackisAlreadyCalled
       expect(err).to.exist
       done()
     })
@@ -210,8 +179,6 @@ describe('complex dial scenarios', () => {
       )
     })
   })
-<<<<<<< HEAD
-=======
   it('dial a second node on a different signaling server', (done) => {
     ws1.dial(ma3, (err, conn) => {
       expect(err).to.not.exist
@@ -229,6 +196,5 @@ describe('complex dial scenarios', () => {
       )
     })
   })
->>>>>>> err/callbackisAlreadyCalled
 })
 
