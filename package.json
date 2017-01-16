@@ -63,7 +63,7 @@
     "peer-id": "^0.8.1",
     "peer-info": "^0.8.0",
     "pull-stream": "^3.4.3",
-    "simple-peer": "^6.1.0",
+    "simple-peer": "^6.1.4",
     "socket.io": "^1.4.6",
     "socket.io-client": "^1.7.2",
     "stream-to-pull-stream": "^1.7.0",
