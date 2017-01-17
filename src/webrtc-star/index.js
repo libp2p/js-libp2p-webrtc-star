@@ -116,7 +116,6 @@ function WebRTCStar () {
     listener.listen = (ma, callback) => {
       callback = callback || function () {}
 
-
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
       listener.io = io.connect(sioUrl, sioOptions)
