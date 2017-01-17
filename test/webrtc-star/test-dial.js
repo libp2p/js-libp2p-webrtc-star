@@ -8,7 +8,6 @@ const series = require('async/series')
 const pull = require('pull-stream')
 
 const WebRTCStar = require('../../src/webrtc-star')
-const sigServer = require('../../src/signalling')
 
 describe('dial', () => {
   let ws1
@@ -77,7 +76,7 @@ describe('dial', () => {
   })
 })
 describe('complex dial scenarios', () => {
-  let ws1, ws2, ws3, sigS2
+  let ws1, ws2, ws3
   const ma1a = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA1')
   const ma1b = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA2')
   const ma1c = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15556/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA3')
@@ -85,7 +84,6 @@ describe('complex dial scenarios', () => {
   const ma3 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15556/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooC1')
   before((done) => {
     series([
-      boot,
       first,
       second,
       third,
@@ -93,21 +91,6 @@ describe('complex dial scenarios', () => {
       fifth
     ], done)
 
-    function boot (done) {
-      const options = {
-        port: 15556,
-        host: '127.0.0.1'
-      }
-
-      sigServer.start(options, (err, server) => {
-        if (err) {
-          throw err
-        }
-        sigS2 = server
-        console.log('signalling 2 on:', server.info.uri)
-        done()
-      })
-    }
     function first (next) {
       ws1 = new WebRTCStar()
 
@@ -153,7 +136,6 @@ describe('complex dial scenarios', () => {
       listener.listen(ma3, next)
     }
   })
-  after((done) => sigS2.stop(done))
 
   it('dial closed listener should error', (done) => {
     ws2.dial(ma1a, (err, conn) => {
@@ -162,7 +144,7 @@ describe('complex dial scenarios', () => {
     })
   })
 
-  it('dial after listener 0 is closed and its signalling connection disconnected', (done) => {
+  it('dial after first listener is closed and its signalling connection disconnected', (done) => {
     ws1.dial(ma2, (err, conn) => {
       expect(err).to.not.exist
 
