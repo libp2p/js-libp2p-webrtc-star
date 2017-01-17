@@ -75,3 +75,108 @@ describe('dial', () => {
     // TODO IPv6 not supported yet
   })
 })
+describe('complex dial scenarios', () => {
+  let ws1, ws2, ws3
+  const ma1a = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA1')
+  const ma1b = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA2')
+  const ma1c = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15556/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooA3')
+  const ma2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooB1')
+  const ma3 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15556/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooC1')
+  before((done) => {
+    series([
+      first,
+      second,
+      third,
+      fourth,
+      fifth
+    ], done)
+
+    function first (next) {
+      ws1 = new WebRTCStar()
+
+      const listener = ws1.createListener((conn) => {
+        pull(conn, conn)
+      })
+
+      // close immediately
+      listener.listen(ma1a, () => {
+        listener.close(next)
+      })
+    }
+
+    function second (next) {
+      const listener = ws1.createListener((conn) => {
+        pull(conn, conn)
+      })
+
+      listener.listen(ma1b, next)
+    }
+    function third (next) {
+      const listener = ws1.createListener((conn) => {
+        pull(conn, conn)
+      })
+
+      listener.listen(ma1c, next)
+    }
+
+    function fourth (next) {
+      ws2 = new WebRTCStar()
+
+      const listener = ws2.createListener((conn) => {
+        pull(conn, conn)
+      })
+      listener.listen(ma2, next)
+    }
+    function fifth (next) {
+      ws3 = new WebRTCStar()
+
+      const listener = ws3.createListener((conn) => {
+        pull(conn, conn)
+      })
+      listener.listen(ma3, next)
+    }
+  })
+
+  it('dial closed listener should error', (done) => {
+    ws2.dial(ma1a, (err, conn) => {
+      expect(err).to.exist
+      done()
+    })
+  })
+
+  it('dial after first listener is closed and its signalling connection disconnected', (done) => {
+    ws1.dial(ma2, (err, conn) => {
+      expect(err).to.not.exist
+
+      const data = new Buffer('some data')
+
+      pull(
+        pull.values([data]),
+        conn,
+        pull.collect((err, values) => {
+          expect(err).to.not.exist
+          expect(values).to.be.eql([data])
+          done()
+        })
+      )
+    })
+  })
+  it('dial a second node on a different signaling server', (done) => {
+    ws1.dial(ma3, (err, conn) => {
+      expect(err).to.not.exist
+
+      const data = new Buffer('some data')
+
+      pull(
+        pull.values([data]),
+        conn,
+        pull.collect((err, values) => {
+          expect(err).to.not.exist
+          expect(values).to.be.eql([data])
+          done()
+        })
+      )
+    })
+  })
+})
+

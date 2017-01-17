@@ -26,7 +26,6 @@ function WebRTCStar () {
     return new WebRTCStar()
   }
 
-  let maSelf
   const listeners = {}
   this.discovery = new EE()
 
@@ -36,12 +35,14 @@ function WebRTCStar () {
       options = {}
     }
 
-    if (!callback) {
-      callback = function noop () {}
-    }
+    callback = callback || function () {}
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = listeners[Object.keys(listeners)[0]].io
+    const keys = Object.keys(listeners)
+                      .filter((key) => key.startsWith(ma.toString().substring(0, ma.toString().lastIndexOf('/'))))
+    const listener = listeners[keys[0]]
+    if (!listener) return callback(new Error('signalling server not connected'))
+    const sioClient = listener.io
 
     const spOptions = {
       initiator: true,
@@ -58,7 +59,7 @@ function WebRTCStar () {
     channel.on('signal', function (signal) {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
-        srcMultiaddr: maSelf.toString(),
+        srcMultiaddr: listener.ma.toString(),
         dstMultiaddr: ma.toString(),
         signal: signal
       })
@@ -113,14 +114,12 @@ function WebRTCStar () {
     const listener = new EE()
 
     listener.listen = (ma, callback) => {
-      if (!callback) {
-        callback = function noop () {}
-      }
-      maSelf = ma
+      callback = callback || function () {}
 
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
       listener.io = io.connect(sioUrl, sioOptions)
+      listener.ma = ma
 
       listener.io.on('connect_error', callback)
       listener.io.on('error', (err) => {
@@ -135,8 +134,25 @@ function WebRTCStar () {
         listener.io.on('ws-handshake', incommingDial)
         listener.io.on('ws-peer', peerDiscovered.bind(this))
         listener.emit('listening')
+        listeners[ma.toString()] = listener
         callback()
       })
+      listener.close = (callback) => {
+        callback = callback || function () {}
+
+        listener.io.emit('ss-leave', ma.toString())
+        setTimeout(() => {
+          listener.io.disconnect()
+          delete listeners[ma.toString()]
+          listener.emit('close')
+          callback()
+        }, 100)
+      }
+      listener.getAddrs = (callback) => {
+        setImmediate(() => {
+          callback(null, [ma])
+        })
+      }
 
       function incommingDial (offer) {
         if (offer.answer || offer.err) {
@@ -172,24 +188,6 @@ function WebRTCStar () {
       }
     }
 
-    listener.close = (callback) => {
-      if (!callback) {
-        callback = function noop () {}
-      }
-      listener.io.emit('ss-leave')
-      setTimeout(() => {
-        listener.emit('close')
-        callback()
-      }, 100)
-    }
-
-    listener.getAddrs = (callback) => {
-      process.nextTick(() => {
-        callback(null, [maSelf])
-      })
-    }
-
-    listeners[multiaddr.toString()] = listener
     return listener
   }
 
