@@ -2,14 +2,19 @@
 
 'use strict'
 
+const webrtcSupport = require('webrtcsupport')
 const expect = require('chai').expect
 const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
-
 const WebRTCStar = require('../../src')
+const isNode = require('detect-node')
 
 describe('dial', () => {
+  if (!webrtcSupport.support && !isNode) {
+    return console.log('WebRTC not available')
+  }
+
   let ws1
   const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
   // deployed sig server

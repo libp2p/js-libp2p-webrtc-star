@@ -5,8 +5,14 @@
 const expect = require('chai').expect
 const multiaddr = require('multiaddr')
 const WebRTCStar = require('../../src')
+const webrtcSupport = require('webrtcsupport')
+const isNode = require('detect-node')
 
 describe('listen', () => {
+  if (!webrtcSupport.support && !isNode) {
+    return console.log('WebRTC not available')
+  }
+
   let ws
 
   const ma = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
