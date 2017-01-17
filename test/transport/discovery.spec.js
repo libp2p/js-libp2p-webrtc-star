@@ -5,7 +5,7 @@
 const expect = require('chai').expect
 const multiaddr = require('multiaddr')
 
-const WebRTCStar = require('../../src/webrtc-star')
+const WebRTCStar = require('../../src')
 
 describe('peer discovery', () => {
   let ws1

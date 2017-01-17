@@ -6,7 +6,7 @@ const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
 
-const WebRTCStar = require('../../src/webrtc-star')
+const WebRTCStar = require('../../src')
 
 describe('valid Connection', () => {
   let ws1

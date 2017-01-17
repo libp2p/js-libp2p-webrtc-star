@@ -2,7 +2,7 @@
 'use strict'
 
 const expect = require('chai').expect
-const WebRTCStar = require('./../../src')
+const WebRTCStar = require('../../src')
 
 describe('instantiate the transport', () => {
   it('create', (done) => {
