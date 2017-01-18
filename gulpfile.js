@@ -1,7 +1,7 @@
 'use strict'
 
 const gulp = require('gulp')
-const sigServer = require('./src/signalling')
+const sigServer = require('./src/sig-server')
 
 let sigS
 
