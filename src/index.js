@@ -15,8 +15,6 @@ const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
 const once = require('once')
 
-const noop = () => {}
-
 exports = module.exports = WebRTCStar
 
 const sioOptions = {
@@ -200,3 +198,5 @@ function WebRTCStar () {
     this.discovery.emit('peer', peer)
   }
 }
+
+const noop = () => {}
