@@ -14,24 +14,30 @@ const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
 const once = require('once')
+// const once = (callback) => callback // require('once')
 
-exports = module.exports = WebRTCStar
+const noop = once(() => {})
 
 const sioOptions = {
   transports: ['websocket'],
   'force new connection': true
 }
 
-function WebRTCStar () {
-  if (!(this instanceof WebRTCStar)) {
-    return new WebRTCStar()
+class WebRTCStar {
+  constructor () {
+    this.maSelf = undefined
+
+    this.sioOptions = {
+      transports: ['websocket'],
+      'force new connection': true
+    }
+
+    this.discovery = new EE()
+    this.listeners = {}
+    this._peerDiscovered = this._peerDiscovered.bind(this)
   }
 
-  let maSelf
-  const listeners = {}
-  this.discovery = new EE()
-
-  this.dial = function (ma, options, callback) {
+  dial (ma, options, callback) {
     if (typeof options === 'function') {
       callback = options
       options = {}
@@ -39,7 +45,7 @@ function WebRTCStar () {
     callback = callback ? once(callback) : noop
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = listeners[Object.keys(listeners)[0]].io
+    const sioClient = this.listeners[Object.keys(this.listeners)[0]].io
 
     const spOptions = {
       initiator: true,
@@ -53,10 +59,10 @@ function WebRTCStar () {
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
 
-    channel.on('signal', function (signal) {
+    channel.on('signal', (signal) => {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
-        srcMultiaddr: maSelf.toString(),
+        srcMultiaddr: this.maSelf.toString(),
         dstMultiaddr: ma.toString(),
         signal: signal
       })
@@ -96,7 +102,7 @@ function WebRTCStar () {
     return conn
   }
 
-  this.createListener = (options, handler) => {
+  createListener (options, handler) {
     if (typeof options === 'function') {
       handler = options
       options = {}
@@ -107,7 +113,7 @@ function WebRTCStar () {
     listener.listen = (ma, callback) => {
       callback = callback ? once(callback) : noop
 
-      maSelf = ma
+      this.maSelf = ma
 
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
@@ -122,7 +128,7 @@ function WebRTCStar () {
       listener.io.once('connect', () => {
         listener.io.emit('ss-join', ma.toString())
         listener.io.on('ws-handshake', incommingDial)
-        listener.io.on('ws-peer', peerDiscovered.bind(this))
+        listener.io.on('ws-peer', this._peerDiscovered)
         listener.emit('listening')
         callback()
       })
@@ -175,14 +181,14 @@ function WebRTCStar () {
     }
 
     listener.getAddrs = (callback) => {
-      setImmediate(() => callback(null, [maSelf]))
+      setImmediate(() => callback(null, [this.maSelf]))
     }
 
-    listeners[multiaddr.toString()] = listener
+    this.listeners[multiaddr.toString()] = listener
     return listener
   }
 
-  this.filter = (multiaddrs) => {
+  filter (multiaddrs) {
     if (!Array.isArray(multiaddrs)) {
       multiaddrs = [multiaddrs]
     }
@@ -191,7 +197,7 @@ function WebRTCStar () {
     })
   }
 
-  function peerDiscovered (maStr) {
+  _peerDiscovered (maStr) {
     log('Peer Discovered:', maStr)
     const id = peerId.createFromB58String(maStr.split('/')[8])
     const peer = new PeerInfo(id)
@@ -200,4 +206,4 @@ function WebRTCStar () {
   }
 }
 
-const noop = once(() => {})
+exports = module.exports = WebRTCStar
