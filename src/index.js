@@ -32,7 +32,7 @@ class WebRTCStar {
     }
 
     this.discovery = new EE()
-    this.listeners = {}
+    this.listenersRefs = {}
     this._peerDiscovered = this._peerDiscovered.bind(this)
   }
 
@@ -44,7 +44,7 @@ class WebRTCStar {
     callback = callback ? once(callback) : noop
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = this.listeners[Object.keys(this.listeners)[0]].io
+    const sioClient = this.listenersRefs[Object.keys(this.listenersRefs)[0]].io
 
     const spOptions = {
       initiator: true,
@@ -185,7 +185,7 @@ class WebRTCStar {
       setImmediate(() => callback(null, [this.maSelf]))
     }
 
-    this.listeners[multiaddr.toString()] = listener
+    this.listenersRefs[multiaddr.toString()] = listener
     return listener
   }
 
