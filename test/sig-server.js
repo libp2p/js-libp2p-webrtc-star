@@ -6,7 +6,7 @@ const io = require('socket.io-client')
 const parallel = require('async/parallel')
 const multiaddr = require('multiaddr')
 
-const sigServer = require('../../src/signalling')
+const sigServer = require('../src/sig-server')
 
 describe('signalling', () => {
   const sioOptions = {

@@ -4,7 +4,7 @@
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "main": "src/index.js",
   "bin": {
-    "star-sig": "src/signalling/bin.js"
+    "star-sig": "src/sig-server/bin.js"
   },
   "browser": {
     "wrtc": false
@@ -49,6 +49,7 @@
     "bl": "^1.2.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "lodash": "^4.17.4",
     "pre-commit": "^1.2.2",
     "webrtcsupport": "^2.2.0"
   },
@@ -60,6 +61,7 @@
     "interface-connection": "^0.3.0",
     "mafmt": "^2.1.5",
     "minimist": "^1.2.0",
+    "once": "^1.4.0",
     "peer-id": "^0.8.1",
     "peer-info": "^0.8.2",
     "pull-stream": "^3.5.0",
