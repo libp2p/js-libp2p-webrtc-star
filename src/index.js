@@ -13,6 +13,9 @@ const peerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
+const once = require('once')
+
+const noop = () => {}
 
 exports = module.exports = WebRTCStar
 
@@ -36,9 +39,7 @@ function WebRTCStar () {
       options = {}
     }
 
-    if (!callback) {
-      callback = function noop () {}
-    }
+    callback = callback ? once(callback) : noop
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const sioClient = listeners[Object.keys(listeners)[0]].io
@@ -55,7 +56,7 @@ function WebRTCStar () {
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
 
-    channel.on('signal', function (signal) {
+    channel.once('signal', function (signal) {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
         srcMultiaddr: maSelf.toString(),
@@ -64,11 +65,9 @@ function WebRTCStar () {
       })
     })
 
-    channel.on('timeout', () => {
-      callback(new Error('timeout'))
-    })
+    channel.once('timeout', () => callback(new Error('timeout')))
 
-    channel.on('error', (err) => {
+    channel.once('error', (err) => {
       if (!connected) {
         callback(err)
       }
@@ -83,17 +82,13 @@ function WebRTCStar () {
         return
       }
 
-      channel.on('connect', () => {
+      channel.once('connect', () => {
         connected = true
         conn.destroy = channel.destroy.bind(channel)
 
-        channel.on('close', () => {
-          conn.destroy()
-        })
+        channel.once('close', () => conn.destroy())
 
-        conn.getObservedAddrs = (callback) => {
-          return callback(null, [ma])
-        }
+        conn.getObservedAddrs = (callback) => callback(null, [ma])
 
         callback(null, conn)
       })
@@ -113,24 +108,21 @@ function WebRTCStar () {
     const listener = new EE()
 
     listener.listen = (ma, callback) => {
-      if (!callback) {
-        callback = function noop () {}
-      }
+      callback = callback ? once(callback) : noop
+
       maSelf = ma
 
       const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
 
       listener.io = io.connect(sioUrl, sioOptions)
 
-      listener.io.on('connect_error', callback)
-      listener.io.on('error', (err) => {
-        console.log('got error')
-
+      listener.io.once('connect_error', callback)
+      listener.io.once('error', (err) => {
         listener.emit('error', err)
         listener.emit('close')
       })
 
-      listener.io.on('connect', () => {
+      listener.io.once('connect', () => {
         listener.io.emit('ss-join', ma.toString())
         listener.io.on('ws-handshake', incommingDial)
         listener.io.on('ws-peer', peerDiscovered.bind(this))
@@ -153,7 +145,7 @@ function WebRTCStar () {
 
         const conn = new Connection(toPull.duplex(channel))
 
-        channel.on('connect', () => {
+        channel.once('connect', () => {
           conn.getObservedAddrs = (callback) => {
             return callback(null, [offer.srcMultiaddr])
           }
@@ -162,7 +154,7 @@ function WebRTCStar () {
           handler(conn)
         })
 
-        channel.on('signal', (signal) => {
+        channel.once('signal', (signal) => {
           offer.signal = signal
           offer.answer = true
           listener.io.emit('ss-handshake', offer)
@@ -173,20 +165,18 @@ function WebRTCStar () {
     }
 
     listener.close = (callback) => {
-      if (!callback) {
-        callback = function noop () {}
-      }
+      callback = callback ? once(callback) : noop
+
       listener.io.emit('ss-leave')
-      setTimeout(() => {
+
+      setImmediate(() => {
         listener.emit('close')
         callback()
-      }, 100)
+      })
     }
 
     listener.getAddrs = (callback) => {
-      process.nextTick(() => {
-        callback(null, [maSelf])
-      })
+      setImmediate(() => callback(null, [maSelf]))
     }
 
     listeners[multiaddr.toString()] = listener
