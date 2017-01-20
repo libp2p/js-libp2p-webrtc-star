@@ -16,14 +16,24 @@ describe('dial', () => {
   }
 
   let ws1
-  const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-  // deployed sig server
-  // const ma1 = multiaddr('/libp2p-webrtc-star/ip4/188.166.203.82/tcp/20000/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-
   let ws2
-  const ma2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
-  // deployed sig server
-  // const ma2 = multiaddr('/libp2p-webrtc-star/ip4/188.166.203.82/tcp/20000/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  let ma1
+  let ma2
+
+  const maHS = '/dns/webrtc-star-signalling.cloud.ipfs.team'
+  // const maHS = '/dns/star-signal.cloud.ipfs.team' NEXT
+
+  const maLS = '/ip4/127.0.0.1/tcp/15555'
+  const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/ws/ipfs/${id}`)
+
+  if (process.env.DNS) {
+    // test with deployed signalling server
+    ma1 = maGen(maHS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maHS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  } else {
+    ma1 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  }
 
   before((done) => {
     series([
@@ -33,20 +43,13 @@ describe('dial', () => {
 
     function first (next) {
       ws1 = new WebRTCStar()
-
-      const listener = ws1.createListener((conn) => {
-        pull(conn, conn)
-      })
-
+      const listener = ws1.createListener((conn) => pull(conn, conn))
       listener.listen(ma1, next)
     }
 
     function second (next) {
       ws2 = new WebRTCStar()
-
-      const listener = ws2.createListener((conn) => {
-        pull(conn, conn)
-      })
+      const listener = ws2.createListener((conn) => pull(conn, conn))
       listener.listen(ma2, next)
     }
   })
