@@ -38,9 +38,7 @@ TODO
 
 ### API
 
-Follows the interface defined by `interface-transport`
-
-[![](https://raw.githubusercontent.com/diasdavid/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
+[![](https://raw.githubusercontent.com/libp2p/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
 
 ### Signalling server
 
@@ -63,16 +61,9 @@ Defaults:
 
 ## Hosted Signalling Server
 
-We host a signalling server at `signalling.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
+We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
 
-Since multiaddr doesn't have support for `DNS` yet, you have to add your libp2p-webrtc-star multiaddr by using the IP address instead. To know the Signalling server address, you can do:
-
-```sh
-» dig +short webrtc-star-signalling.cloud.ipfs.team
-188.166.203.82
-```
-
-And so, a webrtc-star address should looking like: `/ip4/188.166.203.82/tcp/20000/ws/ipfs/<your-peer-id>`
+A libp2p-webrtc-star address, using the signalling server we provide, looks like: `/libp2p-webrtc-star/dns/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
 
 ### Deployment
 
@@ -80,7 +71,7 @@ We have a [dokku](https://github.com/ipfs/ops-requests/issues/31) setup ready fo
 
 ```sh
 # if you already have added the remote, you don't need to do it again
-> git remote add dokku dokku@cloud.ipfs.team:webrtc-star-signalling
+> git remote add dokku dokku@cloud.ipfs.team:star-signall
 > git push dokku master
 ```
 
