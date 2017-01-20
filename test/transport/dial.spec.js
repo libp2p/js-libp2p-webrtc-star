@@ -71,6 +71,7 @@ describe('dial', () => {
       )
     })
   })
+
   it('dial offline / non-existent node on IPv4, check callback', (done) => {
     let maOffline = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/ABCD')
     ws1.dial(maOffline, (err, conn) => {

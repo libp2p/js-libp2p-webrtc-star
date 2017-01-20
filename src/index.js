@@ -9,7 +9,7 @@ const EE = require('events').EventEmitter
 const wrtc = require('wrtc')
 const isNode = require('detect-node')
 const SimplePeer = require('simple-peer')
-const peerId = require('peer-id')
+const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
@@ -20,6 +20,21 @@ const noop = once(() => {})
 const sioOptions = {
   transports: ['websocket'],
   'force new connection': true
+}
+
+function cleanUrlSIO (ma) {
+  const maStrSplit = ma.toString().split('/')
+  if (!multiaddr.isName(ma)) {
+    return 'http://' + maStrSplit[3] + ':' + maStrSplit[5]
+  } else {
+    if (ma.protos()[2].name === 'ws') {
+      return 'http://' + maStrSplit[3]
+    } else if (ma.protos()[2].name === 'wss') {
+      return 'https://' + maStrSplit[3]
+    } else {
+      throw new Error('invalid multiaddr' + ma.toString())
+    }
+  }
 }
 
 class WebRTCStar {
@@ -116,7 +131,7 @@ class WebRTCStar {
 
       this.maSelf = ma
 
-      const sioUrl = 'http://' + ma.toString().split('/')[3] + ':' + ma.toString().split('/')[5]
+      const sioUrl = cleanUrlSIO(ma)
 
       listener.io = io.connect(sioUrl, sioOptions)
 
@@ -200,10 +215,12 @@ class WebRTCStar {
 
   _peerDiscovered (maStr) {
     log('Peer Discovered:', maStr)
-    const id = peerId.createFromB58String(maStr.split('/')[8])
-    const peer = new PeerInfo(id)
-    peer.multiaddr.add(multiaddr(maStr))
-    this.discovery.emit('peer', peer)
+    const split = maStr.split('/ipfs/')
+    const peerIdStr = split[split.length - 1]
+    const peerId = PeerId.createFromB58String(peerIdStr)
+    const peerInfo = new PeerInfo(peerId)
+    peerInfo.multiaddr.add(multiaddr(maStr))
+    this.discovery.emit('peer', peerInfo)
   }
 }
 
