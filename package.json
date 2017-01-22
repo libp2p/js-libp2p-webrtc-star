@@ -59,7 +59,7 @@
     "detect-node": "^2.0.3",
     "hapi": "^16.1.0",
     "interface-connection": "^0.3.0",
-    "mafmt": "^2.1.5",
+    "mafmt": "^2.1.6",
     "minimist": "^1.2.0",
     "once": "^1.4.0",
     "peer-id": "^0.8.1",
