@@ -1,1 +1,1 @@
-web: node src/signalling/bin.js
+web: node src/sig-server/bin.js
