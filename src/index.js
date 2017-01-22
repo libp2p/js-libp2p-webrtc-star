@@ -27,9 +27,10 @@ function cleanUrlSIO (ma) {
   if (!multiaddr.isName(ma)) {
     return 'http://' + maStrSplit[3] + ':' + maStrSplit[5]
   } else {
-    if (ma.protos()[2].name === 'ws') {
+    const wsProto = ma.protos()[2].name
+    if (wsProto === 'ws') {
       return 'http://' + maStrSplit[3]
-    } else if (ma.protos()[2].name === 'wss') {
+    } else if (wsProto === 'wss') {
       return 'https://' + maStrSplit[3]
     } else {
       throw new Error('invalid multiaddr' + ma.toString())

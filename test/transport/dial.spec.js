@@ -26,7 +26,7 @@ describe('dial', () => {
   const maLS = '/ip4/127.0.0.1/tcp/15555'
   const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/ws/ipfs/${id}`)
 
-  if (process.env.DNS) {
+  if (process.env.WEBRC_STAR_DNS) {
     // test with deployed signalling server
     ma1 = maGen(maHS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
     ma2 = maGen(maHS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')

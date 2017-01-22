@@ -51,7 +51,7 @@ TODO
 This will expose a `star-sig` cli tool. To spawn a server do:
 
 ```bash
-> star-sig --port=9090 --host=127.0.0.1
+> star-signal --port=9090 --host=127.0.0.1
 ```
 
 Defaults:
@@ -62,20 +62,13 @@ Defaults:
 ## Hosted Signalling Server
 
 We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
+A libp2p-webrtc-star address, using the signalling server we provide, looks like: 
 
-A libp2p-webrtc-star address, using the signalling server we provide, looks like: `/libp2p-webrtc-star/dns/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
+`/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
 
-### Deployment
+If you are loading your Web Application behind https, then you will need to dial to it through WebSockets Secure, to achieve this simply switch ws with wss, so that the multiaddr looks like:
 
-We have a [dokku](https://github.com/ipfs/ops-requests/issues/31) setup ready for this to be deployed, to deploy simple do (you have to have permission first):
-
-```sh
-# if you already have added the remote, you don't need to do it again
-> git remote add dokku dokku@cloud.ipfs.team:star-signall
-> git push dokku master
-```
-
-[Notes](https://github.com/libp2p/js-libp2p-webrtc-star/pull/48#issuecomment-266235955)
+`/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
 
 ### This module uses `pull-streams`
 

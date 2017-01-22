@@ -4,7 +4,8 @@
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "main": "src/index.js",
   "bin": {
-    "star-sig": "src/sig-server/bin.js"
+    "star-sig": "src/sig-server/bin.js",
+    "star-signal": "src/sig-server/bin.js"
   },
   "browser": {
     "wrtc": false
@@ -16,7 +17,7 @@
     "test": "gulp test",
     "test:node": "gulp test:node",
     "test:browser": "gulp test:browser",
-    "test:dns": "DNS=1 gulp test",
+    "test:dns": "WEBRTC_STAR_DNS=1 gulp test",
     "release": "gulp release",
     "release-minor": "gulp release --type minor",
     "release-major": "gulp release --type major",
