@@ -28,10 +28,12 @@ describe('dial', () => {
 
   if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
     // test with deployed signalling server using DNS
+    console.log('Using DNS:', maHSDNS)
     ma1 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
     ma2 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
   } else if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_IP) {
     // test with deployed signalling server using IP
+    console.log('Using IP:', maHSIP)
     ma1 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
     ma2 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
   } else {
