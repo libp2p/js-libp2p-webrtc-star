@@ -1,1 +1,1 @@
-web: node src/signalling/bin.js
+web: npm run star-signal

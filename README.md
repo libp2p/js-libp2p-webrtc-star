@@ -38,9 +38,7 @@ TODO
 
 ### API
 
-Follows the interface defined by `interface-transport`
-
-[![](https://raw.githubusercontent.com/diasdavid/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
+[![](https://raw.githubusercontent.com/libp2p/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
 
 ### Signalling server
 
@@ -53,7 +51,7 @@ Follows the interface defined by `interface-transport`
 This will expose a `star-sig` cli tool. To spawn a server do:
 
 ```bash
-> star-sig --port=9090 --host=127.0.0.1
+> star-signal --port=9090 --host=127.0.0.1
 ```
 
 Defaults:
@@ -63,28 +61,14 @@ Defaults:
 
 ## Hosted Signalling Server
 
-We host a signalling server at `signalling.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
+We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
+A libp2p-webrtc-star address, using the signalling server we provide, looks like: 
 
-Since multiaddr doesn't have support for `DNS` yet, you have to add your libp2p-webrtc-star multiaddr by using the IP address instead. To know the Signalling server address, you can do:
+`/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
 
-```sh
-» dig +short webrtc-star-signalling.cloud.ipfs.team
-188.166.203.82
-```
+If you are loading your Web Application behind https, then you will need to dial to it through WebSockets Secure, to achieve this simply switch ws with wss, so that the multiaddr looks like:
 
-And so, a webrtc-star address should looking like: `/ip4/188.166.203.82/tcp/20000/ws/ipfs/<your-peer-id>`
-
-### Deployment
-
-We have a [dokku](https://github.com/ipfs/ops-requests/issues/31) setup ready for this to be deployed, to deploy simple do (you have to have permission first):
-
-```sh
-# if you already have added the remote, you don't need to do it again
-> git remote add dokku dokku@cloud.ipfs.team:webrtc-star-signalling
-> git push dokku master
-```
-
-[Notes](https://github.com/libp2p/js-libp2p-webrtc-star/pull/48#issuecomment-266235955)
+`/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
 
 ### This module uses `pull-streams`
 

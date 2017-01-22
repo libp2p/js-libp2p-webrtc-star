@@ -12,6 +12,9 @@ describe('filter', () => {
     const maArr = [
       multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
       multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws'),
+      multiaddr('/libp2p-webrtc-star/dns/libp2p.io/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
+      multiaddr('/libp2p-webrtc-star/dns/signal.libp2p.io/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
+      multiaddr('/libp2p-webrtc-star/dns/signal.libp2p.io/wss/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
       multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo2'),
       multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo3'),
       multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo4'),
@@ -20,7 +23,7 @@ describe('filter', () => {
     ]
 
     const filtered = ws.filter(maArr)
-    expect(filtered.length).to.equal(4)
+    expect(filtered.length).to.equal(7)
   })
 
   it('filter a single addr for this transport', () => {

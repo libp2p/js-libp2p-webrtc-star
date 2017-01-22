@@ -16,14 +16,30 @@ describe('dial', () => {
   }
 
   let ws1
-  const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-  // deployed sig server
-  // const ma1 = multiaddr('/libp2p-webrtc-star/ip4/188.166.203.82/tcp/20000/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-
   let ws2
-  const ma2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
-  // deployed sig server
-  // const ma2 = multiaddr('/libp2p-webrtc-star/ip4/188.166.203.82/tcp/20000/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  let ma1
+  let ma2
+
+  const maHSDNS = '/dns/star-signal.cloud.ipfs.team'
+  const maHSIP = '/ip4/188.166.203.82/tcp/20000'
+
+  const maLS = '/ip4/127.0.0.1/tcp/15555'
+  const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/ws/ipfs/${id}`)
+
+  if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
+    // test with deployed signalling server using DNS
+    console.log('Using DNS:', maHSDNS)
+    ma1 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  } else if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_IP) {
+    // test with deployed signalling server using IP
+    console.log('Using IP:', maHSIP)
+    ma1 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  } else {
+    ma1 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  }
 
   before((done) => {
     series([
@@ -33,20 +49,13 @@ describe('dial', () => {
 
     function first (next) {
       ws1 = new WebRTCStar()
-
-      const listener = ws1.createListener((conn) => {
-        pull(conn, conn)
-      })
-
+      const listener = ws1.createListener((conn) => pull(conn, conn))
       listener.listen(ma1, next)
     }
 
     function second (next) {
       ws2 = new WebRTCStar()
-
-      const listener = ws2.createListener((conn) => {
-        pull(conn, conn)
-      })
+      const listener = ws2.createListener((conn) => pull(conn, conn))
       listener.listen(ma2, next)
     }
   })
@@ -68,6 +77,7 @@ describe('dial', () => {
       )
     })
   })
+
   it('dial offline / non-existent node on IPv4, check callback', (done) => {
     let maOffline = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/ABCD')
     ws1.dial(maOffline, (err, conn) => {
