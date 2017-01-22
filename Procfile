@@ -1,1 +1,1 @@
-web: node src/sig-server/bin.js
+web: npm run star-signal
