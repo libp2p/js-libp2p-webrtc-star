@@ -11,13 +11,14 @@
     "wrtc": false
   },
   "scripts": {
-    "signalling": "node src/signalling/bin.js",
+    "star-signal": "node src/sig-server/bin.js",
     "lint": "gulp lint",
     "build": "gulp build",
     "test": "gulp test",
     "test:node": "gulp test:node",
     "test:browser": "gulp test:browser",
-    "test:dns": "WEBRTC_STAR_DNS=1 gulp test",
+    "test:dns": "WEBRTC_STAR_REMOTE_SIGNAL_DNS=1 gulp test",
+    "test:ip": "WEBRTC_STAR_REMOTE_SIGNAL_IP=1 gulp test",
     "release": "gulp release",
     "release-minor": "gulp release --type minor",
     "release-major": "gulp release --type major",

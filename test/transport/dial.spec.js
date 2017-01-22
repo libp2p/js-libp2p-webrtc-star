@@ -20,16 +20,20 @@ describe('dial', () => {
   let ma1
   let ma2
 
-  const maHS = '/dns/webrtc-star-signalling.cloud.ipfs.team'
-  // const maHS = '/dns/star-signal.cloud.ipfs.team' NEXT
+  const maHSDNS = '/dns/star-signal.cloud.ipfs.team'
+  const maHSIP = '/ip4/188.166.203.82/tcp/20000'
 
   const maLS = '/ip4/127.0.0.1/tcp/15555'
   const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/ws/ipfs/${id}`)
 
-  if (process.env.WEBRC_STAR_DNS) {
-    // test with deployed signalling server
-    ma1 = maGen(maHS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-    ma2 = maGen(maHS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
+    // test with deployed signalling server using DNS
+    ma1 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+  } else if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_IP) {
+    // test with deployed signalling server using IP
+    ma1 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+    ma2 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
   } else {
     ma1 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
     ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
