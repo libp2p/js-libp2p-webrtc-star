@@ -68,7 +68,7 @@ A libp2p-webrtc-star address, using the signalling server we provide, looks like
 
 If you are loading your Web Application behind https, then you will need to dial to it through WebSockets Secure, to achieve this simply switch ws with wss, so that the multiaddr looks like:
 
-`/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/ws/ipfs/<your-peer-id>`
+`/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss/ipfs/<your-peer-id>`
 
 ### This module uses `pull-streams`
 
