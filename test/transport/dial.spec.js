@@ -24,6 +24,7 @@ describe('dial', () => {
   const maHSIP = '/ip4/188.166.203.82/tcp/20000'
 
   const maLS = '/ip4/127.0.0.1/tcp/15555'
+  // const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/wss/ipfs/${id}`) // https
   const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/ws/ipfs/${id}`)
 
   if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {

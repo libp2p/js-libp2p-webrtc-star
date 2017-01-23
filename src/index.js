@@ -134,6 +134,8 @@ class WebRTCStar {
 
       const sioUrl = cleanUrlSIO(ma)
 
+      log('Dialing to Signalling Server on: ' + sioUrl)
+
       listener.io = io.connect(sioUrl, sioOptions)
 
       listener.io.once('connect_error', callback)
