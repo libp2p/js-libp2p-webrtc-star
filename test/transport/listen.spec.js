@@ -48,6 +48,16 @@ describe('listen', () => {
     })
   })
 
+  it('listen on offline signalling server should error', (done) => {
+    let maOfflineSigServer = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.0/tcp/15555/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
+    const listener = ws.createListener((conn) => {})
+    listener.listen(maOfflineSigServer, (err) => {
+      expect(err).to.exist
+      listener.once('close', done)
+      listener.close()
+    })
+  })
+
   it.skip('close listener with connections, through timeout', (done) => {
     // TODO ? Should this apply ?
   })

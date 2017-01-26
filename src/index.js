@@ -40,8 +40,6 @@ function cleanUrlSIO (ma) {
 
 class WebRTCStar {
   constructor () {
-    this.maSelf = undefined
-
     this.sioOptions = {
       transports: ['websocket'],
       'force new connection': true
@@ -60,7 +58,11 @@ class WebRTCStar {
     callback = callback ? once(callback) : noop
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = this.listenersRefs[Object.keys(this.listenersRefs)[0]].io
+    const keys = Object.keys(this.listenersRefs)
+                          .filter((key) => cleanUrlSIO(ma) === cleanUrlSIO(multiaddr(key)))
+    const listener = this.listenersRefs[keys[0]]
+    if (!listener) return callback(new Error('signalling server not connected'))
+    const sioClient = listener.io
 
     const spOptions = {
       initiator: true,
@@ -73,11 +75,10 @@ class WebRTCStar {
 
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
-
     channel.on('signal', (signal) => {
       sioClient.emit('ss-handshake', {
         intentId: intentId,
-        srcMultiaddr: this.maSelf.toString(),
+        srcMultiaddr: listener.ma.toString(),
         dstMultiaddr: ma.toString(),
         signal: signal
       })
@@ -130,13 +131,12 @@ class WebRTCStar {
     listener.listen = (ma, callback) => {
       callback = callback ? once(callback) : noop
 
-      this.maSelf = ma
-
       const sioUrl = cleanUrlSIO(ma)
 
       log('Dialing to Signalling Server on: ' + sioUrl)
 
       listener.io = io.connect(sioUrl, sioOptions)
+      listener.ma = ma
 
       listener.io.once('connect_error', callback)
       listener.io.once('error', (err) => {
@@ -148,9 +148,25 @@ class WebRTCStar {
         listener.io.emit('ss-join', ma.toString())
         listener.io.on('ws-handshake', incommingDial)
         listener.io.on('ws-peer', this._peerDiscovered)
+        this.listenersRefs[ma.toString()] = listener
         listener.emit('listening')
         callback()
       })
+
+      listener.close = (callback) => {
+        callback = callback ? once(callback) : noop
+
+        listener.io.emit('ss-leave', ma.toString())
+        setImmediate(() => {
+          listener.io.disconnect()
+          listener.emit('close')
+          callback()
+          delete this.listenersRefs[ma.toString()]
+        })
+      }
+      listener.getAddrs = (callback) => {
+        setImmediate(() => callback(null, [ma]))
+      }
 
       function incommingDial (offer) {
         if (offer.answer || offer.err) {
@@ -188,22 +204,6 @@ class WebRTCStar {
       }
     }
 
-    listener.close = (callback) => {
-      callback = callback ? once(callback) : noop
-
-      listener.io.emit('ss-leave')
-
-      setImmediate(() => {
-        listener.emit('close')
-        callback()
-      })
-    }
-
-    listener.getAddrs = (callback) => {
-      setImmediate(() => callback(null, [this.maSelf]))
-    }
-
-    this.listenersRefs[multiaddr.toString()] = listener
     return listener
   }
 
