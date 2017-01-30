@@ -59,7 +59,7 @@ class WebRTCStar {
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
     const keys = Object.keys(this.listenersRefs)
-                          .filter((key) => cleanUrlSIO(ma) === cleanUrlSIO(multiaddr(key)))
+        .filter((key) => cleanUrlSIO(ma) === cleanUrlSIO(multiaddr(key)))
     const listener = this.listenersRefs[keys[0]]
     if (!listener) return callback(new Error('signalling server not connected'))
     const sioClient = listener.io
