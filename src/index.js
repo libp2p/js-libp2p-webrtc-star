@@ -14,6 +14,7 @@ const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
 const once = require('once')
+const setImmediate = require('async/setImmediate')
 
 const noop = once(() => {})
 
