@@ -7,7 +7,6 @@ const mafmt = require('mafmt')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
 const wrtc = require('wrtc')
-const isNode = require('detect-node')
 const SimplePeer = require('simple-peer')
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
@@ -15,6 +14,8 @@ const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
 const once = require('once')
 const setImmediate = require('async/setImmediate')
+const webrtcSupport = require('webrtcsupport')
+const isNode = require('detect-node')
 
 const noop = once(() => {})
 
@@ -133,6 +134,12 @@ class WebRTCStar {
 
     listener.listen = (ma, callback) => {
       callback = callback ? once(callback) : noop
+
+      if (!webrtcSupport.support && !isNode) {
+        return setImmediate(() => {
+          callback(new Error('No WebRTC support in this runtime'))
+        })
+      }
 
       this.maSelf = ma
 
