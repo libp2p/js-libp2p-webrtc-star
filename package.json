@@ -53,11 +53,11 @@
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "lodash": "^4.17.4",
-    "pre-commit": "^1.2.2",
-    "webrtcsupport": "^2.2.0"
+    "pre-commit": "^1.2.2"
   },
   "dependencies": {
     "async": "^2.1.4",
+    "webrtcsupport": "^2.2.0",
     "debug": "^2.6.1",
     "detect-node": "^2.0.3",
     "hapi": "^16.1.0",
