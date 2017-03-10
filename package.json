@@ -56,7 +56,7 @@
     "pre-commit": "^1.2.2"
   },
   "dependencies": {
-    "async": "^2.1.4",
+    "async": "^2.1.5",
     "webrtcsupport": "^2.2.0",
     "debug": "^2.6.1",
     "detect-node": "^2.0.3",
