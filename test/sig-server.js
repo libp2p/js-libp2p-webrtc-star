@@ -1,7 +1,10 @@
 /* eslint-env mocha */
 'use strict'
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
 const io = require('socket.io-client')
 const parallel = require('async/parallel')
 const multiaddr = require('multiaddr')
@@ -28,7 +31,7 @@ describe('signalling', () => {
 
   it('start and stop signalling server (default port)', (done) => {
     sigServer.start((err, server) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       expect(server.info.port).to.equal(13579)
       expect(server.info.protocol).to.equal('http')
       expect(server.info.address).to.equal('0.0.0.0')
@@ -41,7 +44,7 @@ describe('signalling', () => {
       port: 12345
     }
     sigServer.start(options, (err, server) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       expect(server.info.port).to.equal(12345)
       expect(server.info.protocol).to.equal('http')
       expect(server.info.address).to.equal('0.0.0.0')
@@ -55,7 +58,7 @@ describe('signalling', () => {
     }
 
     sigServer.start(options, (err, server) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       expect(server.info.port).to.equal(12345)
       expect(server.info.protocol).to.equal('http')
       expect(server.info.address).to.equal('0.0.0.0')
@@ -138,7 +141,7 @@ describe('signalling', () => {
     })
 
     c1.once('ws-handshake', (offer) => {
-      expect(offer.err).to.not.exist
+      expect(offer.err).to.not.exist()
       expect(offer.answer).to.equal(true)
       done()
     })
@@ -149,9 +152,9 @@ describe('signalling', () => {
     })
   })
 
-  it('c1 handshake c2 fail (does not exist anymore)', (done) => {
+  it('c1 handshake c2 fail (does not exist() anymore)', (done) => {
     c1.once('ws-handshake', (offer) => {
-      expect(offer.err).to.exist
+      expect(offer.err).to.exist()
       done()
     })
 
@@ -232,7 +235,7 @@ describe('signalling', () => {
     })
 
     function completed (err) {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
 
       if (++count === 2) {
         done()
@@ -249,7 +252,7 @@ describe('signalling', () => {
     })
 
     function completed (err) {
-      expect(err).to.exist
+      expect(err).to.exist()
       done()
     }
   })
@@ -320,8 +323,8 @@ describe('signalling', () => {
     })
 
     function receivedUpdate (update) {
-      expect(update).to.exist
-      expect(update.id).to.exist
+      expect(update).to.exist()
+      expect(update.id).to.exist()
       expect(update.row).to.equal('0')
 
       if (++count === 2) {

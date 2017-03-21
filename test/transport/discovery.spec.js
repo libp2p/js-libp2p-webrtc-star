@@ -2,7 +2,10 @@
 
 'use strict'
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const webrtcSupport = require('webrtcsupport')
 const isNode = require('detect-node')
@@ -24,7 +27,7 @@ describe('peer discovery', () => {
 
     const listener = ws1.createListener((conn) => {})
     listener.listen(ma1, (err) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       done()
     })
   })
@@ -39,7 +42,7 @@ describe('peer discovery', () => {
 
     const listener = ws2.createListener((conn) => {})
     listener.listen(ma2, (err) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
     })
   })
 })
