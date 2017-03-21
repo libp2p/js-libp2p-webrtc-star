@@ -2,7 +2,10 @@
 
 'use strict'
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const WebRTCStar = require('../../src')
 const webrtcSupport = require('webrtcsupport')
@@ -25,7 +28,7 @@ describe('listen', () => {
     const listener = ws.createListener((conn) => {})
 
     listener.listen(ma, (err) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       listener.close(done)
     })
   })
@@ -33,16 +36,14 @@ describe('listen', () => {
   it('listen, check for listening event', (done) => {
     const listener = ws.createListener((conn) => {})
 
-    listener.once('listening', () => {
-      listener.close(done)
-    })
+    listener.once('listening', () => listener.close(done))
     listener.listen(ma)
   })
 
   it('listen, check for the close event', (done) => {
     const listener = ws.createListener((conn) => {})
     listener.listen(ma, (err) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       listener.once('close', done)
       listener.close()
     })
@@ -59,9 +60,9 @@ describe('listen', () => {
   it('getAddrs', (done) => {
     const listener = ws.createListener((conn) => {})
     listener.listen(ma, (err) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       listener.getAddrs((err, addrs) => {
-        expect(err).to.not.exist
+        expect(err).to.not.exist()
         expect(addrs[0]).to.deep.equal(ma)
         listener.close(done)
       })

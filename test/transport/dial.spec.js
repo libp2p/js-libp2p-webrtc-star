@@ -3,7 +3,10 @@
 'use strict'
 
 const webrtcSupport = require('webrtcsupport')
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
@@ -63,7 +66,7 @@ describe('dial', () => {
 
   it('dial on IPv4, check callback', (done) => {
     ws1.dial(ma2, (err, conn) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
 
       const data = new Buffer('some data')
 
@@ -71,7 +74,7 @@ describe('dial', () => {
         pull.values([data]),
         conn,
         pull.collect((err, values) => {
-          expect(err).to.not.exist
+          expect(err).to.not.exist()
           expect(values).to.be.eql([data])
           done()
         })
@@ -79,10 +82,10 @@ describe('dial', () => {
     })
   })
 
-  it('dial offline / non-existent node on IPv4, check callback', (done) => {
+  it('dial offline / non-exist()ent node on IPv4, check callback', (done) => {
     let maOffline = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/ABCD')
     ws1.dial(maOffline, (err, conn) => {
-      expect(err).to.exist
+      expect(err).to.exist()
       done()
     })
   })

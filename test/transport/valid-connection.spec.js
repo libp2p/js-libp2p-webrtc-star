@@ -1,7 +1,10 @@
 /* eslint-env mocha */
 'use strict'
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
@@ -55,7 +58,7 @@ describe('valid Connection', () => {
 
   it('get observed addrs', (done) => {
     conn.getObservedAddrs((err, addrs) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       expect(addrs[0].toString()).to.equal(ma2.toString())
       done()
     })
@@ -63,7 +66,7 @@ describe('valid Connection', () => {
 
   it('get Peer Info', (done) => {
     conn.getPeerInfo((err, peerInfo) => {
-      expect(err).to.exist
+      expect(err).to.exist()
       done()
     })
   })
@@ -71,10 +74,9 @@ describe('valid Connection', () => {
   it('set Peer Info', (done) => {
     conn.setPeerInfo('info')
     conn.getPeerInfo((err, peerInfo) => {
-      expect(err).to.not.exist
+      expect(err).to.not.exist()
       expect(peerInfo).to.equal('info')
       done()
     })
   })
 })
-
