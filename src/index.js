@@ -233,7 +233,7 @@ class WebRTCStar {
     const peerIdStr = split[split.length - 1]
     const peerId = PeerId.createFromB58String(peerIdStr)
     const peerInfo = new PeerInfo(peerId)
-    peerInfo.multiaddr.add(multiaddr(maStr))
+    peerInfo.multiaddrs.add(multiaddr(maStr))
     this.discovery.emit('peer', peerInfo)
   }
 }
