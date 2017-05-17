@@ -33,13 +33,29 @@ module.exports = (http) => {
 
   // join this signaling server network
   function join (multiaddr) {
-    peers[multiaddr] = this // socket
-    Object.keys(peers).forEach((mh) => {
-      if (mh === multiaddr) {
-        return
+    const socket = peers[multiaddr] = this // socket
+    let refreshInterval = setInterval(sendPeers, config.refreshPeerListIntervalMS)
+
+    socket.once('ss-leave', stopSendingPeers)
+    socket.once('disconnect', stopSendingPeers)
+
+    sendPeers()
+
+    function sendPeers () {
+      Object.keys(peers).forEach((mh) => {
+        if (mh === multiaddr) {
+          return
+        }
+        safeEmit(mh, 'ws-peer', multiaddr)
+      })
+    }
+
+    function stopSendingPeers () {
+      if (refreshInterval) {
+        clearInterval(refreshInterval)
+        refreshInterval = null
       }
-      safeEmit(mh, 'ws-peer', multiaddr)
-    })
+    }
   }
 
   function leave (multiaddr) {

@@ -16,5 +16,6 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  refreshPeerListIntervalMS: 10000
 }
