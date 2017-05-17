@@ -170,7 +170,6 @@ describe('signalling', () => {
   })
 
   it('emits ws-peer every 10 seconds', (done) => {
-    let addr = 0
     let peersEmitted = 0
 
     c1 = io.connect(sioUrl, sioOptions)
@@ -180,7 +179,7 @@ describe('signalling', () => {
 
     c1.on('ws-peer', (p) => {
       expect(p).to.be.equal('c2')
-      peersEmitted ++
+      peersEmitted++
     })
 
     setTimeout(() => {
@@ -188,7 +187,6 @@ describe('signalling', () => {
       done()
     }, 11000)
   })
-
 
   it('stop signalling server', (done) => {
     parallel([
@@ -199,7 +197,7 @@ describe('signalling', () => {
       (cb) => {
         c2.disconnect()
         cb()
-      },
+      }
       // done in test
       // (cb) => {
       //  c3.disconnect()
