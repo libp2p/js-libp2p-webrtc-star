@@ -160,6 +160,9 @@ class WebRTCStar {
 
       listener.io.on('connect', () => {
         listener.io.emit('ss-join', ma.toString())
+      })
+
+      listener.io.once('connect', () => {
         listener.emit('listening')
         callback()
       })
