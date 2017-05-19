@@ -126,7 +126,7 @@ describe('signalling', () => {
   })
 
   it('ss-join the fourth', (done) => {
-    c1.on('ws-peer', (multiaddr) => {
+    c1.once('ws-peer', (multiaddr) => {
       expect(multiaddr).to.equal(c4mh.toString())
       expect(Object.keys(sigS.peers()).length).to.equal(2)
       done()
@@ -164,6 +164,30 @@ describe('signalling', () => {
     })
   })
 
+  it('disconnects every client', (done) => {
+    [c1, c2, c3, c4].forEach((c) => c.disconnect())
+    done()
+  })
+
+  it('emits ws-peer every 10 seconds', (done) => {
+    let peersEmitted = 0
+
+    c1 = io.connect(sioUrl, sioOptions)
+    c2 = io.connect(sioUrl, sioOptions)
+    c1.emit('ss-join', 'c1')
+    c2.emit('ss-join', 'c2')
+
+    c1.on('ws-peer', (p) => {
+      expect(p).to.be.equal('c2')
+      peersEmitted++
+    })
+
+    setTimeout(() => {
+      expect(peersEmitted).to.equal(2)
+      done()
+    }, 11000)
+  })
+
   it('stop signalling server', (done) => {
     parallel([
       (cb) => {
@@ -173,16 +197,16 @@ describe('signalling', () => {
       (cb) => {
         c2.disconnect()
         cb()
-      },
+      }
       // done in test
       // (cb) => {
       //  c3.disconnect()
       //  cb()
       // },
-      (cb) => {
-        c4.disconnect()
-        cb()
-      }
+      // (cb) => {
+      //   c4.disconnect()
+      //   cb()
+      // }
     ], () => {
       sigS.stop(done)
     })
