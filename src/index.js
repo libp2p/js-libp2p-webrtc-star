@@ -155,10 +155,14 @@ class WebRTCStar {
         listener.emit('close')
       })
 
-      listener.io.once('connect', () => {
+      listener.io.on('ws-handshake', incommingDial)
+      listener.io.on('ws-peer', this._peerDiscovered)
+
+      listener.io.on('connect', () => {
         listener.io.emit('ss-join', ma.toString())
-        listener.io.on('ws-handshake', incommingDial)
-        listener.io.on('ws-peer', this._peerDiscovered)
+      })
+
+      listener.io.once('connect', () => {
         listener.emit('listening')
         callback()
       })
