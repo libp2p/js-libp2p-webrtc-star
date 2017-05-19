@@ -58,7 +58,6 @@
   },
   "dependencies": {
     "async": "^2.4.0",
-    "webrtcsupport": "^2.2.0",
     "debug": "^2.6.8",
     "detect-node": "^2.0.3",
     "hapi": "^16.1.1",
@@ -74,6 +73,7 @@
     "socket.io": "^2.0.1",
     "socket.io-client": "^2.0.1",
     "stream-to-pull-stream": "^1.7.2",
+    "webrtcsupport": "github:ipfs/webrtcsupport",
     "wrtc": "0.0.62"
   },
   "contributors": [
