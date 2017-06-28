@@ -22,12 +22,6 @@
 
 **Note:** This module uses [pull-streams](https://pull-stream.github.io) for all stream based interfaces.
 
-## Example
-
-```JavaScript
-TODO
-```
-
 ## Usage
 
 ### Installation
@@ -39,6 +33,24 @@ TODO
 ### API
 
 [![](https://raw.githubusercontent.com/libp2p/interface-transport/master/img/badge.png)](https://github.com/libp2p/interface-transport)
+
+### Using this module in Node.js (and not in the browser)
+
+To use this module in Node.js, you have to BYOI of WebRTC, there are multiple options out there, unfortunately, none of them is 100% solid. The ones we recommend are: [wrtc](http://npmjs.org/wrtc) and [electron-webrtc](https://www.npmjs.com/package/electron-webrtc).
+
+Instead of just creating the WebRTCStar instance without arguments, you need to pass an options object with the WebRTC implementation:
+
+```JavaScript
+const wrtc = require('wrtc')
+const electronWrtc = require('electron-wrtc')
+const WStar = require('libp2p-webrtc-star')
+
+// Using wrtc
+const ws1 = new WStar({ wrtc: wrtc })
+
+// Using electron-webrtc
+const ws2 = new WStar({ wrtc: electronWebRTC() })
+```
 
 ### Signalling server
 
