@@ -15,8 +15,6 @@ describe('instantiate the transport', () => {
   })
 
   it('create without new', () => {
-    expect(() => {
-      WebRTCStar()
-    }).to.throw()
+    expect(() => WebRTCStar()).to.throw()
   })
 })

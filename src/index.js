@@ -6,7 +6,6 @@ const multiaddr = require('multiaddr')
 const mafmt = require('mafmt')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
-const wrtc = require('wrtc')
 const SimplePeer = require('simple-peer')
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
@@ -15,7 +14,8 @@ const toPull = require('stream-to-pull-stream')
 const once = require('once')
 const setImmediate = require('async/setImmediate')
 const webrtcSupport = require('webrtcsupport')
-const isNode = require('detect-node')
+const utils = require('./utils')
+const cleanUrlSIO = utils.cleanUrlSIO
 
 const noop = once(() => {})
 
@@ -24,29 +24,19 @@ const sioOptions = {
   'force new connection': true
 }
 
-function cleanUrlSIO (ma) {
-  const maStrSplit = ma.toString().split('/')
-  if (!multiaddr.isName(ma)) {
-    return 'http://' + maStrSplit[3] + ':' + maStrSplit[5]
-  } else {
-    const wsProto = ma.protos()[2].name
-    if (wsProto === 'ws') {
-      return 'http://' + maStrSplit[3]
-    } else if (wsProto === 'wss') {
-      return 'https://' + maStrSplit[3]
-    } else {
-      throw new Error('invalid multiaddr' + ma.toString())
-    }
-  }
-}
-
 class WebRTCStar {
-  constructor () {
+  constructor (options) {
+    options = options || {}
+
     this.maSelf = undefined
 
     this.sioOptions = {
       transports: ['websocket'],
       'force new connection': true
+    }
+
+    if (options.wrtc) {
+      this.wrtc = options.wrtc
     }
 
     this.discovery = new EE()
@@ -62,18 +52,19 @@ class WebRTCStar {
       callback = options
       options = {}
     }
+
     callback = callback ? once(callback) : noop
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = this.listenersRefs[Object.keys(this.listenersRefs)[0]].io
 
-    const spOptions = {
-      initiator: true,
-      trickle: false
-    }
-    if (isNode) {
-      spOptions.wrtc = wrtc
-    }
+    const sioClient = this
+      .listenersRefs[Object.keys(this.listenersRefs)[0]].io
+
+    const spOptions = { initiator: true, trickle: false }
+
+    // Use custom WebRTC implementation
+    if (this.wrtc) { spOptions.wrtc = this.wrtc }
+
     const channel = new SimplePeer(spOptions)
 
     const conn = new Connection(toPull.duplex(channel))
@@ -91,9 +82,7 @@ class WebRTCStar {
     channel.once('timeout', () => callback(new Error('timeout')))
 
     channel.once('error', (err) => {
-      if (!connected) {
-        callback(err)
-      }
+      if (!connected) { callback(err) }
     })
 
     // NOTE: aegir segfaults if we do .once on the socket.io event emitter and we
@@ -135,10 +124,8 @@ class WebRTCStar {
     listener.listen = (ma, callback) => {
       callback = callback ? once(callback) : noop
 
-      if (!webrtcSupport.support && !isNode) {
-        return setImmediate(() => {
-          callback(new Error('No WebRTC support in this runtime'))
-        })
+      if (!webrtcSupport.support && !this.wrtc) {
+        return setImmediate(() => callback(new Error('no WebRTC support')))
       }
 
       this.maSelf = ma
@@ -167,18 +154,16 @@ class WebRTCStar {
         callback()
       })
 
+      const self = this
       function incommingDial (offer) {
         if (offer.answer || offer.err) {
           return
         }
 
-        const spOptions = {
-          trickle: false
-        }
+        const spOptions = { trickle: false }
 
-        if (isNode) {
-          spOptions.wrtc = wrtc
-        }
+        // Use custom WebRTC implementation
+        if (self.wrtc) { spOptions.wrtc = self.wrtc }
 
         const channel = new SimplePeer(spOptions)
 
@@ -226,9 +211,7 @@ class WebRTCStar {
     if (!Array.isArray(multiaddrs)) {
       multiaddrs = [multiaddrs]
     }
-    return multiaddrs.filter((ma) => {
-      return mafmt.WebRTCStar.matches(ma)
-    })
+    return multiaddrs.filter((ma) => mafmt.WebRTCStar.matches(ma))
   }
 
   _peerDiscovered (maStr) {
@@ -242,4 +225,4 @@ class WebRTCStar {
   }
 }
 
-exports = module.exports = WebRTCStar
+module.exports = WebRTCStar
