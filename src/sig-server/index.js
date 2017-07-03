@@ -3,6 +3,7 @@
 const Hapi = require('hapi')
 const config = require('./config')
 const log = config.log
+const epimetheus = require('epimetheus')
 
 exports = module.exports
 
@@ -21,6 +22,8 @@ exports.start = (options, callback) => {
     port: port,
     host: host
   })
+
+  epimetheus.instrument(http)
 
   http.start((err) => {
     if (err) {
