@@ -22,8 +22,8 @@ module.exports = (create) => {
     const maHSIP = '/ip4/188.166.203.82/tcp/20000'
 
     const maLS = '/ip4/127.0.0.1/tcp/15555'
-    const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/wss/ipfs/${id}`) // https
-    // const maGen = (base, id) => multiaddr(`/libp2p-webrtc-star${base}/ws/ipfs/${id}`)
+    const maGen = (base, id) => multiaddr(`${base}/wss/p2p-webrtc-star/ipfs/${id}`) // https
+    // const maGen = (base, id) => multiaddr(`${base}/ws/p2p-webrtc-star/ipfs/${id}`)
 
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
       // test with deployed signalling server using DNS
@@ -75,7 +75,7 @@ module.exports = (create) => {
     })
 
     it('dial offline / non-exist()ent node on IPv4, check callback', (done) => {
-      let maOffline = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/15555/ws/ipfs/ABCD')
+      let maOffline = multiaddr('ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
       ws1.dial(maOffline, (err, conn) => {
         expect(err).to.exist()
         done()

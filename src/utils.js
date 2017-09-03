@@ -6,13 +6,14 @@ function cleanUrlSIO (ma) {
   const maStrSplit = ma.toString().split('/')
 
   if (!multiaddr.isName(ma)) {
-    return 'http://' + maStrSplit[3] + ':' + maStrSplit[5]
+    return 'http://' + maStrSplit[2] + ':' + maStrSplit[4]
   } else {
-    const wsProto = ma.protos()[2].name
+    const wsProto = ma.protos()[1].name
+
     if (wsProto === 'ws') {
-      return 'http://' + maStrSplit[3]
+      return 'http://' + maStrSplit[2]
     } else if (wsProto === 'wss') {
-      return 'https://' + maStrSplit[3]
+      return 'https://' + maStrSplit[2]
     } else {
       throw new Error('invalid multiaddr' + ma.toString())
     }

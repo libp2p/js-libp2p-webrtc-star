@@ -14,14 +14,18 @@ const SERVER_PORT = 13580
 module.exports = (create) => {
   describe('reconnect to signaling server', () => {
     let sigS
+
+    const base = (id) => {
+      return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/${id}`
+    }
+
     let ws1
-    const ma1 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/13580/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo6A')
-
     let ws2
-    const ma2 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/13580/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo6B')
-
     let ws3
-    const ma3 = multiaddr('/libp2p-webrtc-star/ip4/127.0.0.1/tcp/13580/ws/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo6C')
+
+    const ma1 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3A'))
+    const ma2 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3B'))
+    const ma3 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3C'))
 
     before((done) => {
       sigS = sigServer.start({ port: SERVER_PORT }, done)
