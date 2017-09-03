@@ -13,7 +13,7 @@ module.exports = (create) => {
       const ws = create()
 
       const maArr = [
-        multiaddr('/ip4/127.0.0.1/tcp/9090/ws/p2p-webrt-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
+        multiaddr('/ip4/127.0.0.1/tcp/9090/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
         multiaddr('/ip4/127.0.0.1/tcp/9090/ws/p2p-webrtc-star'),
         multiaddr('/dns/libp2p.io/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),
         multiaddr('/dns/signal.libp2p.io/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'),

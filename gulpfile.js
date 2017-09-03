@@ -17,9 +17,8 @@ function boot (done) {
   }
 
   sigServer.start(options, (err, server) => {
-    if (err) {
-      throw err
-    }
+    if (err) { throw err }
+
     sigS = server
     console.log('signalling on:', server.info.uri)
     done()
