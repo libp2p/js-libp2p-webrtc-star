@@ -216,6 +216,10 @@ class WebRTCStar {
 
   _peerDiscovered (maStr) {
     log('Peer Discovered:', maStr)
+    const legacy = '/libp2p-webrtc-star'
+    if (maStr.indexOf(legacy) !== -1) {
+      maStr.substring(legacy.length, maStr.length)
+    }
     const split = maStr.split('/ipfs/')
     const peerIdStr = split[split.length - 1]
     const peerId = PeerId.createFromB58String(peerIdStr)
