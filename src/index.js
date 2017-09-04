@@ -16,6 +16,7 @@ const setImmediate = require('async/setImmediate')
 const webrtcSupport = require('webrtcsupport')
 const utils = require('./utils')
 const cleanUrlSIO = utils.cleanUrlSIO
+const cleanMultiaddr = utils.cleanMultiaddr
 
 const noop = once(() => {})
 
@@ -216,10 +217,8 @@ class WebRTCStar {
 
   _peerDiscovered (maStr) {
     log('Peer Discovered:', maStr)
-    const legacy = '/libp2p-webrtc-star'
-    if (maStr.indexOf(legacy) !== -1) {
-      maStr.substring(legacy.length, maStr.length)
-    }
+    maStr = cleanMultiaddr(maStr)
+
     const split = maStr.split('/ipfs/')
     const peerIdStr = split[split.length - 1]
     const peerId = PeerId.createFromB58String(peerIdStr)
