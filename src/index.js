@@ -218,8 +218,18 @@ class WebRTCStar {
     log('Peer Discovered:', maStr)
     const legacy = '/libp2p-webrtc-star'
     if (maStr.indexOf(legacy) !== -1) {
-      maStr.substring(legacy.length, maStr.length)
+      maStr = maStr.substring(legacy.length, maStr.length)
+      let ma = multiaddr(maStr)
+      const tuppleIPFS = ma.stringTuples().filter((tupple) => {
+        return tupple[0] === 421 // ipfs code
+      })[0]
+
+      ma = ma.decapsulate('ipfs')
+      ma = ma.encapsulate('p2p-webrtc-star')
+      ma = ma.encapsulate(`/ipfs/${tuppleIPFS[1]}`)
+      maStr = ma.toString()
     }
+
     const split = maStr.split('/ipfs/')
     const peerIdStr = split[split.length - 1]
     const peerId = PeerId.createFromB58String(peerIdStr)
