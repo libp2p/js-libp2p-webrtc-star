@@ -33,7 +33,7 @@ module.exports = (http) => {
 
   // join this signaling server network
   function join (multiaddr) {
-    if (!multiaddr) return
+    if (!multiaddr) { return }
     const socket = peers[multiaddr] = this // socket
     let refreshInterval = setInterval(sendPeers, config.refreshPeerListIntervalMS)
 
@@ -60,7 +60,7 @@ module.exports = (http) => {
   }
 
   function leave (multiaddr) {
-    if (!multiaddr) return
+    if (!multiaddr) { return }
     if (peers[multiaddr]) {
       delete peers[multiaddr]
     }
