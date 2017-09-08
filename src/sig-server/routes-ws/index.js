@@ -76,9 +76,7 @@ module.exports = (http) => {
 
   // forward an WebRTC offer to another peer
   function forwardHandshake (offer) {
-    if (typeof offer != "object") return
-    if (!offer.srcMultiaddr) return
-    if (!offer.dstMultiaddr) return
+    if (offer == null || typeof offer !== 'object' || !offer.srcMultiaddr || !offer.dstMultiaddr) { return }
     if (offer.answer) {
       safeEmit(offer.srcMultiaddr, 'ws-handshake', offer)
     } else {
