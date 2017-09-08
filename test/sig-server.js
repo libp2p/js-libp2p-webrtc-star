@@ -43,6 +43,25 @@ describe('signalling', () => {
     })
   })
 
+  it('start and stop signalling server (default port) and spam it with invalid requests', (done) => {
+    sigServer.start((err, server) => {
+      expect(err).to.not.exist()
+      expect(server.info.port).to.equal(13579)
+      expect(server.info.protocol).to.equal('http')
+      expect(server.info.address).to.equal('0.0.0.0')
+      const cl = io.connect(server.info.uri)
+      cl.on('connect', () => {
+        cl.emit('ss-handshake', null)
+        cl.emit('ss-handshake', 1)
+        cl.emit('ss-handshake', [1, 2, 3])
+        cl.emit('ss-handshake', {})
+        setTimeout(() => {
+          server.stop(done)
+        }, 1000)
+      })
+    })
+  })
+
   it('start and stop signalling server (custom port)', (done) => {
     const options = {
       port: 12345

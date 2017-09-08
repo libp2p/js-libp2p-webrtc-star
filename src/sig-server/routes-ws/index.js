@@ -33,6 +33,7 @@ module.exports = (http) => {
 
   // join this signaling server network
   function join (multiaddr) {
+    if (!multiaddr) { return }
     const socket = peers[multiaddr] = this // socket
     let refreshInterval = setInterval(sendPeers, config.refreshPeerListIntervalMS)
 
@@ -59,6 +60,7 @@ module.exports = (http) => {
   }
 
   function leave (multiaddr) {
+    if (!multiaddr) { return }
     if (peers[multiaddr]) {
       delete peers[multiaddr]
     }
@@ -74,6 +76,7 @@ module.exports = (http) => {
 
   // forward an WebRTC offer to another peer
   function forwardHandshake (offer) {
+    if (offer == null || typeof offer !== 'object' || !offer.srcMultiaddr || !offer.dstMultiaddr) { return }
     if (offer.answer) {
       safeEmit(offer.srcMultiaddr, 'ws-handshake', offer)
     } else {
