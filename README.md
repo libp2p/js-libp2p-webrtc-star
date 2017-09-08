@@ -2,9 +2,10 @@
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-[![Build Status](https://travis-ci.org/libp2p/js-libp2p-webrtc-star.svg?style=flat-square)](https://travis-ci.org/libp2p/js-libp2p-webrtc-star)
-![](https://img.shields.io/badge/coverage-%3F-yellow.svg?style=flat-square)
-[![Dependency Status](https://david-dm.org/libp2p/js-libp2p-webrtc-star.svg?style=flat-square)](https://david-dm.org/libp2p/js-libp2p-webrtc-star)
+[![Travis](https://travis-ci.org/libp2p/js-libp2p-webrtc-star.svg?style=flat-square)](https://travis-ci.org/libp2p/js-libp2p-webrtc-star)
+[![Circle](https://circleci.com/gh/libp2p/js-libp2p-webrtc-star.svg?style=svg)](https://circleci.com/gh/libp2p/js-libp2p-webrtc-star)
+[![Coverage](https://coveralls.io/repos/github/libp2p/js-libp2p-webrtc-star/badge.svg?branch=master)](https://coveralls.io/github/libp2p/js-libp2p-webrtc-star?branch=master)
+[![david-dm](https://david-dm.org/libp2p/js-libp2p-webrtc-star.svg?style=flat-square)](https://david-dm.org/libp2p/js-libp2p-webrtc-star)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
 ![](https://img.shields.io/badge/npm-%3E%3D3.0.0-orange.svg?style=flat-square)
 ![](https://img.shields.io/badge/Node.js-%3E%3D6.0.0-orange.svg?style=flat-square)
@@ -18,7 +19,6 @@
 
 `libp2p-webrtc-star` is one of the WebRTC transports available for libp2p. `libp2p-webrtc-star incorporates both a transport and a discovery service that is facilitated by the signalling server, also part of this module.
 
-**Note:** This module uses [pull-streams](https://pull-stream.github.io) for all stream based interfaces.
 
 ## Usage
 
@@ -50,7 +50,9 @@ const ws1 = new WStar({ wrtc: wrtc })
 const ws2 = new WStar({ wrtc: electronWebRTC() })
 ```
 
-### Signalling server
+### Rendezvous server (aka Signalling server)
+
+Nodes using `libp2p-webrtc-star` will connect to a known point in the network, a rendezvous point where they can learn about other nodes (Discovery) and exchange their [SDP offers (signalling data)](https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/).
 
 `libp2p-webrtc-star` comes with its own signalling server, used for peers to handshake their signalling data and establish a connection. You can install it in your machine by installing the module globally:
 
@@ -58,7 +60,7 @@ const ws2 = new WStar({ wrtc: electronWebRTC() })
 > npm install --global libp2p-webrtc-star
 ```
 
-This will expose a `star-sig` cli tool. To spawn a server do:
+This will expose a `webrtc-star` cli tool. To spawn a server do:
 
 ```bash
 > star-signal --port=9090 --host=127.0.0.1
@@ -69,7 +71,7 @@ Defaults:
 - `port` - 13579
 - `host` - '0.0.0.0'
 
-## Hosted Signalling Server
+## Hosted Rendezvous Server 
 
 We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
 A libp2p-webrtc-star address, using the signalling server we provide, looks like: 

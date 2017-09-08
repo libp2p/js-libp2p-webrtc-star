@@ -4,6 +4,7 @@
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "main": "src/index.js",
   "bin": {
+    "webrtc-star": "src/sig-server/bin.js",
     "star-sig": "src/sig-server/bin.js",
     "star-signal": "src/sig-server/bin.js"
   },
