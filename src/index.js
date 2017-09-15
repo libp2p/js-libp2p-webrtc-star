@@ -212,7 +212,14 @@ class WebRTCStar {
     if (!Array.isArray(multiaddrs)) {
       multiaddrs = [multiaddrs]
     }
-    return multiaddrs.filter((ma) => mafmt.WebRTCStar.matches(ma))
+
+    return multiaddrs.filter((ma) => {
+      if (ma.protoNames().indexOf('p2p-circuit') > -1) {
+        return false
+      }
+
+      return mafmt.WebRTCStar.matches(ma)
+    })
   }
 
   _peerDiscovered (maStr) {
