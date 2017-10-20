@@ -192,7 +192,8 @@ describe('signalling', () => {
     done()
   })
 
-  it('emits ws-peer every 10 seconds', (done) => {
+  it('emits ws-peer every 10 seconds', function (done) {
+    this.timeout(50000)
     let peersEmitted = 0
 
     c1 = io.connect(sioUrl, sioOptions)
