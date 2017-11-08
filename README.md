@@ -34,7 +34,7 @@
 
 ### Using this module in Node.js (and not in the browser)
 
-To use this module in Node.js, you have to BYOI of WebRTC, there are multiple options out there, unfortunately, none of them is 100% solid. The ones we recommend are: [wrtc](http://npmjs.org/wrtc) and [electron-webrtc](https://www.npmjs.com/package/electron-webrtc).
+To use this module in Node.js, you have to BYOI of WebRTC, there are multiple options out there, unfortunately, none of them are 100% solid. The ones we recommend are: [wrtc](http://npmjs.org/wrtc) and [electron-webrtc](https://www.npmjs.com/package/electron-webrtc).
 
 Instead of just creating the WebRTCStar instance without arguments, you need to pass an options object with the WebRTC implementation:
 
