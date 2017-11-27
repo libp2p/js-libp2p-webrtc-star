@@ -3,12 +3,32 @@
 const config = require('../config')
 const log = config.log
 const SocketIO = require('socket.io')
+const client = require('prom-client')
 
-module.exports = (http) => {
+const fake = {
+  gauge: {
+    set: () => {}
+  },
+  counter: {
+    inc: () => {}
+  }
+}
+
+module.exports = (http, hasMetrics) => {
   const io = new SocketIO(http.listener)
   io.on('connection', handle)
 
   const peers = {}
+
+  const peersMetric = hasMetrics ? new client.Gauge({ name: 'rendezvous_peers', help: 'peers online now' }) : fake.gauge
+  const dialsSuccessTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_dials_total_success', help: 'sucessfully completed dials since server started' }) : fake.counter
+  const dialsFailureTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_dials_total_failure', help: 'failed dials since server started' }) : fake.counter
+  const dialsTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_dials_total', help: 'all dials since server started' }) : fake.counter
+  const joinsSuccessTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_joins_total_success', help: 'sucessfully completed joins since server started' }) : fake.counter
+  const joinsFailureTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_joins_total_failure', help: 'failed joins since server started' }) : fake.counter
+  const joinsTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_joins_total', help: 'all joins since server started' }) : fake.counter
+
+  const refreshMetrics = () => peersMetric.set(Object.keys(peers).length)
 
   this.peers = () => {
     return peers
@@ -33,7 +53,8 @@ module.exports = (http) => {
 
   // join this signaling server network
   function join (multiaddr) {
-    if (!multiaddr) { return }
+    joinsTotal.inc()
+    if (!multiaddr) { return joinsFailureTotal.inc() }
     const socket = peers[multiaddr] = this // socket
     let refreshInterval = setInterval(sendPeers, config.refreshPeerListIntervalMS)
 
@@ -57,12 +78,16 @@ module.exports = (http) => {
         refreshInterval = null
       }
     }
+
+    joinsSuccessTotal.inc()
+    refreshMetrics()
   }
 
   function leave (multiaddr) {
     if (!multiaddr) { return }
     if (peers[multiaddr]) {
       delete peers[multiaddr]
+      refreshMetrics()
     }
   }
 
@@ -71,18 +96,22 @@ module.exports = (http) => {
       if (peers[mh].id === this.id) {
         delete peers[mh]
       }
+      refreshMetrics()
     })
   }
 
   // forward an WebRTC offer to another peer
   function forwardHandshake (offer) {
-    if (offer == null || typeof offer !== 'object' || !offer.srcMultiaddr || !offer.dstMultiaddr) { return }
+    dialsTotal.inc()
+    if (offer == null || typeof offer !== 'object' || !offer.srcMultiaddr || !offer.dstMultiaddr) { return dialsFailureTotal.inc() }
     if (offer.answer) {
+      dialsSuccessTotal.inc()
       safeEmit(offer.srcMultiaddr, 'ws-handshake', offer)
     } else {
       if (peers[offer.dstMultiaddr]) {
         safeEmit(offer.dstMultiaddr, 'ws-handshake', offer)
       } else {
+        dialsFailureTotal.inc()
         offer.err = 'peer is not available'
         safeEmit(offer.srcMultiaddr, 'ws-handshake', offer)
       }

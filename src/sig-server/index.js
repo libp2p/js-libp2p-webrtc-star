@@ -3,6 +3,8 @@
 const Hapi = require('hapi')
 const config = require('./config')
 const log = config.log
+const epimetheus = require('epimetheus')
+const path = require('path')
 
 exports = module.exports
 
@@ -22,16 +24,32 @@ exports.start = (options, callback) => {
     host: host
   })
 
-  http.start((err) => {
+  http.register({ register: require('inert') }, (err) => {
     if (err) {
       return callback(err)
     }
 
-    log('signaling server has started on: ' + http.info.uri)
+    http.start((err) => {
+      if (err) {
+        return callback(err)
+      }
 
-    http.peers = require('./routes-ws')(http).peers
+      log('signaling server has started on: ' + http.info.uri)
 
-    callback(null, http)
+      http.peers = require('./routes-ws')(http, options.metrics).peers
+
+      http.route({
+        method: 'GET',
+        path: '/',
+        handler: (request, reply) => reply.file(path.join(__dirname, 'index.html'), {
+          confine: false
+        })
+      })
+
+      callback(null, http)
+    })
+
+    if (options.metrics) { epimetheus.instrument(http) }
   })
 
   return http
