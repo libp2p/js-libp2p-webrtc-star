@@ -20,13 +20,13 @@ module.exports = (http, hasMetrics) => {
 
   const peers = {}
 
-  const peersMetric = hasMetrics ? new client.Gauge({ name: 'rendezvous_peers', help: 'peers online now' }) : fake.gauge
-  const dialsSuccessTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_dials_total_success', help: 'sucessfully completed dials since server started' }) : fake.counter
-  const dialsFailureTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_dials_total_failure', help: 'failed dials since server started' }) : fake.counter
-  const dialsTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_dials_total', help: 'all dials since server started' }) : fake.counter
-  const joinsSuccessTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_joins_total_success', help: 'sucessfully completed joins since server started' }) : fake.counter
-  const joinsFailureTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_joins_total_failure', help: 'failed joins since server started' }) : fake.counter
-  const joinsTotal = hasMetrics ? new client.Counter({ name: 'rendezvous_joins_total', help: 'all joins since server started' }) : fake.counter
+  const peersMetric = hasMetrics ? new client.Gauge({ name: 'signalling_peers', help: 'peers online now' }) : fake.gauge
+  const dialsSuccessTotal = hasMetrics ? new client.Counter({ name: 'signalling_dials_total_success', help: 'sucessfully completed dials since server started' }) : fake.counter
+  const dialsFailureTotal = hasMetrics ? new client.Counter({ name: 'signalling_dials_total_failure', help: 'failed dials since server started' }) : fake.counter
+  const dialsTotal = hasMetrics ? new client.Counter({ name: 'signalling_dials_total', help: 'all dials since server started' }) : fake.counter
+  const joinsSuccessTotal = hasMetrics ? new client.Counter({ name: 'signalling_joins_total_success', help: 'sucessfully completed joins since server started' }) : fake.counter
+  const joinsFailureTotal = hasMetrics ? new client.Counter({ name: 'signalling_joins_total_failure', help: 'failed joins since server started' }) : fake.counter
+  const joinsTotal = hasMetrics ? new client.Counter({ name: 'signalling_joins_total', help: 'all joins since server started' }) : fake.counter
 
   const refreshMetrics = () => peersMetric.set(Object.keys(peers).length)
 
