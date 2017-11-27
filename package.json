@@ -56,7 +56,7 @@
     "mafmt": "^3.0.1",
     "pre-commit": "^1.2.2",
     "safe-buffer": "^5.1.1",
-    "wrtc": "0.0.62"
+    "wrtc": "0.0.63"
   },
   "dependencies": {
     "async": "^2.5.0",
