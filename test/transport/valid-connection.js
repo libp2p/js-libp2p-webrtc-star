@@ -12,6 +12,7 @@ const pull = require('pull-stream')
 module.exports = (create) => {
   describe('valid Connection', () => {
     let ws1
+
     const base = (id) => {
       return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/${id}`
     }
@@ -22,7 +23,9 @@ module.exports = (create) => {
 
     let conn
 
-    before((done) => {
+    before(function (done) {
+      this.timeout(40 * 1000)
+
       series([first, second], dial)
 
       function first (next) {
