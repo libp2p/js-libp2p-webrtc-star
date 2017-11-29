@@ -4,19 +4,24 @@ const multiaddr = require('multiaddr')
 
 function cleanUrlSIO (ma) {
   const maStrSplit = ma.toString().split('/')
+  const tcpProto = ma.protos()[1].name
+  const wsProto = ma.protos()[2].name
+  const tcpPort = ma.stringTuples()[1][1]
+
+  if (tcpProto !== 'tcp' || (wsProto !== 'ws' && wsProto !== 'wss')) {
+    throw new Error('invalid multiaddr: ' + ma.toString())
+  }
 
   if (!multiaddr.isName(ma)) {
     return 'http://' + maStrSplit[2] + ':' + maStrSplit[4]
-  } else {
-    const wsProto = ma.protos()[1].name
+  }
 
-    if (wsProto === 'ws') {
-      return 'http://' + maStrSplit[2]
-    } else if (wsProto === 'wss') {
-      return 'https://' + maStrSplit[2]
-    } else {
-      throw new Error('invalid multiaddr' + ma.toString())
-    }
+  if (wsProto === 'ws') {
+    return 'http://' + maStrSplit[2] + (tcpPort === 80 ? '' : ':' + tcpPort)
+  }
+
+  if (wsProto === 'wss') {
+    return 'https://' + maStrSplit[2] + (tcpPort === 443 ? '' : ':' + tcpPort)
   }
 }
 
