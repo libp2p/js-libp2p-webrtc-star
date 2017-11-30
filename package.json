@@ -17,7 +17,7 @@
     "test:browser": "aegir test -t browser",
     "test:dns": "WEBRTC_STAR_REMOTE_SIGNAL_DNS=1 aegir test -t browser",
     "test:ip": "WEBRTC_STAR_REMOTE_SIGNAL_IP=1 aegir test -t browser",
-    "release": "aegir test release -t node -t browser",
+    "release": "aegir release -t node -t browser",
     "release-minor": "aegir release --type minor -t node -t browser",
     "release-major": "aegir release --type major -t node -t browser",
     "coverage": "aegir coverage",
