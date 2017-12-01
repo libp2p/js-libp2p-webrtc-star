@@ -117,7 +117,7 @@ describe('signalling', () => {
   })
 
   it('ss-join first client', (done) => {
-    c1.emit('ss-join', c1mh.toString())
+    c1.emit('ss-join', c1mh.toString(), '', () => {})
     setTimeout(() => {
       expect(Object.keys(sigS.peers()).length).to.equal(1)
       done()
@@ -125,7 +125,7 @@ describe('signalling', () => {
   })
 
   it('ss-join and ss-leave second client', (done) => {
-    c2.emit('ss-join', c2mh.toString())
+    c2.emit('ss-join', c2mh.toString(), '', () => {})
     setTimeout(() => {
       expect(Object.keys(sigS.peers()).length).to.equal(2)
       c2.emit('ss-leave', c2mh.toString())
@@ -137,7 +137,7 @@ describe('signalling', () => {
   })
 
   it('ss-join and disconnect third client', (done) => {
-    c3.emit('ss-join', c3mh.toString())
+    c3.emit('ss-join', c3mh.toString(), '', () => {})
     setTimeout(() => {
       expect(Object.keys(sigS.peers()).length).to.equal(2)
       c3.disconnect()
@@ -154,7 +154,7 @@ describe('signalling', () => {
       expect(Object.keys(sigS.peers()).length).to.equal(2)
       done()
     })
-    c4.emit('ss-join', c4mh.toString())
+    c4.emit('ss-join', c4mh.toString(), '', () => {})
   })
 
   it('c1 handshake c4', (done) => {
@@ -192,7 +192,7 @@ describe('signalling', () => {
     done()
   })
 
-  it('emits ws-peer every 10 seconds', function (done) {
+  it.skip('emits ws-peer every 10 seconds', function (done) {
     this.timeout(50000)
     let peersEmitted = 0
 

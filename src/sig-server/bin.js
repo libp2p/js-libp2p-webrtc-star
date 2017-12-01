@@ -10,6 +10,7 @@ let server
 signalling.start({
   port: argv.port || argv.p || process.env.PORT || 9090,
   host: argv.host || argv.h || process.env.HOST || '0.0.0.0',
+  cryptoChallenge: !(argv.disableCryptoChallenge || process.env.DISABLE_CRYPTO_CHALLENGE),
   metrics: !(argv.disableMetrics || process.env.DISABLE_METRICS)
 }, (err, _server) => {
   if (err) {

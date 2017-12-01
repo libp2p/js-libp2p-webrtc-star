@@ -15,8 +15,8 @@ const once = require('once')
 const setImmediate = require('async/setImmediate')
 const webrtcSupport = require('webrtcsupport')
 const utils = require('./utils')
-const cleanUrlSIO = utils.cleanUrlSIO
-const cleanMultiaddr = utils.cleanMultiaddr
+const {cleanUrlSIO, cleanMultiaddr} = utils
+const crypto = require('libp2p-crypto')
 
 const noop = once(() => {})
 
@@ -39,6 +39,13 @@ class WebRTCStar {
     if (options.wrtc) {
       this.wrtc = options.wrtc
     }
+
+    if (options.id) {
+      this.id = options.id
+      this.canCrypto = true
+    }
+
+    this.flag = options.allowJoinWithDisabledChallenge // let's just refer to it as "flag"
 
     this.discovery = new EE()
     this.discovery.start = (callback) => { setImmediate(callback) }
@@ -146,15 +153,47 @@ class WebRTCStar {
       listener.io.on('ws-handshake', incommingDial)
       listener.io.on('ws-peer', this._peerDiscovered)
 
+      const pubKeyStr = this.canCrypto ? crypto.keys.marshalPublicKey(this.id.pubKey).toString('hex') : ''
+
+      const maStr = ma.toString()
+
       listener.io.on('connect', () => {
-        listener.io.emit('ss-join', ma.toString())
-      })
+        listener.io.emit('ss-join', maStr, pubKeyStr, (err, sig) => {
+          if (err) { return callback(err) }
 
-      listener.io.once('connect', () => {
-        listener.emit('listening')
-        callback()
-      })
+          if (sig) {
+            if (!this.canCrypto) {
+              return callback(new Error("Can't sign cryptoChallenge: No id provided"))
+            }
 
+            log('performing cryptoChallenge')
+
+            this.id.privKey.sign(Buffer.from(sig), (err, signature) => {
+              if (err) {
+                return callback(err)
+              }
+              this.signature = signature.toString('hex')
+              log('do join')
+              listener.io.emit('ss-join', this.ma.toString(), this.signature, err => {
+                if (err) {
+                  return callback(err)
+                }
+
+                listener.emit('listening')
+                callback()
+              })
+            })
+          } else {
+            /* if (!this.flag) {
+              return callback(new Error('Tried to listen on a server with crypto challenge disabled!\n    This is prohibited by default and can lead to security issues!\n    Please set "allowJoinWithDisabledChallenge" to true in the constructor options (but only if you know what you are doing)!'))
+            } */
+            log('do join')
+            listener.emit('listening')
+            this.signature = '_'
+            callback()
+          }
+        })
+      })
       const self = this
       function incommingDial (offer) {
         if (offer.answer || offer.err) {
