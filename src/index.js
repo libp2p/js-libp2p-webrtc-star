@@ -4,6 +4,7 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star')
 const multiaddr = require('multiaddr')
 const mafmt = require('mafmt')
+const withIs = require('class-is')
 const io = require('socket.io-client')
 const EE = require('events').EventEmitter
 const SimplePeer = require('simple-peer')
@@ -235,4 +236,4 @@ class WebRTCStar {
   }
 }
 
-module.exports = WebRTCStar
+module.exports = withIs(WebRTCStar, { className: 'WebRTCStar', symbolName: '@libp2p/js-libp2p-webrtc-star/webrtcstar' })
