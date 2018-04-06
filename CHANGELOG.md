@@ -1,3 +1,13 @@
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.13.4...v0.14.0) (2018-04-06)
+
+
+### Features
+
+* add class-is module ([27f5865](https://github.com/libp2p/js-libp2p-webrtc-star/commit/27f5865))
+
+
+
 <a name="0.13.4"></a>
 ## [0.13.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.13.3...v0.13.4) (2018-02-20)
 
