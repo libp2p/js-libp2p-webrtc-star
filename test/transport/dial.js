@@ -56,7 +56,9 @@ module.exports = (create) => {
       }
     })
 
-    it('dial on IPv4, check callback', (done) => {
+    it('dial on IPv4, check callback', function (done) {
+      this.timeout(20 * 1000)
+
       ws1.dial(ma2, (err, conn) => {
         expect(err).to.not.exist()
 
@@ -74,7 +76,8 @@ module.exports = (create) => {
       })
     })
 
-    it('dial offline / non-exist()ent node on IPv4, check callback', (done) => {
+    it('dial offline / non-exist()ent node on IPv4, check callback', function (done) {
+      this.timeout(20 * 1000)
       let maOffline = multiaddr('ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
       ws1.dial(maOffline, (err, conn) => {
         expect(err).to.exist()
