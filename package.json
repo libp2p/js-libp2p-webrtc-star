@@ -64,7 +64,7 @@
     "detect-node": "^2.0.3",
     "epimetheus": "^1.0.55",
     "hapi": "^16.6.2",
-    "inert": "^5.1.0",
+    "inert": "^4.2.1",
     "interface-connection": "~0.3.2",
     "mafmt": "^6.0.0",
     "minimist": "^1.2.0",
