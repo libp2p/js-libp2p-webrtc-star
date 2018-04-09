@@ -41,6 +41,10 @@ class WebRTCStar {
       this.wrtc = options.wrtc
     }
 
+    if (options.spOptions) {
+      this.spOptions = options.spOptions
+    }
+
     this.discovery = new EE()
     this.discovery.start = (callback) => { setImmediate(callback) }
     this.discovery.stop = (callback) => { setImmediate(callback) }
@@ -62,7 +66,7 @@ class WebRTCStar {
     const sioClient = this
       .listenersRefs[Object.keys(this.listenersRefs)[0]].io
 
-    const spOptions = { initiator: true, trickle: false }
+    const spOptions = Object.assign({ initiator: true, trickle: false }, this.spOptions)
 
     // Use custom WebRTC implementation
     if (this.wrtc) { spOptions.wrtc = this.wrtc }
@@ -162,7 +166,7 @@ class WebRTCStar {
           return
         }
 
-        const spOptions = { trickle: false }
+        const spOptions = Object.assign({ trickle: false }, this.spOptions)
 
         // Use custom WebRTC implementation
         if (self.wrtc) { spOptions.wrtc = self.wrtc }
