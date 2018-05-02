@@ -13,7 +13,7 @@ signalling.start({
   host: argv.host || argv.h || process.env.HOST || '0.0.0.0',
   tls: {
     key: argv.key ? fs.readFileSync(argv.key) : undefined,
-    cert: argv.cert ? fs.readFileSync(argv.cert) : undefined,  
+    cert: argv.cert ? fs.readFileSync(argv.cert) : undefined
   },
   metrics: !(argv.disableMetrics || process.env.DISABLE_METRICS)
 }, (err, _server) => {

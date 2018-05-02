@@ -8,6 +8,8 @@ chai.use(dirtyChai)
 const io = require('socket.io-client')
 const parallel = require('async/parallel')
 const multiaddr = require('multiaddr')
+const readFileSync = require('fs').readFileSync
+const resolve = require('path').resolve
 
 const sigServer = require('../src/sig-server')
 
@@ -70,6 +72,23 @@ describe('signalling', () => {
       expect(err).to.not.exist()
       expect(server.info.port).to.equal(12345)
       expect(server.info.protocol).to.equal('http')
+      expect(server.info.address).to.equal('0.0.0.0')
+      server.stop(done)
+    })
+  })
+
+  it('passes the TLS/SSL options to Hapi', (done) => {
+    const options = {
+      port: 12345,
+      tls: {
+        key: readFileSync(resolve(__dirname, 'ssl-cert-snakeoil.key')),
+        cert: readFileSync(resolve(__dirname, 'ssl-cert-snakeoil.crt'))
+      }
+    }
+    sigServer.start(options, (err, server) => {
+      expect(err).to.not.exist()
+      expect(server.info.port).to.equal(12345)
+      expect(server.info.protocol).to.equal('https')
       expect(server.info.address).to.equal('0.0.0.0')
       server.stop(done)
     })
