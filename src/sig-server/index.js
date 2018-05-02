@@ -21,7 +21,8 @@ exports.start = (options, callback) => {
 
   http.connection({
     port: port,
-    host: host
+    host: host,
+    tls: options.tls
   })
 
   http.register({ register: require('inert') }, (err) => {
