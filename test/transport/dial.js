@@ -9,7 +9,6 @@ chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
-const Buffer = require('safe-buffer').Buffer
 
 module.exports = (create) => {
   describe('dial', () => {
@@ -78,7 +77,7 @@ module.exports = (create) => {
 
     it('dial offline / non-exist()ent node on IPv4, check callback', function (done) {
       this.timeout(20 * 1000)
-      let maOffline = multiaddr('ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
+      let maOffline = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
       ws1.dial(maOffline, (err, conn) => {
         expect(err).to.exist()
         done()
