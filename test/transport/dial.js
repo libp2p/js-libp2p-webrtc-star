@@ -9,7 +9,6 @@ chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
-const Buffer = require('safe-buffer').Buffer
 
 module.exports = (create) => {
   describe('dial', () => {
