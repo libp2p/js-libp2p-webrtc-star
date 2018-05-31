@@ -19,6 +19,7 @@ const webrtcSupport = require('webrtcsupport')
 const utils = require('./utils')
 const cleanUrlSIO = utils.cleanUrlSIO
 const cleanMultiaddr = utils.cleanMultiaddr
+const pump = require('pump')
 
 const noop = once(() => {})
 
@@ -72,8 +73,12 @@ class WebRTCStar {
 
     // const conn = new Connection(toPull.duplex(channel))
     const block = new BlockStream(16 * 1024, {nopad: true})
-    channel.pipe(block)
-    block.pipe(channel)
+    // channel.pipe(block)
+    // block.pipe(channel)
+
+    pump(channel, block, channel, (err) => {
+      if (err) throw err
+    })
     const conn = new Connection(toPull.duplex(block))
     // const conn = new Connection(pull(
     //   toPull.source(channel),
@@ -189,8 +194,11 @@ class WebRTCStar {
         // ))
 
         const block = new BlockStream(16 * 1024, {nopad: true})
-        channel.pipe(block)
-        block.pipe(channel)
+        // channel.pipe(block)
+        // block.pipe(channel)
+        pump(channel, block, channel, (err) => {
+          if (err) throw err
+        })
         const conn = new Connection(toPull.duplex(block))
 
         channel.once('connect', () => {
