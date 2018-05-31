@@ -54,6 +54,11 @@ const ws2 = new WStar({ wrtc: electronWebRTC() })
 const WStar = require('libp2p-webrtc-star')
 
 const ws = new WStar()
+
+// defining maximum allowed buffer (defaults to 16kb)
+const ws3 = new Wstar({
+  blockStreamSize: 64 * 1024 // 64kb
+})
 ```
 
 ## API
@@ -94,7 +99,7 @@ Defaults:
 ## Hosted Rendezvous Server
 
 We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
-A libp2p-webrtc-star address, using the signalling server we provide, looks like: 
+A libp2p-webrtc-star address, using the signalling server we provide, looks like:
 
 `/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star/ipfs/<your-peer-id>`
 
