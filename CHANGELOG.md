@@ -1,3 +1,18 @@
+<a name="0.15.2"></a>
+## [0.15.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.0...v0.15.2) (2018-06-01)
+
+
+### Bug Fixes
+
+* race condition using pump ([2e430c1](https://github.com/libp2p/js-libp2p-webrtc-star/commit/2e430c1))
+
+
+### Features
+
+* using block-stream to control webRTC transport ([8d76dd0](https://github.com/libp2p/js-libp2p-webrtc-star/commit/8d76dd0))
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.0...v0.15.1) (2018-06-01)
 
