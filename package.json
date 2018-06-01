@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
-    "aegir": "^13.1.0",
+    "aegir": "^14.0.0",
     "bl": "^1.2.2",
     "chai": "^4.1.2",
     "dirty-chai": "^2.0.1",
