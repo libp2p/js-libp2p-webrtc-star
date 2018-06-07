@@ -12,7 +12,6 @@ const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
-const BlockStream = require('block-stream')
 const once = require('once')
 const setImmediate = require('async/setImmediate')
 const webrtcSupport = require('webrtcsupport')
@@ -70,18 +69,7 @@ class WebRTCStar {
 
     const channel = new SimplePeer(spOptions)
 
-    // const conn = new Connection(toPull.duplex(channel))
-    const block = new BlockStream(16 * 1024, {nopad: true})
-    channel.pipe(block)
-    block.pipe(channel)
-    const conn = new Connection(toPull.duplex(block))
-    // const conn = new Connection(pull(
-    //   toPull.source(channel),
-    //   // pullBlock({size: 64 * 1024}),
-    //   pullBlock({size: 64 * 1024}),
-    //   toPull.sink(channel)
-    // ))
-
+    const conn = new Connection(toPull.duplex(channel))
     let connected = false
 
     channel.on('signal', (signal) => {
@@ -181,17 +169,7 @@ class WebRTCStar {
 
         const channel = new SimplePeer(spOptions)
 
-        // const conn = new Connection(toPull.duplex(channel))
-        // const conn = new Connection(pull(
-        //   toPull.source(channel),
-        //   pullBlock({size: 64 * 1024}),
-        //   toPull.sink(channel)
-        // ))
-
-        const block = new BlockStream(16 * 1024, {nopad: true})
-        channel.pipe(block)
-        block.pipe(channel)
-        const conn = new Connection(toPull.duplex(block))
+        const conn = new Connection(toPull.duplex(channel))
 
         channel.once('connect', () => {
           conn.getObservedAddrs = (callback) => {
