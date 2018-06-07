@@ -13,13 +13,13 @@ const PeerInfo = require('peer-info')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
 const BlockStream = require('block-stream')
-const pump = require('pump')
 const once = require('once')
 const setImmediate = require('async/setImmediate')
 const webrtcSupport = require('webrtcsupport')
 const utils = require('./utils')
 const cleanUrlSIO = utils.cleanUrlSIO
 const cleanMultiaddr = utils.cleanMultiaddr
+const pump = require('pump')
 
 const noop = once(() => {})
 
@@ -42,8 +42,6 @@ class WebRTCStar {
     if (options.wrtc) {
       this.wrtc = options.wrtc
     }
-
-    this.blockStreamSize = options.blockStreamSize || 16 * 1024
 
     this.discovery = new EE()
     this.discovery.start = (callback) => { setImmediate(callback) }
@@ -73,13 +71,21 @@ class WebRTCStar {
 
     const channel = new SimplePeer(spOptions)
 
-    const block = new BlockStream(this.blockStreamSize, {nopad: true})
+    // const conn = new Connection(toPull.duplex(channel))
+    const block = new BlockStream(16 * 1024, {nopad: true})
+    // channel.pipe(block)
+    // block.pipe(channel)
 
     pump(channel, block, channel, (err) => {
-      if (err) return callback(err)
+      if (err) throw err
     })
-
     const conn = new Connection(toPull.duplex(block))
+    // const conn = new Connection(pull(
+    //   toPull.source(channel),
+    //   // pullBlock({size: 64 * 1024}),
+    //   pullBlock({size: 64 * 1024}),
+    //   toPull.sink(channel)
+    // ))
 
     let connected = false
 
@@ -180,12 +186,19 @@ class WebRTCStar {
 
         const channel = new SimplePeer(spOptions)
 
-        const block = new BlockStream(this.blockStreamSize, {nopad: true})
+        // const conn = new Connection(toPull.duplex(channel))
+        // const conn = new Connection(pull(
+        //   toPull.source(channel),
+        //   pullBlock({size: 64 * 1024}),
+        //   toPull.sink(channel)
+        // ))
 
+        const block = new BlockStream(16 * 1024, {nopad: true})
+        // channel.pipe(block)
+        // block.pipe(channel)
         pump(channel, block, channel, (err) => {
-          if (err) return callback(err)
+          if (err) throw err
         })
-
         const conn = new Connection(toPull.duplex(block))
 
         channel.once('connect', () => {
