@@ -42,6 +42,7 @@ class WebRTCStar {
     }
 
     this.discovery = new EE()
+    this.discovery.tag = 'webRTCStar'
     this.discovery.start = (callback) => { setImmediate(callback) }
     this.discovery.stop = (callback) => { setImmediate(callback) }
 
