@@ -47,17 +47,16 @@
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
     "aegir": "^14.0.0",
-    "bl": "^1.2.2",
+    "bl": "^2.0.0",
     "chai": "^4.1.2",
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
-    "gulp": "^3.9.1",
     "lodash": "^4.17.10",
     "mafmt": "^6.0.0",
     "wrtc": "0.1.1"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^2.6.1",
     "class-is": "^1.1.0",
     "debug": "^3.1.0",
     "detect-node": "^2.0.3",
@@ -72,9 +71,9 @@
     "peer-id": "~0.10.7",
     "peer-info": "~0.14.1",
     "pull-stream": "^3.6.8",
-    "simple-peer": "^9.1.1",
-    "socket.io": "^2.1.0",
-    "socket.io-client": "^2.1.0",
+    "simple-peer": "^9.1.2",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "stream-to-pull-stream": "^1.7.2",
     "webrtcsupport": "github:ipfs/webrtcsupport"
   },
