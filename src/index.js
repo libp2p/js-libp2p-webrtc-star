@@ -21,6 +21,25 @@ const setImmediate = require('async/setImmediate')
 const once = require('once')
 const noop = once(() => {})
 
+function cleanMultiaddr (maStr) {
+  const legacy = '/libp2p-webrtc-star'
+
+  if (maStr.indexOf(legacy) !== -1) {
+    maStr = maStr.substring(legacy.length, maStr.length)
+    let ma = multiaddr(maStr)
+    const tuppleIPFS = ma.stringTuples().filter((tupple) => {
+      return tupple[0] === 421 // ipfs code
+    })[0]
+
+    ma = ma.decapsulate('ipfs')
+    ma = ma.encapsulate('/p2p-webrtc-star')
+    ma = ma.encapsulate(`/ipfs/${tuppleIPFS[1]}`)
+    maStr = ma.toString()
+  }
+
+  return maStr
+}
+
 class WebRTCStar {
   constructor (options) {
     options = options || {}
@@ -39,9 +58,11 @@ class WebRTCStar {
       options = {}
     }
 
+    ma = cleanMultiaddr(String(ma))
+
     callback = callback ? once(callback) : noop
 
-    let b58 = ma.toString().split('ipfs/').pop()
+    let b58 = ma.split('ipfs/').pop()
 
     log('dialing %s %s', ma, b58)
 
