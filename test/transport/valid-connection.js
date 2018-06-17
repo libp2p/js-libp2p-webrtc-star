@@ -26,7 +26,9 @@ module.exports = (create) => {
 
     let conn
 
-    before(async () => {
+    before(async function () {
+      this.timeout(2 * 60 * 1000)
+
       let listener
 
       m = await create('m')
