@@ -112,12 +112,14 @@ class WebRTCStar {
       callback = callback ? once(callback) : noop
 
       if (!webrtcSupport.support && !this.wrtc) {
-        return setImmediate(() => callback(new Error('no WebRTC support')))
+        const err = new Error('No WebRTC support')
+        listener.emit('error', err)
+        return setImmediate(() => callback(err))
       }
 
       log('listening on %s', ma)
 
-      let ns = listener.ns = 'webrtc' // TODO: should this be ma.toString() ?
+      const ns = listener.ns = 'webrtc' // TODO: should this be ma.toString() ?
       listener.ma = ma
 
       this.exchange.handle(ns, (request, cb) => {
@@ -133,7 +135,7 @@ class WebRTCStar {
         const spOptions = { trickle: false }
 
         // Use custom WebRTC implementation
-        if (self.wrtc) { spOptions.wrtc = self.wrtc }
+        if (this.wrtc) { spOptions.wrtc = self.wrtc }
 
         const channel = new SimplePeer(spOptions)
 
@@ -158,6 +160,7 @@ class WebRTCStar {
         channel.signal(offer.signal)
       })
 
+      listener.emit('listening')
       setImmediate(() => callback())
     }
 
@@ -166,6 +169,7 @@ class WebRTCStar {
 
       this.exchange.unhandle(listener.ns)
 
+      listener.emit('close')
       setImmediate(callback)
     }
 
