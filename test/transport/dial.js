@@ -30,16 +30,16 @@ module.exports = (create) => {
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
       // test with deployed signalling server using DNS
       console.log('Using DNS:', maHSDNS)
-      ma1 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma1 = maGen(maHSDNS, 'Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf')
+      ma2 = maGen(maHSDNS, 'QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g')
     } else if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_IP) {
       // test with deployed signalling server using IP
       console.log('Using IP:', maHSIP)
-      ma1 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma1 = maGen(maHSIP, 'Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf')
+      ma2 = maGen(maHSIP, 'QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g')
     } else {
-      ma1 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma1 = maGen(maLS, 'Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf')
+      ma2 = maGen(maLS, 'QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g')
     }
 
     before(async () => {
@@ -58,7 +58,7 @@ module.exports = (create) => {
     })
 
     it('dial on IPv4, check callback', function (done) {
-      this.timeout(20 * 1000)
+      this.timeout(60 * 1000)
 
       ws1.dial(ma2, (err, conn) => {
         expect(err).to.not.exist()

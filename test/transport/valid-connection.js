@@ -21,8 +21,8 @@ module.exports = (create) => {
       return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/${id}`
     }
 
-    const ma1 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3A'))
-    const ma2 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3B'))
+    const ma1 = multiaddr(base('Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf'))
+    const ma2 = multiaddr(base('QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g'))
 
     let conn
 

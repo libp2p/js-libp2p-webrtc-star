@@ -122,7 +122,7 @@ class WebRTCStar {
       const ns = listener.ns = 'webrtc' // TODO: should this be ma.toString() ?
       listener.ma = ma
 
-      this.exchange.handle(ns, (request, cb) => {
+      this.exchange.handle(ns, (from, request, cb) => {
         let offer
 
         try {
