@@ -10,7 +10,7 @@ const WebRTCStar = require('../../src')
 
 describe('instantiate the transport', () => {
   it('create', () => {
-    const wstar = new WebRTCStar()
+    const wstar = new WebRTCStar({ exchange: true })
     expect(wstar).to.exist()
   })
 

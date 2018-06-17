@@ -35,23 +35,6 @@ describe('utils', () => {
   const invalidMultiaddrDNS2 = multiaddr(invalidMultiaddrStringDNS2)
   const invalidMultiaddrDNS3 = multiaddr(invalidMultiaddrStringDNS3)
 
-  it('cleanUrlSIO webrtc-star modern', () => {
-    const newUrlSIOStringDNS = cleanUrlSIO(modernMultiaddrDNS)
-    const newUrlSIOStringDNS2 = cleanUrlSIO(modernMultiaddrDNS2)
-    const newUrlSIOStringDNS3 = cleanUrlSIO(modernMultiaddrDNS3)
-    const newUrlSIOStringDNS4 = cleanUrlSIO(modernMultiaddrDNS4)
-
-    expect(() => cleanUrlSIO(modernMultiaddrDNS)).to.not.throw()
-    expect(() => cleanUrlSIO(invalidMultiaddrDNS)).to.throw(Error, 'invalid multiaddr')
-    expect(() => cleanUrlSIO(invalidMultiaddrDNS2)).to.throw(Error, 'invalid multiaddr')
-    expect(() => cleanUrlSIO(invalidMultiaddrDNS3)).to.throw(Error, 'invalid multiaddr')
-
-    expect(newUrlSIOStringDNS).to.equal('https://star-signal.cloud.ipfs.team')
-    expect(newUrlSIOStringDNS2).to.equal('https://star-signal.cloud.ipfs.team:9999')
-    expect(newUrlSIOStringDNS3).to.equal('http://star-signal.cloud.ipfs.team')
-    expect(newUrlSIOStringDNS4).to.equal('http://star-signal.cloud.ipfs.team:8080')
-  })
-
   it('cleanMultiaddr webrtc-star legacy', () => {
     const newMultiaddrStringDNS = cleanMultiaddr(legacyMultiaddrStringDNS)
     const newMultiaddrStringIP = cleanMultiaddr(legacyMultiaddrStringIP)

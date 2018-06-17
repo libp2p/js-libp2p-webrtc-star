@@ -9,11 +9,14 @@ chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const series = require('async/series')
 const pull = require('pull-stream')
+const promisify = require('promisify-es6')
+const Utils = require('../utils')
 
 module.exports = (create) => {
   describe('dial', () => {
     let ws1
     let ws2
+    let m
     let ma1
     let ma2
 
@@ -39,20 +42,19 @@ module.exports = (create) => {
       ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
     }
 
-    before((done) => {
-      series([first, second], done)
+    before(async () => {
+      let listener
 
-      function first (next) {
-        ws1 = create()
-        const listener = ws1.createListener((conn) => pull(conn, conn))
-        listener.listen(ma1, next)
-      }
+      m = await create('m')
+      ws1 = await create('a')
+      ws2 = await create('b')
 
-      function second (next) {
-        ws2 = create()
-        const listener = ws2.createListener((conn) => pull(conn, conn))
-        listener.listen(ma2, next)
-      }
+      await promisify((cb) => Utils.Exchange.before(ws1.exchange, ws2.exchange, m.exchange, cb))()
+
+      listener = ws1.createListener((conn) => pull(conn, conn))
+      await promisify(listener.listen)(ma1)
+      listener = ws2.createListener((conn) => pull(conn, conn))
+      await promisify(listener.listen)(ma2)
     })
 
     it('dial on IPv4, check callback', function (done) {

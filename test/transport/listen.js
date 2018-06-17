@@ -14,8 +14,8 @@ module.exports = (create) => {
 
     const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
 
-    before(() => {
-      ws = create()
+    before(async () => {
+      ws = await create('a')
     })
 
     it('listen, check for callback', (done) => {
