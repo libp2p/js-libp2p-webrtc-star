@@ -47,7 +47,7 @@ class WebRTCStar {
 
     let b58 = ma.split('ipfs/').pop()
 
-    log('dialing %s %s', ma, b58)
+    log('dialing %s (id=%s)', ma, b58)
 
     const spOptions = { initiator: true, trickle: false }
 
@@ -61,7 +61,7 @@ class WebRTCStar {
 
     channel.on('signal', (signal) => {
       log('dial#%s got signal', ma)
-      this.exchange.request(Id.createFromB58String(b58), 'webrtc', Buffer.from(JSON.stringify({signal, ma: '/ip4/0.0.0.0/tcp/127.0.0.1'})), (err, result) => { // TODO: fix this
+      this.exchange.request(Id.createFromB58String(b58), 'webrtc', Buffer.from(JSON.stringify({signal})), (err, result) => {
         if (err) {
           log('dial#%s exchange failed %s', ma, err)
           return callback(err)
@@ -141,11 +141,15 @@ class WebRTCStar {
 
         const conn = new Connection(toPull.duplex(channel))
 
+        const remoteMa = '/p2p-webrtc-star/ipfs/' + from.toB58String()
+
+        log('incoming connection %s', remoteMa)
+
         channel.once('connect', () => {
-          log('connected')
+          log('%s: connected', remoteMa)
 
           conn.getObservedAddrs = (callback) => {
-            return callback(null, [multiaddr(offer.ma)]) // TODO: this isn't really safe AT ALL...
+            return callback(null, [multiaddr(remoteMa)])
           }
 
           listener.emit('connection', conn)
@@ -153,9 +157,11 @@ class WebRTCStar {
         })
 
         channel.once('signal', (signal) => {
-          log('sending back signal')
-          cb(null, Buffer.from(JSON.stringify({signal, ma: listener.ma.toString()})))
+          log('%s: sending back signal', remoteMa)
+          cb(null, Buffer.from(JSON.stringify({signal})))
         })
+
+        // TODO: add error response?
 
         channel.signal(offer.signal)
       })
