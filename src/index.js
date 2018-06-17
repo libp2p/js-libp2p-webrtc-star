@@ -135,7 +135,7 @@ class WebRTCStar {
         const spOptions = { trickle: false }
 
         // Use custom WebRTC implementation
-        if (this.wrtc) { spOptions.wrtc = self.wrtc }
+        if (this.wrtc) { spOptions.wrtc = this.wrtc }
 
         const channel = new SimplePeer(spOptions)
 
