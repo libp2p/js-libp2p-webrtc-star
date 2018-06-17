@@ -3,13 +3,7 @@
   "version": "0.15.1",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "main": "src/index.js",
-  "bin": {
-    "webrtc-star": "src/sig-server/bin.js",
-    "star-sig": "src/sig-server/bin.js",
-    "star-signal": "src/sig-server/bin.js"
-  },
   "scripts": {
-    "star-signal": "node src/sig-server/bin.js",
     "lint": "aegir lint",
     "build": "aegir build",
     "test": "aegir test -t node -t browser",
@@ -52,6 +46,9 @@
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
     "gulp": "^3.9.1",
+    "interface-data-exchange-devdeps": "0.0.1",
+    "libp2p-exchange-direct": "0.0.3",
+    "libp2p-exchange-rendezvous": "0.0.2",
     "lodash": "^4.17.10",
     "mafmt": "^6.0.0",
     "wrtc": "0.1.1"
@@ -61,21 +58,14 @@
     "class-is": "^1.1.0",
     "debug": "^3.1.0",
     "detect-node": "^2.0.3",
-    "epimetheus": "^1.0.55",
-    "hapi": "^16.6.2",
-    "inert": "^4.2.1",
     "interface-connection": "~0.3.2",
     "mafmt": "^6.0.0",
     "minimist": "^1.2.0",
     "multiaddr": "^5.0.0",
     "once": "^1.4.0",
     "peer-id": "~0.10.7",
-    "peer-info": "~0.14.1",
     "pull-stream": "^3.6.8",
     "simple-peer": "^9.1.1",
-    "socket.io": "^2.1.0",
-    "socket.io-client": "^2.1.0",
-    "stream-to-pull-stream": "^1.7.2",
     "webrtcsupport": "github:ipfs/webrtcsupport"
   },
   "contributors": [

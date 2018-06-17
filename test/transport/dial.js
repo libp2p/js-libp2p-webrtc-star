@@ -7,13 +7,16 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
-const series = require('async/series')
+const {parallel, waterfall} = require('async')
 const pull = require('pull-stream')
+const promisify = require('promisify-es6')
+const Utils = require('../utils')
 
 module.exports = (create) => {
   describe('dial', () => {
     let ws1
     let ws2
+    let m
     let ma1
     let ma2
 
@@ -27,36 +30,35 @@ module.exports = (create) => {
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
       // test with deployed signalling server using DNS
       console.log('Using DNS:', maHSDNS)
-      ma1 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma1 = maGen(maHSDNS, 'Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf')
+      ma2 = maGen(maHSDNS, 'QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g')
     } else if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_IP) {
       // test with deployed signalling server using IP
       console.log('Using IP:', maHSIP)
-      ma1 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma1 = maGen(maHSIP, 'Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf')
+      ma2 = maGen(maHSIP, 'QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g')
     } else {
-      ma1 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma1 = maGen(maLS, 'Qmf2uGBMP8VcLYAbh7katNyXyhiptYoUf1kLzbFd1jpRbf')
+      ma2 = maGen(maLS, 'QmY6yfBGWghP7NcW3gFeJC9FgRQe2rbV8BkfyWAYfBAT3g')
     }
 
-    before((done) => {
-      series([first, second], done)
+    before(async () => {
+      let listener
 
-      function first (next) {
-        ws1 = create()
-        const listener = ws1.createListener((conn) => pull(conn, conn))
-        listener.listen(ma1, next)
-      }
+      m = await create('m')
+      ws1 = await create('a')
+      ws2 = await create('b')
 
-      function second (next) {
-        ws2 = create()
-        const listener = ws2.createListener((conn) => pull(conn, conn))
-        listener.listen(ma2, next)
-      }
+      await promisify((cb) => Utils.Exchange.before(ws1.exchange, ws2.exchange, m.exchange, cb))()
+
+      listener = ws1.createListener((conn) => pull(conn, conn))
+      await promisify(listener.listen)(ma1)
+      listener = ws2.createListener((conn) => pull(conn, conn))
+      await promisify(listener.listen)(ma2)
     })
 
-    it('dial on IPv4, check callback', function (done) {
-      this.timeout(20 * 1000)
+    it('dial, check callback', function (done) {
+      this.timeout(2 * 60 * 1000)
 
       ws1.dial(ma2, (err, conn) => {
         expect(err).to.not.exist()
@@ -75,17 +77,22 @@ module.exports = (create) => {
       })
     })
 
-    it('dial offline / non-exist()ent node on IPv4, check callback', function (done) {
-      this.timeout(20 * 1000)
-      let maOffline = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
+    it('dial offline / non-exist()ent node, check callback', function (done) {
+      this.timeout(60 * 1000)
+      let maOffline = multiaddr('/p2p-webrtc-star/ipfs/ABCD')
       ws1.dial(maOffline, (err, conn) => {
         expect(err).to.exist()
         done()
       })
     })
 
-    it.skip('dial on IPv6', (done) => {
-      // TODO IPv6 not supported yet
+    after(async () => {
+      await new Promise((resolve, reject) => {
+        waterfall([
+          cb => parallel([ws1.exchange, ws2.exchange, m.exchange].map(e => cb => e.stop(cb)), e => cb(e)),
+          cb => parallel([ws1.exchange.swarm, ws2.exchange.swarm, m.exchange.swarm].map(p => cb => p.stop(cb)), e => cb(e))
+        ], e => e ? reject(e) : resolve())
+      })
     })
   })
 }
