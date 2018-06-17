@@ -7,7 +7,7 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
-const series = require('async/series')
+const {parallel, waterfall} = require('async')
 const pull = require('pull-stream')
 const promisify = require('promisify-es6')
 const Utils = require('../utils')
@@ -88,6 +88,15 @@ module.exports = (create) => {
 
     it.skip('dial on IPv6', (done) => {
       // TODO IPv6 not supported yet
+    })
+
+    after(async () => {
+      await new Promise((resolve, reject) => {
+        waterfall([
+          cb => parallel([ws1.exchange, ws2.exchange, m.exchange].map(e => cb => e.stop(cb)), e => cb(e)),
+          cb => parallel([ws1.exchange.swarm, ws2.exchange.swarm, m.exchange.swarm].map(p => cb => p.stop(cb)), e => cb(e))
+        ], e => e ? reject(e) : resolve())
+      })
     })
   })
 }
