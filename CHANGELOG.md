@@ -1,3 +1,13 @@
+<a name="0.15.3"></a>
+## [0.15.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.2...v0.15.3) (2018-06-19)
+
+
+### Features
+
+* add tag ([03983f2](https://github.com/libp2p/js-libp2p-webrtc-star/commit/03983f2))
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.0...v0.15.1) (2018-06-01)
 
