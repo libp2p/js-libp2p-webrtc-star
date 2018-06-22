@@ -45,9 +45,13 @@ class WebRTCStar {
 
     callback = callback ? once(callback) : noop
 
-    let b58 = ma.split('ipfs/').pop()
+    let peerId = multiaddr(ma).getPeerId()
 
-    log('dialing %s (id=%s)', ma, b58)
+    log('dialing %s (id=%s)', ma, peerId)
+
+    if (!peerId) {
+      return callback(new Error('Cannot dial peer: No Id provided!'))
+    }
 
     const spOptions = { initiator: true, trickle: false }
 
@@ -61,7 +65,7 @@ class WebRTCStar {
 
     channel.on('signal', (signal) => {
       log('dial#%s got signal', ma)
-      this.exchange.request(Id.createFromB58String(b58), 'webrtc', Buffer.from(JSON.stringify({signal})), (err, result) => {
+      this.exchange.request(Id.createFromB58String(peerId), 'webrtc', Buffer.from(JSON.stringify({signal})), (err, result) => {
         if (err) {
           log('dial#%s exchange failed %s', ma, err)
           return callback(err)
