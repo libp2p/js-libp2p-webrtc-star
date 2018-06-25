@@ -2,6 +2,7 @@
   "name": "libp2p-webrtc-star",
   "version": "0.15.3",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
+  "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
   "bin": {
     "webrtc-star": "src/sig-server/bin.js",
@@ -39,7 +40,6 @@
     "IPFS",
     "libp2p"
   ],
-  "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-webrtc-star/issues"

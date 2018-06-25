@@ -16,6 +16,10 @@
 
 > libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star
 
+## Lead Maintainer
+
+[Vasco Santos](https://github.com/vasco-santos).
+
 ## Description
 
 `libp2p-webrtc-star` is one of the WebRTC transports available for libp2p. `libp2p-webrtc-star` incorporates both a transport and a discovery service that is facilitated by the signalling server, also part of this module.
