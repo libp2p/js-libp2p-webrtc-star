@@ -53,7 +53,7 @@
     "electron-webrtc": "~0.3.0",
     "lodash": "^4.17.10",
     "mafmt": "^6.0.0",
-    "wrtc": "0.1.1"
+    "wrtc": "~0.1.6"
   },
   "dependencies": {
     "async": "^2.6.1",
