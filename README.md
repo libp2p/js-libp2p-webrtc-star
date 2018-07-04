@@ -42,7 +42,7 @@ Instead of just creating the WebRTCStar instance without arguments, you need to 
 
 ```JavaScript
 const wrtc = require('wrtc')
-const electronWrtc = require('electron-wrtc')
+const electronWebRTC = require('electron-webrtc')
 const WStar = require('libp2p-webrtc-star')
 
 // Using wrtc
