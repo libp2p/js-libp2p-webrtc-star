@@ -1,3 +1,8 @@
+<a name="0.15.4"></a>
+## [0.15.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.3...v0.15.4) (2018-08-27)
+
+
+
 <a name="0.15.3"></a>
 ## [0.15.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.2...v0.15.3) (2018-06-19)
 
