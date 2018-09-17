@@ -1,3 +1,13 @@
+<a name="0.15.5"></a>
+## [0.15.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.4...v0.15.5) (2018-09-17)
+
+
+### Bug Fixes
+
+* catch RTCPeerConnection failed connections ([b65d509](https://github.com/libp2p/js-libp2p-webrtc-star/commit/b65d509))
+
+
+
 <a name="0.15.4"></a>
 ## [0.15.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.3...v0.15.4) (2018-08-27)
 
