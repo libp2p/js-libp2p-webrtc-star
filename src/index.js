@@ -68,7 +68,13 @@ class WebRTCStar {
     // Use custom WebRTC implementation
     if (this.wrtc) { spOptions.wrtc = this.wrtc }
 
-    const channel = new SimplePeer(spOptions)
+    let channel
+    try {
+      channel = new SimplePeer(spOptions)
+    } catch (err) {
+      log('Could not create connection:', err)
+      return callback(err)
+    }
 
     const conn = new Connection(toPull.duplex(channel))
     let connected = false
@@ -168,7 +174,13 @@ class WebRTCStar {
         // Use custom WebRTC implementation
         if (self.wrtc) { spOptions.wrtc = self.wrtc }
 
-        const channel = new SimplePeer(spOptions)
+        let channel
+        try {
+          channel = new SimplePeer(spOptions)
+        } catch (err) {
+          log('Could not create incoming connection:', err)
+          return callback(err)
+        }
 
         const conn = new Connection(toPull.duplex(channel))
 
