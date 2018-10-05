@@ -48,6 +48,8 @@ class WebRTCStar {
 
     this.listenersRefs = {}
     this._peerDiscovered = this._peerDiscovered.bind(this)
+
+    this.dial = this.dial.bind(this)
   }
 
   dial (ma, options, callback) {
