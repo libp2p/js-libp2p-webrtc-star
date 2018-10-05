@@ -60,6 +60,10 @@ class WebRTCStar {
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
 
+    if (!Object.keys(this.listenersRefs).length) {
+      return callback(new Error('No server connection!'))
+    }
+
     const sioClient = this
       .listenersRefs[Object.keys(this.listenersRefs)[0]].io
 
