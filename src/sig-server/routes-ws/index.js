@@ -56,7 +56,10 @@ module.exports = (http, hasMetrics) => {
     joinsTotal.inc()
     if (!multiaddr) { return joinsFailureTotal.inc() }
     const socket = peers[multiaddr] = this // socket
+
+    let sentPeers = {}
     let refreshInterval = setInterval(sendPeers, config.refreshPeerListIntervalMS)
+    let clearPeerSendList = setInterval(() => { sentPeers = {} }, config.clearPeersSentListInterval)
 
     socket.once('ss-leave', stopSendingPeers)
     socket.once('disconnect', stopSendingPeers)
@@ -65,9 +68,10 @@ module.exports = (http, hasMetrics) => {
 
     function sendPeers () {
       Object.keys(peers).forEach((mh) => {
-        if (mh === multiaddr) {
+        if (mh === multiaddr || sentPeers[mh]) {
           return
         }
+        sentPeers[mh] = true
         safeEmit(mh, 'ws-peer', multiaddr)
       })
     }
@@ -76,6 +80,11 @@ module.exports = (http, hasMetrics) => {
       if (refreshInterval) {
         clearInterval(refreshInterval)
         refreshInterval = null
+      }
+
+      if (clearPeerSendList) {
+        clearInterval(clearPeerSendList)
+        clearPeerSendList = null
       }
     }
 
