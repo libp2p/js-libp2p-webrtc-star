@@ -53,7 +53,7 @@
     "electron-webrtc": "~0.3.0",
     "lodash": "^4.17.11",
     "mafmt": "^6.0.3",
-    "wrtc": "~0.1.6"
+    "wrtc": "~0.3.3"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -63,7 +63,7 @@
     "epimetheus": "^1.0.92",
     "hapi": "^16.6.2",
     "inert": "^4.2.1",
-    "interface-connection": "~0.3.2",
+    "interface-connection": "~0.3.3",
     "mafmt": "^6.0.3",
     "minimist": "^1.2.0",
     "multiaddr": "^6.0.2",
