@@ -1,3 +1,13 @@
+<a name="0.15.7"></a>
+## [0.15.7](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.6...v0.15.7) (2019-01-04)
+
+
+### Features
+
+* only send new peers, not the whole peer list ([e12089b](https://github.com/libp2p/js-libp2p-webrtc-star/commit/e12089b))
+
+
+
 <a name="0.15.6"></a>
 ## [0.15.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.3...v0.15.6) (2018-11-26)
 
