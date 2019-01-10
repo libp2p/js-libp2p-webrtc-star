@@ -1,3 +1,13 @@
+<a name="0.15.8"></a>
+## [0.15.8](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.7...v0.15.8) (2019-01-10)
+
+
+### Bug Fixes
+
+* reduce bundle size ([#165](https://github.com/libp2p/js-libp2p-webrtc-star/issues/165)) ([cb96de8](https://github.com/libp2p/js-libp2p-webrtc-star/commit/cb96de8))
+
+
+
 <a name="0.15.7"></a>
 ## [0.15.7](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.6...v0.15.7) (2019-01-04)
 
