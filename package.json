@@ -51,7 +51,7 @@
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
     "prom-client": "^11.2.1",
-    "wrtc": "~0.3.5"
+    "wrtc": "~0.3.7"
   },
   "dependencies": {
     "async": "^2.6.2",
@@ -68,10 +68,10 @@
     "peer-id": "~0.12.2",
     "peer-info": "~0.15.1",
     "pull-stream": "^3.6.9",
-    "simple-peer": "^9.2.1",
+    "simple-peer": "^9.3.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
-    "stream-to-pull-stream": "^1.7.2",
+    "stream-to-pull-stream": "^1.7.3",
     "webrtcsupport": "github:ipfs/webrtcsupport"
   },
   "contributors": [
