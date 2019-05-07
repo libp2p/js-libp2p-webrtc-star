@@ -27,11 +27,13 @@ module.exports = (create) => {
     const ma2 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3B'))
     const ma3 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3C'))
 
-    before((done) => {
-      sigS = sigServer.start({ port: SERVER_PORT }, done)
+    before(async () => {
+      sigS = await sigServer.start({ port: SERVER_PORT })
     })
 
-    after((done) => sigS.stop(done))
+    after(async () => {
+      await sigS.stop()
+    })
 
     it('listen on the first', (done) => {
       ws1 = create()
@@ -57,12 +59,12 @@ module.exports = (create) => {
       })
     })
 
-    it('stops the server', (done) => {
-      sigS.stop(done)
+    it('stops the server', async () => {
+      await sigS.stop()
     })
 
-    it('starts the server again', (done) => {
-      sigS = sigServer.start({ port: SERVER_PORT }, done)
+    it('starts the server again', async () => {
+      sigS = await sigServer.start({ port: SERVER_PORT })
     })
 
     it('wait a bit for clients to reconnect', (done) => {
