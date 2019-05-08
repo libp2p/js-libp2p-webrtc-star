@@ -43,8 +43,15 @@ class WebRTCStar {
 
     this.discovery = new EE()
     this.discovery.tag = 'webRTCStar'
-    this.discovery.start = (callback) => { setImmediate(callback) }
-    this.discovery.stop = (callback) => { setImmediate(callback) }
+    this.discovery._isStarted = true
+    this.discovery.start = (callback) => {
+      this.discovery._isStarted = true
+      setImmediate(callback)
+    }
+    this.discovery.stop = (callback) => {
+      this.discovery._isStarted = false
+      setImmediate(callback)
+    }
 
     this.listenersRefs = {}
     this._peerDiscovered = this._peerDiscovered.bind(this)
@@ -237,6 +244,8 @@ class WebRTCStar {
   }
 
   _peerDiscovered (maStr) {
+    if (!this.discovery._isStarted) return
+
     log('Peer Discovered:', maStr)
     maStr = cleanMultiaddr(maStr)
 
