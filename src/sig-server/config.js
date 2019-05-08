@@ -10,10 +10,8 @@ module.exports = {
     port: process.env.PORT || 13579,
     host: '0.0.0.0',
     options: {
-      connections: {
-        routes: {
-          cors: true
-        }
+      routes: {
+        cors: true
       }
     }
   },

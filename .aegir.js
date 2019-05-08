@@ -4,26 +4,26 @@ const sigServer = require('./src/sig-server')
 let firstRun = true
 let sigS
 
-function boot (done) {
+async function boot (done) {
   const options = {
     port: 15555,
     host: '127.0.0.1',
-    metrics: firstRun
+    metrics: false // firsrun TODO: needs https://github.com/libp2p/js-libp2p-webrtc-star/issues/174
   }
 
   if (firstRun) { firstRun = false }
 
-  sigServer.start(options, (err, server) => {
-    if (err) { throw err }
+  sigS = await sigServer.start(options)
 
-    sigS = server
-    console.log('signalling on:', server.info.uri)
-    done()
-  })
+  console.log('signalling on:', sigS.info.uri)
+
+  done()
 }
 
-function stop (done) {
-  sigS.stop(done)
+async function stop (done) {
+  await sigS.stop()
+
+  done()
 }
 
 module.exports = {
