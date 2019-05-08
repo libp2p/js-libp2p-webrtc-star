@@ -38,9 +38,9 @@ exports.start = async (options = {}) => {
   })
 
   if (options.metrics) {
-    // TODO: reenable epimatheus when support
-    log('wait for epimeteus support')
-    throw new Error('epimeteus is currently not supported by hapi. Needs: https://github.com/libp2p/js-libp2p-webrtc-star/issues/174')
+    // TODO: reenable epimetheus when support
+    log('wait for epimetheus support')
+    throw new Error('epimetheus is currently not supported by hapi. Needs: https://github.com/libp2p/js-libp2p-webrtc-star/issues/174')
     epimetheus.instrument(http)
   }
 
