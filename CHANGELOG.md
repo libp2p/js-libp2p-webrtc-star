@@ -1,3 +1,18 @@
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.8...v0.16.0) (2019-05-08)
+
+
+### Bug Fixes
+
+* update hapi ([#173](https://github.com/libp2p/js-libp2p-webrtc-star/issues/173)) ([f7dc83a](https://github.com/libp2p/js-libp2p-webrtc-star/commit/f7dc83a))
+
+
+### BREAKING CHANGES
+
+* signaling server api with async await instead of callbacks
+
+
+
 <a name="0.15.8"></a>
 ## [0.15.8](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.7...v0.15.8) (2019-01-10)
 
