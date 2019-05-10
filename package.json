@@ -48,7 +48,7 @@
     "gulp": "^3.9.1",
     "interface-data-exchange-devdeps": "0.0.1",
     "libp2p-exchange-direct": "0.0.3",
-    "libp2p-exchange-rendezvous": "0.0.2",
+    "libp2p-exchange-rendezvous": "guysv/libp2p-exchange-rendezvous#no-crypto",
     "lodash": "^4.17.10",
     "mafmt": "^6.0.0",
     "wrtc": "0.1.1"
