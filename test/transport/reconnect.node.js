@@ -3,6 +3,7 @@
 'use strict'
 
 const chai = require('chai')
+const series = require('async/series')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
@@ -37,7 +38,10 @@ module.exports = (create) => {
       ws1 = create()
 
       const listener = ws1.createListener((conn) => {})
-      listener.listen(ma1, (err) => {
+      series([
+        (cb) => ws1.discovery.start(cb),
+        (cb) => listener.listen(ma1, cb)
+      ], (err) => {
         expect(err).to.not.exist()
         done()
       })

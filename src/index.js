@@ -43,7 +43,7 @@ class WebRTCStar {
 
     this.discovery = new EE()
     this.discovery.tag = 'webRTCStar'
-    this.discovery._isStarted = true
+    this.discovery._isStarted = false
     this.discovery.start = (callback) => {
       this.discovery._isStarted = true
       setImmediate(callback)
