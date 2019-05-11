@@ -48,7 +48,6 @@
     "gulp": "^3.9.1",
     "interface-data-exchange-devdeps": "0.0.1",
     "libp2p-exchange-direct": "0.0.3",
-    "libp2p-exchange-rendezvous": "guysv/libp2p-exchange-rendezvous#no-crypto",
     "lodash": "^4.17.10",
     "mafmt": "^6.0.0",
     "wrtc": "^0.4.0"
@@ -59,6 +58,7 @@
     "debug": "^3.1.0",
     "detect-node": "^2.0.3",
     "interface-connection": "~0.3.2",
+    "libp2p-exchange-rendezvous": "guysv/libp2p-exchange-rendezvous#no-crypto",
     "mafmt": "^6.0.0",
     "minimist": "^1.2.0",
     "multiaddr": "^5.0.0",
