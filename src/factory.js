@@ -3,9 +3,10 @@ const WebRTCStarClass = require('./index')
 
 function WebRTCStarFactory (options) {
   const WebRTCStarProxy = {
-    construct(target, libp2pOpts) {
-      options.exchange = new RendezvousExchange(libp2pOpts.libp2p.switch, {enableServer: true})
-      return new target(Object.assign(libp2pOpts, options))
+    construct(target, args) {
+      options.exchange = new RendezvousExchange(args[0].libp2p.switch, {enableServer: true})
+      options.exchange.start()
+      return new target(Object.assign(args[0], options))
     }
   }
 
