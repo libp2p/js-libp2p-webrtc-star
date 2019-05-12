@@ -196,11 +196,7 @@ class WebRTCStar {
     }
 
     return multiaddrs.filter((ma) => {
-      if (ma.protoNames().indexOf('p2p-circuit') > -1) {
-        return false
-      }
-
-      return mafmt.WebRTCStar.matches(ma)
+      return ma.protoNames().indexOf('p2p-webrtc-star') > -1
     })
   }
 }
