@@ -1,3 +1,13 @@
+<a name="0.16.1"></a>
+## [0.16.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.16.0...v0.16.1) (2019-05-12)
+
+
+### Features
+
+* start/stop discovery events when start/stop called ([#176](https://github.com/libp2p/js-libp2p-webrtc-star/issues/176)) ([f4dc087](https://github.com/libp2p/js-libp2p-webrtc-star/commit/f4dc087))
+
+
+
 <a name="0.16.0"></a>
 # [0.16.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.15.8...v0.16.0) (2019-05-08)
 
