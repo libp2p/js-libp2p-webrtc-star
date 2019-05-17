@@ -4,7 +4,6 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star')
 
 const multiaddr = require('multiaddr')
-const mafmt = require('mafmt')
 const Id = require('peer-id')
 
 const withIs = require('class-is')
@@ -207,12 +206,12 @@ module.exports = withIs(WebRTCStar, { className: 'WebRTCStar', symbolName: '@lib
 
 function WebRTCStarFactory (options) {
   const WebRTCStarProxy = {
-    construct(target, [nodeOpts]) {
+    construct (WebRTCStarClass, [nodeOpts]) {
       options.exchange = new RendezvousExchange(nodeOpts.libp2p, {enableServer: true})
-      nodeOpts.libp2p.on("start", () => options.exchange.start(() => {}))
-      nodeOpts.libp2p.on("stop", () => options.exchange.stop(() => {}))
+      nodeOpts.libp2p.on('start', () => options.exchange.start(() => {}))
+      nodeOpts.libp2p.on('stop', () => options.exchange.stop(() => {}))
 
-      return new target(Object.assign(nodeOpts, options))
+      return new WebRTCStarClass(Object.assign(nodeOpts, options))
     }
   }
 
@@ -220,4 +219,3 @@ function WebRTCStarFactory (options) {
 }
 
 module.exports.Factory = WebRTCStarFactory
-
