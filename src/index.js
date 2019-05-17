@@ -17,6 +17,8 @@ const webrtcSupport = require('webrtcsupport')
 const Connection = require('interface-connection').Connection
 const toPull = require('stream-to-pull-stream')
 
+const RendezvousExchange = require('libp2p-exchange-rendezvous')
+
 const setImmediate = require('async/setImmediate')
 const once = require('once')
 const noop = once(() => {})
@@ -202,3 +204,20 @@ class WebRTCStar {
 }
 
 module.exports = withIs(WebRTCStar, { className: 'WebRTCStar', symbolName: '@libp2p/js-libp2p-webrtc-star/webrtcstar' })
+
+function WebRTCStarFactory (options) {
+  const WebRTCStarProxy = {
+    construct(target, [nodeOpts]) {
+      options.exchange = new RendezvousExchange(nodeOpts.libp2p, {enableServer: true})
+      nodeOpts.libp2p.on("start", () => options.exchange.start(() => {}))
+      nodeOpts.libp2p.on("stop", () => options.exchange.stop(() => {}))
+
+      return new target(Object.assign(nodeOpts, options))
+    }
+  }
+
+  return new Proxy(WebRTCStar, WebRTCStarProxy)
+}
+
+module.exports.Factory = WebRTCStarFactory
+
