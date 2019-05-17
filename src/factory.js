@@ -5,7 +5,7 @@ function WebRTCStarFactory (options) {
   const WebRTCStarProxy = {
     construct(target, args) {
       options.exchange = new RendezvousExchange(args[0].libp2p, {enableServer: true})
-      options.exchange.start()
+      options.exchange.start(() => {})
       return new target(Object.assign(args[0], options))
     }
   }
