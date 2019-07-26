@@ -37,6 +37,12 @@ exports.start = async (options = {}) => {
     })
   })
 
+  http.route({
+    method: 'GET',
+    path: '/healthcheck',
+    handler: (request, reply) => 'OK'
+  })
+
   if (options.metrics) {
     // TODO: reenable epimetheus when support
     log('wait for epimetheus support')
