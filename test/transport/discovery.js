@@ -7,7 +7,6 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
-const series = require('async/series')
 
 module.exports = (create) => {
   describe('peer discovery', () => {
@@ -27,98 +26,75 @@ module.exports = (create) => {
     let ws4
     const ma4 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3D'))
 
-    it('listen on the first', (done) => {
-      series([
-        (cb) => {
-          ws1 = create()
-          ws1Listener = ws1.createListener((conn) => {})
-          ws1.discovery.start(cb)
-        },
-        (cb) => {
-          ws1Listener.listen(ma1, cb)
-        }
-      ], (err) => {
-        expect(err).to.not.exist()
-        done()
-      })
+    it('listen on the first', async () => {
+      ws1 = create()
+      ws1Listener = ws1.createListener(() => { })
+      ws1.discovery.start()
+
+      await ws1Listener.listen(ma1)
     })
 
-    it('listen on the second, discover the first', (done) => {
-      let listener
+    it('listen on the second, discover the first', async () => {
+      ws2 = create()
+      const listener = ws2.createListener(() => { })
+      ws2.discovery.start()
 
-      ws1.discovery.once('peer', (peerInfo) => {
-        expect(peerInfo.multiaddrs.has(ma2)).to.equal(true)
-        done()
+      const p = new Promise((resolve) => {
+        ws1.discovery.once('peer', (peerInfo) => {
+          expect(peerInfo.multiaddrs.has(ma2)).to.equal(true)
+          resolve()
+        })
       })
 
-      series([
-        (cb) => {
-          ws2 = create()
-          listener = ws2.createListener((conn) => {})
-          ws2.discovery.start(cb)
-        },
-        (cb) => {
-          listener.listen(ma2, cb)
-        }
-      ], (err) => {
-        expect(err).to.not.exist()
-      })
+      listener.listen(ma2)
+      await p
     })
 
     // this test is mostly validating the non-discovery test mechanism works
-    it('listen on the third, verify ws-peer is discovered', (done) => {
-      let listener
+    it('listen on the third, verify ws-peer is discovered', async () => {
       let discoveredPeer = false
-      // resolve on peer discovered
-      ws1.discovery.once('peer', (peerInfo) => {
+
+      ws1.discovery.once('peer', () => {
         discoveredPeer = true
       })
-      ws1Listener.io.once('ws-peer', (maStr) => {
-        expect(discoveredPeer).to.equal(true)
-        done()
+
+      // resolve on peer discovered
+      const p = new Promise((resolve) => {
+        ws1Listener.io.once('ws-peer', () => {
+          expect(discoveredPeer).to.equal(true)
+          resolve()
+        })
       })
 
-      series([
-        (cb) => {
-          ws3 = create()
-          listener = ws3.createListener((conn) => {})
-          ws3.discovery.start(cb)
-        },
-        (cb) => {
-          listener.listen(ma3, cb)
-        }
-      ], (err) => {
-        expect(err).to.not.exist()
-      })
+      ws3 = create()
+      const listener = ws3.createListener(() => { })
+      ws3.discovery.start()
+
+      await listener.listen(ma3)
+      await p
     })
 
-    it('listen on the fourth, ws-peer is not discovered', (done) => {
-      let listener
+    it('listen on the fourth, ws-peer is not discovered', async () => {
       let discoveredPeer = false
-      // resolve on peer discovered
-      ws1.discovery.once('peer', (peerInfo) => {
+
+      ws1.discovery.once('peer', () => {
         discoveredPeer = true
       })
-      ws1Listener.io.once('ws-peer', (maStr) => {
-        expect(discoveredPeer).to.equal(false)
-        done()
+      // resolve on peer discovered
+      const p = new Promise((resolve) => {
+        ws1Listener.io.once('ws-peer', () => {
+          expect(discoveredPeer).to.equal(false)
+          resolve()
+        })
       })
 
-      series([
-        (cb) => {
-          ws1.discovery.stop(cb)
-        },
-        (cb) => {
-          ws4 = create()
-          listener = ws4.createListener((conn) => {})
-          ws4.discovery.start(cb)
-        },
-        (cb) => {
-          listener.listen(ma4, cb)
-        }
-      ], (err) => {
-        expect(err).to.not.exist()
-      })
+      ws1.discovery.stop()
+      ws4 = create()
+      const listener = ws4.createListener(() => { })
+      ws4.discovery.start()
+
+      await listener.listen(ma4)
+      await p
     })
   })
 }

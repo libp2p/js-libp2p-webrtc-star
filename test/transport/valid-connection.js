@@ -6,8 +6,7 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
-const series = require('async/series')
-const pull = require('pull-stream')
+const pipe = require('it-pipe')
 
 module.exports = (create) => {
   describe('valid Connection', () => {
@@ -23,52 +22,23 @@ module.exports = (create) => {
 
     let conn
 
-    before(function (done) {
-      this.timeout(40 * 1000)
+    before(async () => {
+      // first
+      ws1 = create()
+      const listener1 = ws1.createListener((conn) => pipe(conn, conn))
 
-      series([first, second], dial)
+      // second
+      ws2 = create()
+      const listener2 = ws2.createListener((conn) => pipe(conn, conn))
 
-      function first (next) {
-        ws1 = create()
+      await Promise.all([listener1.listen(ma1), listener2.listen(ma2)])
 
-        const listener = ws1.createListener((conn) => pull(conn, conn))
-        listener.listen(ma1, next)
-      }
-
-      function second (next) {
-        ws2 = create()
-
-        const listener = ws2.createListener((conn) => pull(conn, conn))
-        listener.listen(ma2, next)
-      }
-
-      function dial () {
-        conn = ws1.dial(ma2, done)
-      }
+      conn = await ws1.dial(ma2)
     })
 
-    it('get observed addrs', (done) => {
-      conn.getObservedAddrs((err, addrs) => {
-        expect(err).to.not.exist()
-        expect(addrs[0].toString()).to.equal(ma2.toString())
-        done()
-      })
-    })
-
-    it('get Peer Info', (done) => {
-      conn.getPeerInfo((err, peerInfo) => {
-        expect(err).to.exist()
-        done()
-      })
-    })
-
-    it('set Peer Info', (done) => {
-      conn.setPeerInfo('info')
-      conn.getPeerInfo((err, peerInfo) => {
-        expect(err).to.not.exist()
-        expect(peerInfo).to.equal('info')
-        done()
-      })
+    it('get observed addrs', () => {
+      const addrs = conn.getObservedAddrs()
+      expect(addrs[0].toString()).to.equal(ma2.toString())
     })
   })
 }

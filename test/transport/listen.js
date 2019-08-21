@@ -18,49 +18,56 @@ module.exports = (create) => {
       ws = create()
     })
 
-    it('listen, check for callback', (done) => {
-      const listener = ws.createListener((conn) => {})
+    it('listen, check for promise', async () => {
+      const listener = ws.createListener(() => {})
 
-      listener.listen(ma, (err) => {
-        expect(err).to.not.exist()
-        listener.close(done)
+      await listener.listen(ma)
+      listener.close()
+    })
+
+    it('listen, check for listening event', async () => {
+      const listener = ws.createListener(() => {})
+
+      const p = new Promise((resolve) => {
+        listener.once('listening', () => {
+          listener.close()
+          resolve()
+        })
       })
+
+      await listener.listen(ma)
+      await p
     })
 
-    it('listen, check for listening event', (done) => {
-      const listener = ws.createListener((conn) => {})
+    it('listen, check for the close event', async () => {
+      const listener = ws.createListener(() => {})
 
-      listener.once('listening', () => listener.close(done))
-      listener.listen(ma)
-    })
-
-    it('listen, check for the close event', (done) => {
-      const listener = ws.createListener((conn) => {})
-      listener.listen(ma, (err) => {
-        expect(err).to.not.exist()
-        listener.once('close', done)
-        listener.close()
+      await listener.listen(ma)
+      const p = new Promise((resolve) => {
+        listener.once('close', () => resolve())
       })
+
+      listener.close()
+      await p
     })
 
-    it.skip('close listener with connections, through timeout', (done) => {
+    it.skip('close listener with connections, through timeout', () => {
       // TODO ? Should this apply ?
     })
 
-    it.skip('listen on IPv6 addr', (done) => {
+    it.skip('listen on IPv6 addr', () => {
       // TODO IPv6 not supported yet
     })
 
-    it('getAddrs', (done) => {
-      const listener = ws.createListener((conn) => {})
-      listener.listen(ma, (err) => {
-        expect(err).to.not.exist()
-        listener.getAddrs((err, addrs) => {
-          expect(err).to.not.exist()
-          expect(addrs[0]).to.deep.equal(ma)
-          listener.close(done)
-        })
-      })
+    it('getAddrs', async () => {
+      const listener = ws.createListener(() => {})
+
+      await listener.listen(ma)
+
+      const addrs = listener.getAddrs()
+      expect(addrs[0]).to.deep.equal(ma)
+
+      listener.close()
     })
   })
 }
