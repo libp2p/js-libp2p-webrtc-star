@@ -3,12 +3,16 @@
 
 const WStar = require('..')
 
+const mockUpgrader = {
+  upgradeInbound: maConn => maConn,
+  upgradeOutbound: maConn => maConn
+}
+
 const create = () => {
-  return new WStar()
+  return new WStar({ upgrader: mockUpgrader })
 }
 
 require('./transport/dial.js')(create)
 require('./transport/listen.js')(create)
 require('./transport/discovery.js')(create)
 require('./transport/filter.js')(create)
-require('./transport/valid-connection.js')(create)

@@ -35,9 +35,9 @@ function cleanMultiaddr (maStr) {
       return tupple[0] === 421 // ipfs code
     })[0]
 
-    ma = ma.decapsulate('ipfs')
+    ma = ma.decapsulate('p2p')
     ma = ma.encapsulate('/p2p-webrtc-star')
-    ma = ma.encapsulate(`/ipfs/${tuppleIPFS[1]}`)
+    ma = ma.encapsulate(`/p2p/${tuppleIPFS[1]}`)
     maStr = ma.toString()
   }
 

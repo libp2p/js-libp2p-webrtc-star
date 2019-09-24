@@ -51,10 +51,6 @@ module.exports = (create) => {
       await p
     })
 
-    it.skip('close listener with connections, through timeout', () => {
-      // TODO ? Should this apply ?
-    })
-
     it.skip('listen on IPv6 addr', () => {
       // TODO IPv6 not supported yet
     })

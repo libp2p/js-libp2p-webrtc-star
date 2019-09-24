@@ -25,7 +25,7 @@
     "coverage-publish": "aegir coverage --provider coveralls"
   },
   "pre-push": [
-    "test"
+    "lint"
   ],
   "engines": {
     "node": ">=10.0.0",
@@ -45,32 +45,34 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
-    "aegir": "^20.0.0",
+    "aegir": "^20.3.1",
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
+    "interface-discovery": "~0.1.1",
+    "interface-transport": "libp2p/interface-transport#chore/skip-abort-while-reading-for-webrtc",
     "prom-client": "^11.5.3",
-    "wrtc": "~0.4.1"
+    "wrtc": "~0.4.2"
   },
   "dependencies": {
-    "@hapi/hapi": "^18.3.2",
-    "@hapi/inert": "^5.2.1",
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/inert": "^5.2.2",
     "abortable-iterator": "^2.1.0",
     "class-is": "^1.1.0",
     "debug": "^4.1.1",
     "epimetheus": "^1.0.92",
     "err-code": "^2.0.0",
-    "interface-connection": "~0.3.3",
-    "interface-transport": "^0.5.2",
     "it-pipe": "^1.0.1",
-    "mafmt": "^6.0.8",
+    "libp2p-utils": "^0.1.0",
+    "mafmt": "^7.0.0",
     "minimist": "^1.2.0",
-    "multiaddr": "^6.1.0",
+    "multiaddr": "^7.1.0",
     "peer-id": "~0.13.2",
-    "peer-info": "~0.16.0",
-    "simple-peer": "^9.5.0",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0",
+    "peer-info": "~0.17.0",
+    "simple-peer": "^9.6.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "stream-to-it": "^0.1.1",
     "streaming-iterables": "^4.1.0",
     "webrtcsupport": "github:ipfs/webrtcsupport"
   },

@@ -22,7 +22,7 @@ module.exports = (create) => {
     const maHSIP = '/ip4/188.166.203.82/tcp/20000'
 
     const maLS = '/ip4/127.0.0.1/tcp/15555'
-    const maGen = (base, id) => multiaddr(`${base}/wss/p2p-webrtc-star/ipfs/${id}`) // https
+    const maGen = (base, id) => multiaddr(`${base}/wss/p2p-webrtc-star/p2p/${id}`) // https
     // const maGen = (base, id) => multiaddr(`${base}/ws/p2p-webrtc-star/ipfs/${id}`)
 
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
@@ -66,8 +66,7 @@ module.exports = (create) => {
       expect(values).to.eql([data])
     })
 
-    // TODO: RE-ENABLE
-    it.skip('dial offline / non-exist()ent node on IPv4, check promise rejected', async function (done) {
+    it('dial offline / non-exist()ent node on IPv4, check promise rejected', async function () {
       this.timeout(20 * 1000)
       const maOffline = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
 
