@@ -19,6 +19,7 @@ describe('transport: with wrtc', () => {
 
   require('./transport/dial.js')(create)
   require('./transport/listen.js')(create)
+  require('./transport/track.js')(create)
   require('./transport/discovery.js')(create)
   require('./transport/filter.js')(create)
   require('./transport/reconnect.node.js')(create)
@@ -32,6 +33,7 @@ describe.skip('transport: with electron-webrtc', () => {
 
   require('./transport/dial.js')(create)
   require('./transport/listen.js')(create)
+  require('./transport/track.js')(create)
   require('./transport/discovery.js')(create)
   require('./transport/filter.js')(create)
   // TODO ensure that nodes from wrtc close properly (race issue in travis)

@@ -2,6 +2,8 @@
 
 const debug = require('debug')
 const log = debug('libp2p:webrtc-star')
+log.error = debug('libp2p:webrtc-star:error')
+
 const assert = require('assert')
 const { EventEmitter } = require('events')
 const errcode = require('err-code')
@@ -113,7 +115,10 @@ class WebRTCStar {
 
       const onError = (err) => {
         if (!connected) {
-          err.message = `connection error ${cOpts.host}:${cOpts.port}: ${err.message}`
+          const msg = `connection error ${cOpts.host}:${cOpts.port}: ${err.message}`
+
+          err.message = msg
+          log.error(msg)
           done(err)
         }
       }
@@ -133,7 +138,7 @@ class WebRTCStar {
       }
 
       const onAbort = () => {
-        log('connection aborted %s:%s', cOpts.host, cOpts.port)
+        log.error('connection aborted %s:%s', cOpts.host, cOpts.port)
         channel.destroy()
         done(new AbortError())
       }
@@ -182,11 +187,11 @@ class WebRTCStar {
    * Creates a WebrtcStar listener. The provided `handler` function will be called
    * anytime a new incoming Connection has been successfully upgraded via
    * `upgrader.upgradeInbound`.
-   * @param {object} [options]
+   * @param {object} [options] simple-peer options for listener
    * @param {function (Connection)} handler
    * @returns {Listener} A WebrtcStar listener
    */
-  createListener (options, handler) {
+  createListener (options = {}, handler) {
     if (!webrtcSupport.support && !this.wrtc) {
       throw errcode(new Error('no WebRTC support'), 'ERR_NO_WEBRTC_SUPPORT')
     }
@@ -224,11 +229,10 @@ class WebRTCStar {
     log('Peer Discovered:', maStr)
     maStr = cleanMultiaddr(maStr)
 
-    const split = maStr.split('/p2p/')
-    const peerIdStr = split[split.length - 1]
-    const peerId = PeerId.createFromB58String(peerIdStr)
+    const ma = multiaddr(maStr)
+    const peerId = PeerId.createFromB58String(ma.getPeerId())
     const peerInfo = new PeerInfo(peerId)
-    peerInfo.multiaddrs.add(multiaddr(maStr))
+    peerInfo.multiaddrs.add(ma)
     this.discovery.emit('peer', peerInfo)
   }
 }

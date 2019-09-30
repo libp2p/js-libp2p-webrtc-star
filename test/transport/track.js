@@ -9,15 +9,14 @@ const expect = chai.expect
 chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
-const { collect } = require('streaming-iterables')
 
 module.exports = (create) => {
-  describe('dial', () => {
+  describe('track connections', () => {
     let ws1
     let ws2
     let ma1
     let ma2
-    let listener2
+    let listener
 
     const maHSDNS = '/dns/star-signal.cloud.ipfs.team'
     const maHSIP = '/ip4/188.166.203.82/tcp/20000'
@@ -44,45 +43,30 @@ module.exports = (create) => {
     beforeEach(async () => {
       // first
       ws1 = create()
-      const listener1 = ws1.createListener((conn) => pipe(conn, conn))
+      listener = ws1.createListener((conn) => pipe(conn, conn))
 
       // second
       ws2 = create()
-      listener2 = ws2.createListener((conn) => pipe(conn, conn))
+      const listener2 = ws2.createListener((conn) => pipe(conn, conn))
 
-      await Promise.all([listener1.listen(ma1), listener2.listen(ma2)])
+      await Promise.all([listener.listen(ma1), listener2.listen(ma2)])
     })
 
-    it('dial on IPv4, check promise', async function () {
-      this.timeout(20 * 1000)
+    it('should untrack conn after being closed', async function () {
+      this.timeout(20e3)
+      expect(listener.__connections).to.have.lengthOf(0)
 
-      const conn = await ws1.dial(ma2)
-      const data = Buffer.from('some data')
-      const values = await pipe(
-        [data],
-        conn,
-        collect
-      )
+      const conn = await ws1.dial(ma1)
+      expect(listener.__connections).to.have.lengthOf(1)
 
-      expect(values).to.eql([data])
-    })
+      await conn.close()
 
-    it('dial offline / non-exist()ent node on IPv4, check promise rejected', async function () {
-      this.timeout(20 * 1000)
-      const maOffline = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/ABCD')
+      // wait for listener to know of the disconnect
+      await new Promise((resolve) => {
+        setTimeout(resolve, 5000)
+      })
 
-      try {
-        await ws1.dial(maOffline)
-      } catch (err) {
-        expect(err).to.exist()
-        return
-      }
-
-      throw new Error('dial did not fail')
-    })
-
-    it.skip('dial on IPv6', (done) => {
-      // TODO IPv6 not supported yet
+      expect(listener.__connections).to.have.lengthOf(0)
     })
   })
 }

@@ -67,6 +67,7 @@
     "mafmt": "^7.0.0",
     "minimist": "^1.2.0",
     "multiaddr": "^7.1.0",
+    "p-defer": "^3.0.0",
     "peer-id": "~0.13.2",
     "peer-info": "~0.17.0",
     "simple-peer": "^9.6.0",
