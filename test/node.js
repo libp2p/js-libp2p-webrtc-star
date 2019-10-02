@@ -7,30 +7,35 @@ const WStar = require('..')
 
 require('./sig-server.js')
 
+const mockUpgrader = {
+  upgradeInbound: maConn => maConn,
+  upgradeOutbound: maConn => maConn
+}
+
 describe('transport: with wrtc', () => {
   const create = () => {
-    return new WStar({ wrtc: wrtc })
+    return new WStar({ upgrader: mockUpgrader, wrtc: wrtc })
   }
 
   require('./transport/dial.js')(create)
   require('./transport/listen.js')(create)
+  require('./transport/track.js')(create)
   require('./transport/discovery.js')(create)
   require('./transport/filter.js')(create)
-  require('./transport/valid-connection.js')(create)
   require('./transport/reconnect.node.js')(create)
 })
 
 // TODO: Electron-webrtc is currently unreliable on linux
 describe.skip('transport: with electron-webrtc', () => {
   const create = () => {
-    return new WStar({ wrtc: electronWebRTC() })
+    return new WStar({ upgrader: mockUpgrader, wrtc: electronWebRTC() })
   }
 
   require('./transport/dial.js')(create)
   require('./transport/listen.js')(create)
+  require('./transport/track.js')(create)
   require('./transport/discovery.js')(create)
   require('./transport/filter.js')(create)
-  require('./transport/valid-connection.js')(create)
   // TODO ensure that nodes from wrtc close properly (race issue in travis)
   // require('./transport/reconnect.node.js')(create)
 })

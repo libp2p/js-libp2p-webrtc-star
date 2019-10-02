@@ -8,9 +8,14 @@ chai.use(dirtyChai)
 
 const WebRTCStar = require('../../src')
 
+const mockUpgrader = {
+  upgradeInbound: maConn => maConn,
+  upgradeOutbound: maConn => maConn
+}
+
 describe('instantiate the transport', () => {
   it('create', () => {
-    const wstar = new WebRTCStar()
+    const wstar = new WebRTCStar({ upgrader: mockUpgrader })
     expect(wstar).to.exist()
   })
 

@@ -3,7 +3,6 @@
 'use strict'
 
 const chai = require('chai')
-const series = require('async/series')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
@@ -36,31 +35,29 @@ module.exports = (create) => {
       await sigS.stop()
     })
 
-    it('listen on the first', (done) => {
+    it('listen on the first', async () => {
       ws1 = create()
 
-      const listener = ws1.createListener((conn) => {})
-      series([
-        (cb) => ws1.discovery.start(cb),
-        (cb) => listener.listen(ma1, cb)
-      ], (err) => {
-        expect(err).to.not.exist()
-        done()
-      })
+      const listener = ws1.createListener(() => {})
+      ws1.discovery.start()
+
+      await listener.listen(ma1)
     })
 
-    it('listen on the second, discover the first', (done) => {
+    it('listen on the second, discover the first', async () => {
       ws2 = create()
 
-      ws1.discovery.once('peer', (peerInfo) => {
-        expect(peerInfo.multiaddrs.has(ma2)).to.equal(true)
-        done()
+      const p = new Promise((resolve) => {
+        ws1.discovery.once('peer', (peerInfo) => {
+          expect(peerInfo.multiaddrs.has(ma2)).to.equal(true)
+          resolve()
+        })
       })
 
-      const listener = ws2.createListener((conn) => {})
-      listener.listen(ma2, (err) => {
-        expect(err).to.not.exist()
-      })
+      const listener = ws2.createListener(() => {})
+
+      await listener.listen(ma2)
+      await p
     })
 
     it('stops the server', async () => {
@@ -75,15 +72,17 @@ module.exports = (create) => {
       setTimeout(done, 2000)
     })
 
-    it('listen on the third, first discovers it', (done) => {
+    it('listen on the third, first discovers it', async () => {
       ws3 = create()
 
-      const listener = ws3.createListener((conn) => {})
-      listener.listen(ma3, (err) => expect(err).to.not.exist())
+      const listener = ws3.createListener(() => {})
+      await listener.listen(ma3)
 
-      ws1.discovery.once('peer', (peerInfo) => {
-        expect(peerInfo.multiaddrs.has(ma3)).to.equal(true)
-        done()
+      await new Promise((resolve) => {
+        ws1.discovery.once('peer', (peerInfo) => {
+          expect(peerInfo.multiaddrs.has(ma3)).to.equal(true)
+          resolve()
+        })
       })
     })
   })
