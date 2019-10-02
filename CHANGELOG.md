@@ -1,3 +1,18 @@
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.16.1...v0.17.0) (2019-10-02)
+
+
+### Code Refactoring
+
+* switch to async iterators ([#183](https://github.com/libp2p/js-libp2p-webrtc-star/issues/183)) ([db5c97e](https://github.com/libp2p/js-libp2p-webrtc-star/commit/db5c97e))
+
+
+### BREAKING CHANGES
+
+* Switch to using async/await and async iterators. The transport and connection interfaces have changed.
+
+
+
 <a name="0.16.1"></a>
 ## [0.16.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.16.0...v0.16.1) (2019-05-12)
 
