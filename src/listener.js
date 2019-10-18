@@ -14,7 +14,10 @@ const { cleanUrlSIO } = require('./utils')
 
 const sioOptions = {
   transports: ['websocket'],
-  'force new connection': true
+  'force new connection': true,
+   query: {
+    wrtcstar: true,
+   },
 }
 
 module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
