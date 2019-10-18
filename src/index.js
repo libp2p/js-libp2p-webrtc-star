@@ -42,7 +42,10 @@ class WebRTCStar {
 
     this.sioOptions = {
       transports: ['websocket'],
-      'force new connection': true
+      'force new connection': true,
+      query: {
+        wrtcstar: true,
+      },
     }
 
     if (options.wrtc) {
