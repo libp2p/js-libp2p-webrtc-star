@@ -1,29 +1,29 @@
-'use strict';
+'use strict'
 
-const debug = require('debug');
-const log = debug('libp2p:webrtc-star');
-log.error = debug('libp2p:webrtc-star:error');
+const debug = require('debug')
+const log = debug('libp2p:webrtc-star')
+log.error = debug('libp2p:webrtc-star:error')
 
-const assert = require('assert');
-const { EventEmitter } = require('events');
-const errcode = require('err-code');
-const withIs = require('class-is');
+const assert = require('assert')
+const { EventEmitter } = require('events')
+const errcode = require('err-code')
+const withIs = require('class-is')
 
-const { AbortError } = require('abortable-iterator');
-const SimplePeer = require('simple-peer');
-const webrtcSupport = require('webrtcsupport');
+const { AbortError } = require('abortable-iterator')
+const SimplePeer = require('simple-peer')
+const webrtcSupport = require('webrtcsupport')
 
-const multiaddr = require('multiaddr');
-const mafmt = require('mafmt');
-const PeerId = require('peer-id');
-const PeerInfo = require('peer-info');
+const multiaddr = require('multiaddr')
+const mafmt = require('mafmt')
+const PeerId = require('peer-id')
+const PeerInfo = require('peer-info')
 
-const { CODE_CIRCUIT } = require('./constants');
-const createListener = require('./listener');
-const toConnection = require('./socket-to-conn');
-const { cleanMultiaddr } = require('./utils');
+const { CODE_CIRCUIT } = require('./constants')
+const createListener = require('./listener')
+const toConnection = require('./socket-to-conn')
+const { cleanMultiaddr } = require('./utils')
 
-function noop() {}
+function noop () { }
 
 /**
  * @class WebRTCStar
@@ -34,31 +34,29 @@ class WebRTCStar {
    * @param {object} options
    * @param {Upgrader} options.upgrader
    */
-  constructor(options = {}) {
-    assert(
-      options.upgrader,
-      'An upgrader must be provided. See https://github.com/libp2p/interface-transport#upgrader.'
-    );
-    this._upgrader = options.upgrader;
-    this.maSelf = undefined;
+  constructor (options = {}) {
+    assert(options.upgrader, 'An upgrader must be provided. See https://github.com/libp2p/interface-transport#upgrader.')
+    this._upgrader = options.upgrader
+
+    this.maSelf = undefined
 
     if (options.wrtc) {
-      this.wrtc = options.wrtc;
+      this.wrtc = options.wrtc
     }
 
-    this.listenersRefs = {};
+    this.listenersRefs = {}
 
     // Discovery
-    this.discovery = new EventEmitter();
-    this.discovery.tag = 'webRTCStar';
-    this.discovery._isStarted = false;
+    this.discovery = new EventEmitter()
+    this.discovery.tag = 'webRTCStar'
+    this.discovery._isStarted = false
     this.discovery.start = () => {
-      this.discovery._isStarted = true;
-    };
+      this.discovery._isStarted = true
+    }
     this.discovery.stop = () => {
-      this.discovery._isStarted = false;
-    };
-    this._peerDiscovered = this._peerDiscovered.bind(this);
+      this.discovery._isStarted = false
+    }
+    this._peerDiscovered = this._peerDiscovered.bind(this)
   }
 
   /**
@@ -68,16 +66,13 @@ class WebRTCStar {
    * @param {AbortSignal} options.signal Used to abort dial requests
    * @returns {Connection} An upgraded Connection
    */
-  async dial(ma, options = {}) {
-    const rawConn = await this._connect(ma, options);
-    const maConn = toConnection(rawConn, {
-      remoteAddr: ma,
-      signal: options.signal,
-    });
-    log('new outbound connection %s', maConn.remoteAddr);
-    const conn = await this._upgrader.upgradeOutbound(maConn);
-    log('outbound connection %s upgraded', maConn.remoteAddr);
-    return conn;
+  async dial (ma, options = {}) {
+    const rawConn = await this._connect(ma, options)
+    const maConn = toConnection(rawConn, { remoteAddr: ma, signal: options.signal })
+    log('new outbound connection %s', maConn.remoteAddr)
+    const conn = await this._upgrader.upgradeOutbound(maConn)
+    log('outbound connection %s upgraded', maConn.remoteAddr)
+    return conn
   }
 
   /**
@@ -87,104 +82,100 @@ class WebRTCStar {
    * @param {AbortSignal} options.signal Used to abort dial requests
    * @returns {Promise<SimplePeer>} Resolves a SimplePeer Webrtc channel
    */
-  _connect(ma, options = {}) {
+  _connect (ma, options = {}) {
     if (options.signal && options.signal.aborted) {
-      throw new AbortError();
+      throw new AbortError()
     }
 
     const spOptions = {
       initiator: true,
-      trickle: false,
-    };
-
-    // Use custom WebRTC implementation
-    if (this.wrtc) {
-      spOptions.wrtc = this.wrtc;
+      trickle: false
     }
 
-    const cOpts = ma.toOptions();
+    // Use custom WebRTC implementation
+    if (this.wrtc) { spOptions.wrtc = this.wrtc }
 
-    const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now();
-    const sioClient = this.listenersRefs[Object.keys(this.listenersRefs)[0]].io;
+    const cOpts = ma.toOptions()
+
+    const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
+    const sioClient = this
+      .listenersRefs[Object.keys(this.listenersRefs)[0]].io
 
     return new Promise((resolve, reject) => {
-      const start = Date.now();
-      let connected;
+      const start = Date.now()
+      let connected
 
-      log('dialing %s:%s', cOpts.host, cOpts.port);
-      const channel = new SimplePeer(spOptions);
+      log('dialing %s:%s', cOpts.host, cOpts.port)
+      const channel = new SimplePeer(spOptions)
 
-      const onError = err => {
+      const onError = (err) => {
         if (!connected) {
-          const msg = `connection error ${cOpts.host}:${cOpts.port}: ${err.message}`;
+          const msg = `connection error ${cOpts.host}:${cOpts.port}: ${err.message}`
 
-          err.message = msg;
-          log.error(msg);
-          done(err);
+          err.message = msg
+          log.error(msg)
+          done(err)
         }
-      };
+      }
 
       const onTimeout = () => {
-        log('connnection timeout %s:%s', cOpts.host, cOpts.port);
-        const err = errcode(
-          new Error(`connection timeout after ${Date.now() - start}ms`),
-          'ERR_CONNECT_TIMEOUT'
-        );
+        log('connnection timeout %s:%s', cOpts.host, cOpts.port)
+        const err = errcode(new Error(`connection timeout after ${Date.now() - start}ms`), 'ERR_CONNECT_TIMEOUT')
         // Note: this will result in onError() being called
-        channel.emit('error', err);
-      };
+        channel.emit('error', err)
+      }
 
       const onConnect = () => {
-        connected = true;
+        connected = true
 
-        log('connection opened %s:%s', cOpts.host, cOpts.port);
-        done(null);
-      };
+        log('connection opened %s:%s', cOpts.host, cOpts.port)
+        done(null)
+      }
 
       const onAbort = () => {
-        log.error('connection aborted %s:%s', cOpts.host, cOpts.port);
-        channel.destroy();
-        done(new AbortError());
-      };
+        log.error('connection aborted %s:%s', cOpts.host, cOpts.port)
+        channel.destroy()
+        done(new AbortError())
+      }
 
-      const done = err => {
-        channel.removeListener('error', onError);
-        channel.removeListener('timeout', onTimeout);
-        channel.removeListener('connect', onConnect);
-        options.signal && options.signal.removeEventListener('abort', onAbort);
+      const done = (err) => {
+        channel.removeListener('error', onError)
+        channel.removeListener('timeout', onTimeout)
+        channel.removeListener('connect', onConnect)
+        options.signal && options.signal.removeEventListener('abort', onAbort)
 
-        err ? reject(err) : resolve(channel);
-      };
+        err ? reject(err) : resolve(channel)
+      }
 
-      channel.once('error', onError);
-      channel.once('timeout', onTimeout);
-      channel.once('connect', onConnect);
-      channel.on('close', () => channel.destroy());
-      options.signal && options.signal.addEventListener('abort', onAbort);
+      channel.once('error', onError)
+      channel.once('timeout', onTimeout)
+      channel.once('connect', onConnect)
+      channel.on('close', () => channel.destroy())
+      options.signal && options.signal.addEventListener('abort', onAbort)
 
-      channel.on('signal', signal => {
+      channel.on('signal', (signal) => {
         sioClient.emit('ss-handshake', {
           intentId: intentId,
           srcMultiaddr: this.maSelf.toString(),
           dstMultiaddr: ma.toString(),
-          signal: signal,
-        });
-      });
+          signal: signal
+        })
+      })
 
       // NOTE: aegir segfaults if we do .once on the socket.io event emitter and we
       // are clueless as to why.
-      sioClient.on('ws-handshake', offer => {
+      sioClient.on('ws-handshake', (offer) => {
         if (offer.intentId === intentId && offer.err) {
-          reject(offer.err);
+          reject(offer.err)
         }
 
         if (offer.intentId !== intentId || !offer.answer) {
-          return;
+          return
         }
 
-        channel.signal(offer.signal);
-      });
-    });
+        channel.signal(offer.signal)
+      })
+    })
   }
 
   /**
@@ -195,19 +186,19 @@ class WebRTCStar {
    * @param {function (Connection)} handler
    * @returns {Listener} A WebrtcStar listener
    */
-  createListener(options = {}, handler) {
+  createListener (options = {}, handler) {
     if (!webrtcSupport.support && !this.wrtc) {
-      throw errcode(new Error('no WebRTC support'), 'ERR_NO_WEBRTC_SUPPORT');
+      throw errcode(new Error('no WebRTC support'), 'ERR_NO_WEBRTC_SUPPORT')
     }
 
     if (typeof options === 'function') {
-      handler = options;
-      options = {};
+      handler = options
+      options = {}
     }
 
-    handler = handler || noop;
+    handler = handler || noop
 
-    return createListener({ handler, upgrader: this._upgrader }, this, options);
+    return createListener({ handler, upgrader: this._upgrader }, this, options)
   }
 
   /**
@@ -215,33 +206,30 @@ class WebRTCStar {
    * @param {Multiaddr[]} multiaddrs
    * @returns {Multiaddr[]} Valid TCP multiaddrs
    */
-  filter(multiaddrs) {
-    multiaddrs = Array.isArray(multiaddrs) ? multiaddrs : [multiaddrs];
+  filter (multiaddrs) {
+    multiaddrs = Array.isArray(multiaddrs) ? multiaddrs : [multiaddrs]
 
-    return multiaddrs.filter(ma => {
+    return multiaddrs.filter((ma) => {
       if (ma.protoCodes().includes(CODE_CIRCUIT)) {
-        return false;
+        return false
       }
 
-      return mafmt.WebRTCStar.matches(ma);
-    });
+      return mafmt.WebRTCStar.matches(ma)
+    })
   }
 
-  _peerDiscovered(maStr) {
-    if (!this.discovery._isStarted) return;
+  _peerDiscovered (maStr) {
+    if (!this.discovery._isStarted) return
 
-    log('Peer Discovered:', maStr);
-    maStr = cleanMultiaddr(maStr);
+    log('Peer Discovered:', maStr)
+    maStr = cleanMultiaddr(maStr)
 
-    const ma = multiaddr(maStr);
-    const peerId = PeerId.createFromB58String(ma.getPeerId());
-    const peerInfo = new PeerInfo(peerId);
-    peerInfo.multiaddrs.add(ma);
-    this.discovery.emit('peer', peerInfo);
+    const ma = multiaddr(maStr)
+    const peerId = PeerId.createFromB58String(ma.getPeerId())
+    const peerInfo = new PeerInfo(peerId)
+    peerInfo.multiaddrs.add(ma)
+    this.discovery.emit('peer', peerInfo)
   }
 }
 
-module.exports = withIs(WebRTCStar, {
-  className: 'WebRTCStar',
-  symbolName: '@libp2p/js-libp2p-webrtc-star/webrtcstar',
-});
+module.exports = withIs(WebRTCStar, { className: 'WebRTCStar', symbolName: '@libp2p/js-libp2p-webrtc-star/webrtcstar' })
