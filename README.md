@@ -58,7 +58,7 @@ const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
 const { collect } = require('streaming-iterables')
 
-const addr = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+const addr = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
 
 const ws = new WStar({ upgrader })
 
