@@ -52,6 +52,7 @@
     "interface-discovery": "~0.1.1",
     "interface-transport": "libp2p/interface-transport#chore/skip-abort-while-reading-for-webrtc",
     "prom-client": "^11.5.3",
+    "sinon": "^7.5.0",
     "wrtc": "~0.4.2"
   },
   "dependencies": {

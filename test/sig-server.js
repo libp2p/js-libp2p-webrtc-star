@@ -6,7 +6,6 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const io = require('socket.io-client')
-const parallel = require('async/parallel')
 const multiaddr = require('multiaddr')
 
 const sigServer = require('../src/sig-server')
@@ -210,18 +209,10 @@ describe('signalling', () => {
     }
   })
 
-  it('stop signalling server', () => {
-    parallel([
-      (cb) => {
-        c1.disconnect()
-        cb()
-      },
-      (cb) => {
-        c2.disconnect()
-        cb()
-      }
-    ], async () => {
-      await sigS.stop()
-    })
+  it('stop signalling server', async () => {
+    c1.disconnect()
+    c2.disconnect()
+
+    await sigS.stop()
   })
 })
