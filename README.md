@@ -112,12 +112,12 @@ Nodes using `libp2p-webrtc-star` will connect to a known point in the network, a
 This will expose a `webrtc-star` cli tool. To spawn a server do:
 
 ```bash
-> star-signal --port=9090 --host=127.0.0.1
+> star-signal --port=13579 --host=127.0.0.1
 ```
 
 Defaults:
 
-- `port` - 13579
+- `port` - 9090
 - `host` - '0.0.0.0'
 
 ## Hosted Rendezvous Server
