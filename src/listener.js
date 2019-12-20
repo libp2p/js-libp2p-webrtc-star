@@ -1,7 +1,9 @@
 'use strict'
 
 const EventEmitter = require('events')
-const log = require('debug')('libp2p:webrtc-star:listener')
+const debug = require('debug')
+const log = debug('libp2p:webrtc-star:listener')
+log.error = debug('libp2p:webrtc-star:listener:error')
 
 const multiaddr = require('multiaddr')
 
@@ -48,7 +50,21 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       const maConn = toConnection(channel)
       log('new inbound connection %s', maConn.remoteAddr)
 
-      const conn = await upgrader.upgradeInbound(maConn)
+      channel.once('signal', (signal) => {
+        offer.signal = signal
+        offer.answer = true
+        listener.io.emit('ss-handshake', offer)
+      })
+
+      channel.signal(offer.signal)
+
+      let conn
+      try {
+        conn = await upgrader.upgradeInbound(maConn)
+      } catch (err) {
+        log.error('inbound connection failed to upgrade', err)
+        return maConn.close()
+      }
       log('inbound connection %s upgraded', maConn.remoteAddr)
 
       trackConn(listener, maConn)
@@ -57,14 +73,6 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         listener.emit('connection', conn)
         handler(conn)
       })
-
-      channel.once('signal', (signal) => {
-        offer.signal = signal
-        offer.answer = true
-        listener.io.emit('ss-handshake', offer)
-      })
-
-      channel.signal(offer.signal)
     }
 
     listener.io.once('connect_error', (err) => defer.reject(err))
