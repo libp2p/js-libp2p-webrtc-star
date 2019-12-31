@@ -4,8 +4,8 @@
 const wrtc = require('wrtc')
 
 const sinon = require('sinon')
-const testsTransport = require('interface-transport')
-const testsDiscovery = require('interface-discovery')
+const testsTransport = require('libp2p-interfaces/src/transport/tests')
+const testsDiscovery = require('libp2p-interfaces/src/peer-discovery/tests')
 const multiaddr = require('multiaddr')
 
 const WStar = require('../src')
