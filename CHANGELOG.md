@@ -1,3 +1,13 @@
+<a name="0.17.1"></a>
+## [0.17.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.0...v0.17.1) (2020-01-01)
+
+
+### Bug Fixes
+
+* transport should not handle connection if upgradeInbound throws ([#191](https://github.com/libp2p/js-libp2p-webrtc-star/issues/191)) ([865a2a7](https://github.com/libp2p/js-libp2p-webrtc-star/commit/865a2a7))
+
+
+
 <a name="0.17.0"></a>
 # [0.17.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.16.1...v0.17.0) (2019-10-02)
 
