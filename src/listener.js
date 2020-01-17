@@ -69,8 +69,13 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         }
 
         if (!conn.remoteAddr) {
-          conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toString()}`)
+          try {
+            conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toString()}`)
+          } catch (err) {
+            log.error('could not determine remote address', err)
+          }
         }
+
         log('inbound connection %s upgraded', maConn.remoteAddr)
 
         trackConn(listener, maConn)
