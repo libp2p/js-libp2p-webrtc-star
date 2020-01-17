@@ -13,6 +13,7 @@ const pDefer = require('p-defer')
 
 const toConnection = require('./socket-to-conn')
 const { cleanUrlSIO } = require('./utils')
+const { CODE_P2P } = require('./constants')
 
 const sioOptions = {
   transports: ['websocket'],
@@ -32,7 +33,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     log('Dialing to Signalling Server on: ' + sioUrl)
     listener.io = io.connect(sioUrl, sioOptions)
 
-    const incommingDial = async (offer) => {
+    const incommingDial = (offer) => {
       if (offer.answer || offer.err) {
         return
       }
@@ -47,9 +48,6 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
       const channel = new SimplePeer(spOptions)
 
-      const maConn = toConnection(channel)
-      log('new inbound connection %s', maConn.remoteAddr)
-
       channel.once('signal', (signal) => {
         offer.signal = signal
         offer.answer = true
@@ -58,18 +56,25 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
       channel.signal(offer.signal)
 
-      let conn
-      try {
-        conn = await upgrader.upgradeInbound(maConn)
-      } catch (err) {
-        log.error('inbound connection failed to upgrade', err)
-        return maConn.close()
-      }
-      log('inbound connection %s upgraded', maConn.remoteAddr)
+      channel.once('connect', async () => {
+        const maConn = toConnection(channel)
+        log('new inbound connection %s', maConn.remoteAddr)
 
-      trackConn(listener, maConn)
+        let conn
+        try {
+          conn = await upgrader.upgradeInbound(maConn)
+        } catch (err) {
+          log.error('inbound connection failed to upgrade', err)
+          return maConn.close()
+        }
 
-      channel.once('connect', () => {
+        if (!conn.remoteAddr) {
+          conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toString()}`)
+        }
+        log('inbound connection %s upgraded', maConn.remoteAddr)
+
+        trackConn(listener, maConn)
+
         listener.emit('connection', conn)
         handler(conn)
       })
