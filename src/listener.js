@@ -106,9 +106,9 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     return defer.promise
   }
 
-  listener.close = () => {
-    listener.__connections.forEach(maConn => maConn.close())
+  listener.close = async () => {
     listener.io && listener.io.emit('ss-leave')
+    await Promise.all(listener.__connections.map(maConn => maConn.close()))
     listener.emit('close')
   }
 
