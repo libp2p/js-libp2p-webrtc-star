@@ -70,7 +70,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
         if (!conn.remoteAddr) {
           try {
-            conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toString()}`)
+            conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toB58String()}`)
           } catch (err) {
             log.error('could not determine remote address', err)
           }
