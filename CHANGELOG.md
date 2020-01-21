@@ -1,3 +1,13 @@
+<a name="0.17.2"></a>
+## [0.17.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.1...v0.17.2) (2020-01-21)
+
+
+### Bug Fixes
+
+* ensure remoteAddr is always set on inbound conns ([#193](https://github.com/libp2p/js-libp2p-webrtc-star/issues/193)) ([01e5453](https://github.com/libp2p/js-libp2p-webrtc-star/commit/01e5453))
+
+
+
 <a name="0.17.1"></a>
 ## [0.17.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.0...v0.17.1) (2020-01-01)
 
