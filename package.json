@@ -45,14 +45,15 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
-    "aegir": "^20.3.1",
+    "aegir": "^20.5.1",
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
-    "libp2p-interfaces": "libp2p/js-interfaces#chore/skip-abort-while-reading-for-webrtc",
+    "libp2p-interfaces": "libp2p/js-interfaces#skip-abort-while-reading",
+    "p-wait-for": "^3.1.0",
     "prom-client": "^11.5.3",
-    "sinon": "^7.5.0",
-    "wrtc": "~0.4.2"
+    "sinon": "^8.1.0",
+    "wrtc": "^0.4.3"
   },
   "dependencies": {
     "@hapi/hapi": "^18.4.0",

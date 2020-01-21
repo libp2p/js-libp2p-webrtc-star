@@ -9,6 +9,7 @@ const expect = chai.expect
 chai.use(dirtyChai)
 const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
+const pWaitFor = require('p-wait-for')
 
 module.exports = (create) => {
   describe('track connections', () => {
@@ -57,16 +58,14 @@ module.exports = (create) => {
       expect(listener.__connections).to.have.lengthOf(0)
 
       const conn = await ws1.dial(ma1)
-      expect(listener.__connections).to.have.lengthOf(1)
+
+      // Wait for the listener to begin tracking, this happens after signaling is complete
+      await pWaitFor(() => listener.__connections.length === 1)
 
       await conn.close()
 
-      // wait for listener to know of the disconnect
-      await new Promise((resolve) => {
-        setTimeout(resolve, 5000)
-      })
-
-      expect(listener.__connections).to.have.lengthOf(0)
+      // Wait for tracking to clear
+      await pWaitFor(() => listener.__connections.length === 0)
     })
   })
 }

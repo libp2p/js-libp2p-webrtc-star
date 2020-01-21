@@ -44,7 +44,10 @@ module.exports = (create) => {
     beforeEach(async () => {
       // first
       ws1 = create()
-      const listener1 = ws1.createListener((conn) => pipe(conn, conn))
+      const listener1 = ws1.createListener((conn) => {
+        expect(conn.remoteAddr).to.exist()
+        pipe(conn, conn)
+      })
 
       // second
       ws2 = create()
