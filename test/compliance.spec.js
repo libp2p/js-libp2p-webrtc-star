@@ -10,7 +10,8 @@ const multiaddr = require('multiaddr')
 
 const WStar = require('../src')
 
-describe('interface-transport compliance', () => {
+describe('interface-transport compliance', function () {
+  this.timeout(10e3)
   testsTransport({
     setup ({ upgrader }) {
       const ws = new WStar({ upgrader, wrtc: wrtc })
