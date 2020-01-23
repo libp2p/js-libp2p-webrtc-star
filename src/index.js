@@ -219,7 +219,7 @@ class WebRTCStar {
         return false
       }
 
-      return mafmt.WebRTCStar.matches(ma)
+      return ma.protoCodes().includes(275)
     })
   }
 
