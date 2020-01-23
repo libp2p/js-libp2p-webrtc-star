@@ -1,3 +1,13 @@
+<a name="0.17.3"></a>
+## [0.17.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.2...v0.17.3) (2020-01-23)
+
+
+### Features
+
+* improve listening address usage ([#194](https://github.com/libp2p/js-libp2p-webrtc-star/issues/194)) ([e45760a](https://github.com/libp2p/js-libp2p-webrtc-star/commit/e45760a))
+
+
+
 <a name="0.17.2"></a>
 ## [0.17.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.1...v0.17.2) (2020-01-21)
 
