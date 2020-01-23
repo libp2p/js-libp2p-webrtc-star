@@ -14,7 +14,6 @@ const SimplePeer = require('simple-peer')
 const webrtcSupport = require('webrtcsupport')
 
 const multiaddr = require('multiaddr')
-const mafmt = require('mafmt')
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 
