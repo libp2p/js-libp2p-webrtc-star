@@ -65,7 +65,7 @@
     "err-code": "^2.0.0",
     "it-pipe": "^1.0.1",
     "libp2p-utils": "^0.1.0",
-    "mafmt": "^7.0.0",
+    "mafmt": "^7.0.1",
     "minimist": "^1.2.0",
     "multiaddr": "^7.1.0",
     "p-defer": "^3.0.0",

@@ -27,6 +27,10 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   listener.listen = (ma) => {
     const defer = pDefer()
 
+    if (!ma.protoCodes().includes(CODE_P2P) && upgrader.localPeer) {
+      ma = ma.encapsulate(`/p2p/${upgrader.localPeer.toB58String()}`)
+    }
+
     WebRTCStar.maSelf = ma
     const sioUrl = cleanUrlSIO(ma)
 

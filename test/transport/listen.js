@@ -12,7 +12,7 @@ module.exports = (create) => {
   describe('listen', () => {
     let ws
 
-    const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
+    const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     before(() => {
       ws = create()
@@ -61,7 +61,8 @@ module.exports = (create) => {
       await listener.listen(ma)
 
       const addrs = listener.getAddrs()
-      expect(addrs[0]).to.deep.equal(ma)
+      const expectedAddr = ma.encapsulate(`/p2p/${ws._upgrader.localPeer.toB58String()}`)
+      expect(addrs[0]).to.deep.equal(expectedAddr)
 
       listener.close()
     })
