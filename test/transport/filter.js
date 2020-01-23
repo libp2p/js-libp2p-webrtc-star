@@ -29,7 +29,7 @@ module.exports = (create) => {
       ]
 
       const filtered = ws.filter(maArr)
-      expect(filtered.length).to.equal(9)
+      expect(filtered.length).to.equal(8)
     })
 
     it('filter a single addr for this transport', () => {
