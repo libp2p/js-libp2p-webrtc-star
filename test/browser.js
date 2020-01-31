@@ -2,16 +2,13 @@
 'use strict'
 
 const WStar = require('..')
-const PeerId = require('peer-id')
 
 const mockUpgrader = {
   upgradeInbound: maConn => maConn,
   upgradeOutbound: maConn => maConn
 }
 
-describe('browser RTC', async () => {
-  const localPeer = await PeerId.create()
-  mockUpgrader.localPeer = localPeer
+describe('browser RTC', () => {
   const create = () => {
     return new WStar({ upgrader: mockUpgrader })
   }
