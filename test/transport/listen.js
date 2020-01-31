@@ -57,12 +57,24 @@ module.exports = (create) => {
 
     it('getAddrs', async () => {
       const listener = ws.createListener(() => {})
+      const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
       await listener.listen(ma)
 
       const addrs = listener.getAddrs()
-      const expectedAddr = ma.encapsulate(`/p2p/${ws._upgrader.localPeer.toB58String()}`)
-      expect(addrs[0]).to.deep.equal(expectedAddr)
+      expect(addrs[0]).to.deep.equal(ma)
+
+      listener.close()
+    })
+
+    it('getAddrs with peer id', async () => {
+      const listener = ws.createListener(() => {})
+      const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
+
+      await listener.listen(ma)
+
+      const addrs = listener.getAddrs()
+      expect(addrs[0]).to.deep.equal(ma)
 
       listener.close()
     })
