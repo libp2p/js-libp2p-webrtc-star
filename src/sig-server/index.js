@@ -7,7 +7,7 @@ const Inert = require('@hapi/inert')
 
 const config = require('./config')
 const log = config.log
-const epimetheus = require('epimetheus')
+const menoetius = require('menoetius')
 const path = require('path')
 
 exports = module.exports
@@ -38,10 +38,8 @@ exports.start = async (options = {}) => {
   })
 
   if (options.metrics) {
-    // TODO: reenable epimetheus when support
-    log('wait for epimetheus support')
-    throw new Error('epimetheus is currently not supported by hapi. Needs: https://github.com/libp2p/js-libp2p-webrtc-star/issues/174')
-    epimetheus.instrument(http)
+    log('enabling metrics')
+    await menoetius.instrument(http)
   }
 
   return http

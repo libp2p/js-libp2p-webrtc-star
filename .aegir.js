@@ -8,7 +8,7 @@ async function boot (done) {
   const options = {
     port: 15555,
     host: '127.0.0.1',
-    metrics: false // firsrun TODO: needs https://github.com/libp2p/js-libp2p-webrtc-star/issues/174
+    metrics: firstRun
   }
 
   if (firstRun) { firstRun = false }
