@@ -14,8 +14,8 @@ module.exports = (create) => {
 
     const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
-    before(() => {
-      ws = create()
+    before(async () => {
+      ws = await create()
     })
 
     it('listen, check for promise', async () => {

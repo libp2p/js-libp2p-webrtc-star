@@ -14,6 +14,7 @@ const SERVER_PORT = 13580
 module.exports = (create) => {
   describe('reconnect to signaling server', () => {
     let sigS
+    const signallerAddr = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     const base = (id) => {
       return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/${id}`
@@ -36,27 +37,27 @@ module.exports = (create) => {
     })
 
     it('listen on the first', async () => {
-      ws1 = create()
+      ws1 = await create()
 
       const listener = ws1.createListener(() => {})
       ws1.discovery.start()
 
-      await listener.listen(ma1)
+      await listener.listen(signallerAddr)
     })
 
     it('listen on the second, discover the first', async () => {
-      ws2 = create()
+      ws2 = await create()
 
       const p = new Promise((resolve) => {
         ws1.discovery.once('peer', (peerInfo) => {
-          expect(peerInfo.multiaddrs.has(ma2)).to.equal(true)
+          expect(peerInfo.multiaddrs.has(ws2._signallingAddr)).to.equal(true)
           resolve()
         })
       })
 
       const listener = ws2.createListener(() => {})
 
-      await listener.listen(ma2)
+      await listener.listen(signallerAddr)
       await p
     })
 
@@ -73,14 +74,14 @@ module.exports = (create) => {
     })
 
     it('listen on the third, first discovers it', async () => {
-      ws3 = create()
+      ws3 = await create()
 
       const listener = ws3.createListener(() => {})
-      await listener.listen(ma3)
+      await listener.listen(signallerAddr)
 
       await new Promise((resolve) => {
         ws1.discovery.once('peer', (peerInfo) => {
-          expect(peerInfo.multiaddrs.has(ma3)).to.equal(true)
+          expect(peerInfo.multiaddrs.has(ws3._signallingAddr)).to.equal(true)
           resolve()
         })
       })

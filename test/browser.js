@@ -2,6 +2,7 @@
 'use strict'
 
 const WStar = require('..')
+const PeerId = require('peer-id')
 
 const mockUpgrader = {
   upgradeInbound: maConn => maConn,
@@ -9,8 +10,15 @@ const mockUpgrader = {
 }
 
 describe('browser RTC', () => {
-  const create = () => {
-    return new WStar({ upgrader: mockUpgrader })
+  const create = async () => {
+    const localPeer = await PeerId.create()
+    return new WStar({
+      upgrader: {
+        upgradeInbound: maConn => maConn,
+        upgradeOutbound: maConn => maConn,
+        localPeer
+      }
+    })
   }
 
   require('./transport/dial.js')(create)
