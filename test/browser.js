@@ -4,11 +4,6 @@
 const WStar = require('..')
 const PeerId = require('peer-id')
 
-const mockUpgrader = {
-  upgradeInbound: maConn => maConn,
-  upgradeOutbound: maConn => maConn
-}
-
 describe('browser RTC', () => {
   const create = async () => {
     const localPeer = await PeerId.create()
