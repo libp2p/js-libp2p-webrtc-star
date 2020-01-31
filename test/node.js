@@ -3,6 +3,7 @@
 
 const wrtc = require('wrtc')
 const electronWebRTC = require('electron-webrtc')
+const PeerId = require('peer-id')
 const WStar = require('..')
 
 require('./sig-server.js')
@@ -13,8 +14,16 @@ const mockUpgrader = {
 }
 
 describe('transport: with wrtc', () => {
-  const create = () => {
-    return new WStar({ upgrader: mockUpgrader, wrtc: wrtc })
+  const create = async () => {
+    const localPeer = await PeerId.create()
+    return new WStar({
+      upgrader: {
+        upgradeInbound: maConn => maConn,
+        upgradeOutbound: maConn => maConn,
+        localPeer
+      },
+      wrtc
+    })
   }
 
   require('./transport/dial.js')(create)

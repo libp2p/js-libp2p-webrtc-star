@@ -38,7 +38,7 @@ class WebRTCStar {
     assert(options.upgrader, 'An upgrader must be provided. See https://github.com/libp2p/interface-transport#upgrader.')
     this._upgrader = options.upgrader
 
-    this.maSelf = undefined
+    this._signallingAddr = undefined
 
     this.sioOptions = {
       transports: ['websocket'],
@@ -161,7 +161,7 @@ class WebRTCStar {
       channel.on('signal', (signal) => {
         sioClient.emit('ss-handshake', {
           intentId: intentId,
-          srcMultiaddr: this.maSelf.toString(),
+          srcMultiaddr: this._signallingAddr.toString(),
           dstMultiaddr: ma.toString(),
           signal: signal
         })

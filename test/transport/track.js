@@ -15,57 +15,51 @@ module.exports = (create) => {
   describe('track connections', () => {
     let ws1
     let ws2
-    let ma1
-    let ma2
+    let ma
     let listener
+    let remoteListener
 
-    const maHSDNS = '/dns/star-signal.cloud.ipfs.team'
-    const maHSIP = '/ip4/188.166.203.82/tcp/20000'
-
-    const maLS = '/ip4/127.0.0.1/tcp/15555'
-    const maGen = (base, id) => multiaddr(`${base}/wss/p2p-webrtc-star/p2p/${id}`) // https
-    // const maGen = (base, id) => multiaddr(`${base}/ws/p2p-webrtc-star/ipfs/${id}`)
+    const maHSDNS = multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
+    const maHSIP = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
+    const maLS = multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
 
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
       // test with deployed signalling server using DNS
       console.log('Using DNS:', maHSDNS)
-      ma1 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maHSDNS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma = maHSDNS
     } else if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_IP) {
       // test with deployed signalling server using IP
       console.log('Using IP:', maHSIP)
-      ma1 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maHSIP, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma = maHSIP
     } else {
-      ma1 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      ma2 = maGen(maLS, 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')
+      ma = maLS
     }
 
     beforeEach(async () => {
       // first
-      ws1 = create()
+      ws1 = await create()
       listener = ws1.createListener((conn) => pipe(conn, conn))
 
       // second
-      ws2 = create()
-      const listener2 = ws2.createListener((conn) => pipe(conn, conn))
+      ws2 = await create()
+      remoteListener = ws2.createListener((conn) => pipe(conn, conn))
 
-      await Promise.all([listener.listen(ma1), listener2.listen(ma2)])
+      await Promise.all([listener.listen(ma), remoteListener.listen(ma)])
     })
 
     it('should untrack conn after being closed', async function () {
       this.timeout(20e3)
       expect(listener.__connections).to.have.lengthOf(0)
 
-      const conn = await ws1.dial(ma1)
+      const conn = await ws1.dial(ws2._signallingAddr)
 
       // Wait for the listener to begin tracking, this happens after signaling is complete
-      await pWaitFor(() => listener.__connections.length === 1)
+      await pWaitFor(() => remoteListener.__connections.length === 1)
 
       await conn.close()
 
       // Wait for tracking to clear
-      await pWaitFor(() => listener.__connections.length === 0)
+      await pWaitFor(() => remoteListener.__connections.length === 0)
     })
   })
 }

@@ -11,42 +11,33 @@ const multiaddr = require('multiaddr')
 module.exports = (create) => {
   describe('peer discovery', () => {
     let ws1
-    let ws1Listener
-    const base = (id) => {
-      return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/${id}`
-    }
-    const ma1 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3A'))
-
     let ws2
-    const ma2 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3B'))
-
     let ws3
-    const ma3 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3C'))
-
     let ws4
-    const ma4 = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo3D'))
+    let ws1Listener
+    const signallerAddr = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     it('listen on the first', async () => {
-      ws1 = create()
+      ws1 = await create()
       ws1Listener = ws1.createListener(() => { })
       ws1.discovery.start()
 
-      await ws1Listener.listen(ma1)
+      await ws1Listener.listen(signallerAddr)
     })
 
     it('listen on the second, discover the first', async () => {
-      ws2 = create()
+      ws2 = await create()
       const listener = ws2.createListener(() => { })
       ws2.discovery.start()
 
       const p = new Promise((resolve) => {
         ws1.discovery.once('peer', (peerInfo) => {
-          expect(peerInfo.multiaddrs.has(ma2)).to.equal(true)
+          expect(peerInfo.multiaddrs.has(ws2._signallingAddr)).to.equal(true)
           resolve()
         })
       })
 
-      listener.listen(ma2)
+      listener.listen(signallerAddr)
       await p
     })
 
@@ -66,11 +57,11 @@ module.exports = (create) => {
         })
       })
 
-      ws3 = create()
+      ws3 = await create()
       const listener = ws3.createListener(() => { })
       ws3.discovery.start()
 
-      await listener.listen(ma3)
+      await listener.listen(signallerAddr)
       await p
     })
 
@@ -89,11 +80,11 @@ module.exports = (create) => {
       })
 
       ws1.discovery.stop()
-      ws4 = create()
+      ws4 = await create()
       const listener = ws4.createListener(() => { })
       ws4.discovery.start()
 
-      await listener.listen(ma4)
+      await listener.listen(signallerAddr)
       await p
     })
   })

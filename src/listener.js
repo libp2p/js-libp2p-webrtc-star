@@ -22,12 +22,19 @@ const sioOptions = {
 
 module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   const listener = new EventEmitter()
+  let listeningAddr
 
   listener.__connections = []
   listener.listen = (ma) => {
     const defer = pDefer()
 
-    WebRTCStar.maSelf = ma
+    listeningAddr = ma
+    if (!ma.protoCodes().includes(CODE_P2P) && upgrader.localPeer) {
+      WebRTCStar._signallingAddr = ma.encapsulate(`/p2p/${upgrader.localPeer.toB58String()}`)
+    } else {
+      WebRTCStar._signallingAddr = ma
+    }
+
     const sioUrl = cleanUrlSIO(ma)
 
     log('Dialing to Signalling Server on: ' + sioUrl)
@@ -95,7 +102,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     listener.io.on('ws-peer', WebRTCStar._peerDiscovered)
 
     listener.io.on('connect', () => {
-      listener.io.emit('ss-join', ma.toString())
+      listener.io.emit('ss-join', WebRTCStar._signallingAddr.toString())
     })
 
     listener.io.once('connect', () => {
@@ -113,7 +120,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   }
 
   listener.getAddrs = () => {
-    return [WebRTCStar.maSelf]
+    return [listeningAddr]
   }
 
   WebRTCStar.listenersRefs[multiaddr.toString()] = listener
