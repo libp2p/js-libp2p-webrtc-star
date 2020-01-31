@@ -1,3 +1,13 @@
+<a name="0.17.4"></a>
+## [0.17.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.3...v0.17.4) (2020-01-31)
+
+
+### Bug Fixes
+
+* dont transform listening addrs ([#195](https://github.com/libp2p/js-libp2p-webrtc-star/issues/195)) ([0e1406b](https://github.com/libp2p/js-libp2p-webrtc-star/commit/0e1406b)), closes [#194](https://github.com/libp2p/js-libp2p-webrtc-star/issues/194)
+
+
+
 <a name="0.17.3"></a>
 ## [0.17.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.2...v0.17.3) (2020-01-23)
 
