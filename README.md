@@ -125,6 +125,6 @@ Defaults:
 We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
 A libp2p-webrtc-star address, using the signalling server we provide, looks like: 
 
-`/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star/ipfs/<your-peer-id>`
+`/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star/p2p/<your-peer-id>`
 
 Note: The address above indicates WebSockets Secure, which can be accessed from both http and https.
