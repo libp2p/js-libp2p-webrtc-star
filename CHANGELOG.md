@@ -1,3 +1,15 @@
+<a name="0.17.5"></a>
+## [0.17.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.4...v0.17.5) (2020-01-31)
+
+
+### Bug Fixes
+
+* signaling vs listening addrs ([#198](https://github.com/libp2p/js-libp2p-webrtc-star/issues/198)) ([91f6a63](https://github.com/libp2p/js-libp2p-webrtc-star/commit/91f6a63))
+* use menoetius to handle metrics ([#197](https://github.com/libp2p/js-libp2p-webrtc-star/issues/197)) ([14086b9](https://github.com/libp2p/js-libp2p-webrtc-star/commit/14086b9))
+* use p2p codec name ([#196](https://github.com/libp2p/js-libp2p-webrtc-star/issues/196)) ([638d3da](https://github.com/libp2p/js-libp2p-webrtc-star/commit/638d3da))
+
+
+
 <a name="0.17.4"></a>
 ## [0.17.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.3...v0.17.4) (2020-01-31)
 
