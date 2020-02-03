@@ -75,7 +75,7 @@ module.exports = (create) => {
         await ws1.dial(maOffline)
       } catch (err) {
         expect(err).to.be.an.instanceOf(Error)
-        expect(err).to.have.property('code', 'ERR_HANDSHAKE_FAILED')
+        expect(err).to.have.property('code', 'ERR_SIGNALLING_FAILED')
         return
       }
 
