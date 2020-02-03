@@ -1,3 +1,23 @@
+<a name="0.17.6"></a>
+## [0.17.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.1...v0.17.6) (2020-02-03)
+
+
+### Bug Fixes
+
+* dont transform listening addrs ([#195](https://github.com/libp2p/js-libp2p-webrtc-star/issues/195)) ([0e1406b](https://github.com/libp2p/js-libp2p-webrtc-star/commit/0e1406b)), closes [#194](https://github.com/libp2p/js-libp2p-webrtc-star/issues/194)
+* ensure dial is rejected with an Error ([#199](https://github.com/libp2p/js-libp2p-webrtc-star/issues/199)) ([41f278e](https://github.com/libp2p/js-libp2p-webrtc-star/commit/41f278e))
+* ensure remoteAddr is always set on inbound conns ([#193](https://github.com/libp2p/js-libp2p-webrtc-star/issues/193)) ([01e5453](https://github.com/libp2p/js-libp2p-webrtc-star/commit/01e5453))
+* signaling vs listening addrs ([#198](https://github.com/libp2p/js-libp2p-webrtc-star/issues/198)) ([91f6a63](https://github.com/libp2p/js-libp2p-webrtc-star/commit/91f6a63))
+* use menoetius to handle metrics ([#197](https://github.com/libp2p/js-libp2p-webrtc-star/issues/197)) ([14086b9](https://github.com/libp2p/js-libp2p-webrtc-star/commit/14086b9))
+* use p2p codec name ([#196](https://github.com/libp2p/js-libp2p-webrtc-star/issues/196)) ([638d3da](https://github.com/libp2p/js-libp2p-webrtc-star/commit/638d3da))
+
+
+### Features
+
+* improve listening address usage ([#194](https://github.com/libp2p/js-libp2p-webrtc-star/issues/194)) ([e45760a](https://github.com/libp2p/js-libp2p-webrtc-star/commit/e45760a))
+
+
+
 <a name="0.17.5"></a>
 ## [0.17.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.4...v0.17.5) (2020-01-31)
 
