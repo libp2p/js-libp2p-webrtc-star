@@ -171,7 +171,7 @@ class WebRTCStar {
       // are clueless as to why.
       sioClient.on('ws-handshake', (offer) => {
         if (offer.intentId === intentId && offer.err) {
-          reject(offer.err)
+          reject(errcode(offer.err instanceof Error ? offer.err : new Error(offer.err), 'ERR_SIGNALLING_FAILED'))
         }
 
         if (offer.intentId !== intentId || !offer.answer) {
