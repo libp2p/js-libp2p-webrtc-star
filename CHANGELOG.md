@@ -1,3 +1,13 @@
+<a name="0.17.7"></a>
+## [0.17.7](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.6...v0.17.7) (2020-02-13)
+
+
+### Bug Fixes
+
+* remove use of assert module ([#202](https://github.com/libp2p/js-libp2p-webrtc-star/issues/202)) ([7563f1f](https://github.com/libp2p/js-libp2p-webrtc-star/commit/7563f1f))
+
+
+
 <a name="0.17.6"></a>
 ## [0.17.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.1...v0.17.6) (2020-02-03)
 
