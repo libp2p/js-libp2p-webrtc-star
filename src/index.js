@@ -4,7 +4,6 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star')
 log.error = debug('libp2p:webrtc-star:error')
 
-const assert = require('assert')
 const { EventEmitter } = require('events')
 const errcode = require('err-code')
 const withIs = require('class-is')
@@ -35,7 +34,10 @@ class WebRTCStar {
    * @param {Upgrader} options.upgrader
    */
   constructor (options = {}) {
-    assert(options.upgrader, 'An upgrader must be provided. See https://github.com/libp2p/interface-transport#upgrader.')
+    if (!options.upgrader) {
+      throw new Error('An upgrader must be provided. See https://github.com/libp2p/interface-transport#upgrader.')
+    }
+
     this._upgrader = options.upgrader
 
     this._signallingAddr = undefined
