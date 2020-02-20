@@ -4,7 +4,7 @@ const sigServer = require('./src/sig-server')
 let firstRun = true
 let sigS
 
-async function boot (done) {
+async function boot () {
   const options = {
     port: 15555,
     host: '127.0.0.1',
@@ -16,14 +16,10 @@ async function boot (done) {
   sigS = await sigServer.start(options)
 
   console.log('signalling on:', sigS.info.uri)
-
-  done()
 }
 
-async function stop (done) {
+async function stop () {
   await sigS.stop()
-
-  done()
 }
 
 module.exports = {
