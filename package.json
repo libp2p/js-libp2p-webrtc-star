@@ -4,6 +4,10 @@
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "bin": {
     "webrtc-star": "src/sig-server/bin.js",
     "star-sig": "src/sig-server/bin.js",
