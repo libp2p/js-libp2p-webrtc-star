@@ -1,3 +1,13 @@
+<a name="0.17.8"></a>
+## [0.17.8](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.7...v0.17.8) (2020-03-16)
+
+
+### Features
+
+* create dockerfile for docker hub integration ([#209](https://github.com/libp2p/js-libp2p-webrtc-star/issues/209)) ([ac1eb8a](https://github.com/libp2p/js-libp2p-webrtc-star/commit/ac1eb8a))
+
+
+
 <a name="0.17.7"></a>
 ## [0.17.7](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.6...v0.17.7) (2020-02-13)
 
