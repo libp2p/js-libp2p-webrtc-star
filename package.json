@@ -4,6 +4,10 @@
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "bin": {
     "webrtc-star": "src/sig-server/bin.js",
     "star-sig": "src/sig-server/bin.js",
@@ -51,7 +55,6 @@
     "electron-webrtc": "~0.3.0",
     "libp2p-interfaces": "libp2p/js-interfaces#skip-abort-while-reading",
     "p-wait-for": "^3.1.0",
-    "prom-client": "^12.0.0",
     "sinon": "^9.0.0",
     "wrtc": "^0.4.3"
   },
@@ -71,6 +74,7 @@
     "p-defer": "^3.0.0",
     "peer-id": "~0.13.2",
     "peer-info": "~0.17.0",
+    "prom-client": "^12.0.0",
     "simple-peer": "^9.6.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
