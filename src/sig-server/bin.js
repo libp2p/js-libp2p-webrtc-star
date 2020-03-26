@@ -3,13 +3,20 @@
 
 'use strict'
 
+// Usage: $0 [--host <host>] [--port <port>] [--disable-metrics]
+
 const signalling = require('./index')
-const argv = require('minimist')(process.argv.slice(2))
+const minimist = require('minimist')
+const argv = minimist(process.argv.slice(2), {
+  p: 'port',
+  h: 'host',
+  'disable-metrics': 'disableMetrics'
+})
 
 ;(async () => {
   const server = await signalling.start({
-    port: argv.port || argv.p || process.env.PORT || 9090,
-    host: argv.host || argv.h || process.env.HOST || '0.0.0.0',
+    port: argv.port || process.env.PORT || 9090,
+    host: argv.host || process.env.HOST || '0.0.0.0',
     metrics: !(argv.disableMetrics || process.env.DISABLE_METRICS)
   })
 
