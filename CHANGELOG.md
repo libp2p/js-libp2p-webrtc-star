@@ -1,3 +1,18 @@
+<a name="0.17.9"></a>
+## [0.17.9](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.8...v0.17.9) (2020-04-02)
+
+
+### Bug Fixes
+
+* check for mdns hostname ips ([#212](https://github.com/libp2p/js-libp2p-webrtc-star/issues/212)) ([ce77e37](https://github.com/libp2p/js-libp2p-webrtc-star/commit/ce77e37))
+
+
+### Features
+
+* support dash case parameters ([#211](https://github.com/libp2p/js-libp2p-webrtc-star/issues/211)) ([08282dd](https://github.com/libp2p/js-libp2p-webrtc-star/commit/08282dd))
+
+
+
 <a name="0.17.8"></a>
 ## [0.17.8](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.7...v0.17.8) (2020-03-16)
 
