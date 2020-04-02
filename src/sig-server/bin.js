@@ -8,9 +8,11 @@
 const signalling = require('./index')
 const minimist = require('minimist')
 const argv = minimist(process.argv.slice(2), {
-  p: 'port',
-  h: 'host',
-  'disable-metrics': 'disableMetrics'
+  alias: {
+    p: 'port',
+    h: 'host',
+    'disable-metrics': 'disableMetrics'
+  }
 })
 
 ;(async () => {
