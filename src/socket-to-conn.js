@@ -10,10 +10,26 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star:socket')
 log.error = debug('libp2p:webrtc-star:socket:error')
 
+const toWebrtcMultiaddr = (address, port) => {
+  if (!address || !port) return undefined
+
+  try {
+    return toMultiaddr(address, port)
+  } catch (err) {
+    log.error(err)
+    // Account for mdns hostnames, just make it a local ip for now
+    return toMultiaddr('0.0.0.0', port)
+  }
+}
+
 // Convert a socket into a MultiaddrConnection
 // https://github.com/libp2p/interface-transport#multiaddrconnection
 module.exports = (socket, options = {}) => {
   const { sink, source } = toIterable.duplex(socket)
+
+  // If the remote address was passed, use it - it may have the peer ID encapsulated
+  const remoteAddr = options.remoteAddr || toWebrtcMultiaddr(socket.remoteAddress, socket.remotePort)
+  const localAddr = toWebrtcMultiaddr(socket.localAddress, socket.localPort)
 
   const maConn = {
     async sink (source) {
@@ -43,12 +59,8 @@ module.exports = (socket, options = {}) => {
 
     conn: socket,
 
-    localAddr: socket.localAddress && socket.localPort
-      ? toMultiaddr(socket.localAddress, socket.localPort) : undefined,
-
-    // If the remote address was passed, use it - it may have the peer ID encapsulated
-    remoteAddr: options.remoteAddr || (socket.remoteAddress && socket.remotePort
-      ? toMultiaddr(socket.remoteAddress, socket.remotePort) : undefined),
+    localAddr,
+    remoteAddr,
 
     timeline: { open: Date.now() },
 
