@@ -31,8 +31,8 @@ module.exports = (create) => {
       ws2.discovery.start()
 
       const p = new Promise((resolve) => {
-        ws1.discovery.once('peer', (peerInfo) => {
-          expect(peerInfo.multiaddrs.has(ws2._signallingAddr)).to.equal(true)
+        ws1.discovery.once('peer', ({ multiaddrs }) => {
+          expect(multiaddrs.some((m) => m.equals(ws2._signallingAddr))).to.equal(true)
           resolve()
         })
       })

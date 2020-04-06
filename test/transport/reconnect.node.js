@@ -40,8 +40,8 @@ module.exports = (create) => {
       ws2 = await create()
 
       const p = new Promise((resolve) => {
-        ws1.discovery.once('peer', (peerInfo) => {
-          expect(peerInfo.multiaddrs.has(ws2._signallingAddr)).to.equal(true)
+        ws1.discovery.once('peer', ({ multiaddrs }) => {
+          expect(multiaddrs.some((m) => m.equals(ws2._signallingAddr))).to.equal(true)
           resolve()
         })
       })
@@ -71,8 +71,8 @@ module.exports = (create) => {
       await listener.listen(signallerAddr)
 
       await new Promise((resolve) => {
-        ws1.discovery.once('peer', (peerInfo) => {
-          expect(peerInfo.multiaddrs.has(ws3._signallingAddr)).to.equal(true)
+        ws1.discovery.once('peer', ({ multiaddrs }) => {
+          expect(multiaddrs.some((m) => m.equals(ws3._signallingAddr))).to.equal(true)
           resolve()
         })
       })

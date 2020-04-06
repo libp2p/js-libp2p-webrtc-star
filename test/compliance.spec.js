@@ -40,6 +40,8 @@ describe('interface-transport compliance', function () {
 })
 
 describe('interface-discovery compliance', () => {
+  let intervalId
+
   testsDiscovery({
     setup () {
       const mockUpgrader = {
@@ -47,8 +49,14 @@ describe('interface-discovery compliance', () => {
         upgradeOutbound: maConn => maConn
       }
       const ws = new WStar({ upgrader: mockUpgrader, wrtc: wrtc })
+      const maStr = '/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d'
+
+      intervalId = setInterval(() => ws._peerDiscovered(maStr), 1000)
 
       return ws.discovery
+    },
+    teardown () {
+      clearInterval(intervalId)
     }
   })
 })
