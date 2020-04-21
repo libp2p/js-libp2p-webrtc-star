@@ -15,7 +15,6 @@ const webrtcSupport = require('webrtcsupport')
 const multiaddr = require('multiaddr')
 const mafmt = require('mafmt')
 const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
 
 const { CODE_CIRCUIT } = require('./constants')
 const createListener = require('./listener')
@@ -233,9 +232,11 @@ class WebRTCStar {
 
     const ma = multiaddr(maStr)
     const peerId = PeerId.createFromB58String(ma.getPeerId())
-    const peerInfo = new PeerInfo(peerId)
-    peerInfo.multiaddrs.add(ma)
-    this.discovery.emit('peer', peerInfo)
+
+    this.discovery.emit('peer', {
+      id: peerId,
+      multiaddrs: [ma]
+    })
   }
 }
 
