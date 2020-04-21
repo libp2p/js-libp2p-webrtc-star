@@ -1,3 +1,18 @@
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.9...v0.18.0) (2020-04-21)
+
+
+### Chores
+
+* peer-discovery not using peer-info ([#213](https://github.com/libp2p/js-libp2p-webrtc-star/issues/213)) ([ab4aafe](https://github.com/libp2p/js-libp2p-webrtc-star/commit/ab4aafe))
+
+
+### BREAKING CHANGES
+
+* peer event emits with id and multiaddrs properties instead of peer-info
+
+
+
 <a name="0.17.9"></a>
 ## [0.17.9](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.8...v0.17.9) (2020-04-02)
 
