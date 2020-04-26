@@ -82,6 +82,9 @@
     "streaming-iterables": "^4.1.0",
     "webrtcsupport": "github:ipfs/webrtcsupport"
   },
+  "bundledDependencies": [
+    "webrtcsupport"
+  ],
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
     "Vasco Santos <vasco.santos@moxy.studio>",
