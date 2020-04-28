@@ -2,7 +2,7 @@
 
 const abortable = require('abortable-iterator')
 const toIterable = require('stream-to-it')
-
+const { Buffer } = require('buffer')
 const { CLOSE_TIMEOUT } = require('./constants')
 const toMultiaddr = require('libp2p-utils/src/ip-port-to-multiaddr')
 
