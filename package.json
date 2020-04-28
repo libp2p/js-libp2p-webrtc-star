@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^18.4.0",
-    "@hapi/inert": "^5.2.2",
+    "@hapi/inert": "^6.0.1",
     "abortable-iterator": "^3.0.0",
     "buffer": "^5.6.0",
     "class-is": "^1.1.0",
