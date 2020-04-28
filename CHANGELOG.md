@@ -1,3 +1,13 @@
+<a name="0.17.10"></a>
+## [0.17.10](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.9...v0.17.10) (2020-04-28)
+
+
+### Bug Fixes
+
+* add buffer ([#217](https://github.com/libp2p/js-libp2p-webrtc-star/issues/217)) ([dfece4a](https://github.com/libp2p/js-libp2p-webrtc-star/commit/dfece4a))
+
+
+
 <a name="0.17.9"></a>
 ## [0.17.9](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.8...v0.17.9) (2020-04-02)
 
