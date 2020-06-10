@@ -23,7 +23,7 @@ const toWebrtcMultiaddr = (address, port) => {
 }
 
 // Convert a socket into a MultiaddrConnection
-// https://github.com/libp2p/interface-transport#multiaddrconnection
+// https://github.com/libp2p/js-libp2p-interfaces/tree/master/src/transport#multiaddrconnection
 module.exports = (socket, options = {}) => {
   const { sink, source } = toIterable.duplex(socket)
 
