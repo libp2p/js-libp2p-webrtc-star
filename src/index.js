@@ -145,7 +145,6 @@ class WebRTCStar {
       }
 
       const done = (err) => {
-        channel.removeListener('error', onError)
         channel.removeListener('timeout', onTimeout)
         channel.removeListener('connect', onConnect)
         options.signal && options.signal.removeEventListener('abort', onAbort)
@@ -153,10 +152,12 @@ class WebRTCStar {
         err ? reject(err) : resolve(channel)
       }
 
-      channel.once('error', onError)
+      channel.on('error', onError)
       channel.once('timeout', onTimeout)
       channel.once('connect', onConnect)
-      channel.on('close', () => channel.destroy())
+      channel.on('close', () => {
+        channel.removeListener('error', onError)
+      })
       options.signal && options.signal.addEventListener('abort', onAbort)
 
       channel.on('signal', (signal) => {
