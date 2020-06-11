@@ -176,7 +176,7 @@ class WebRTCStar {
           reject(errcode(offer.err instanceof Error ? offer.err : new Error(offer.err), 'ERR_SIGNALLING_FAILED'))
         }
 
-        if (offer.intentId !== intentId || !offer.answer) {
+        if (offer.intentId !== intentId || !offer.answer || channel.destroyed) {
           return
         }
 
