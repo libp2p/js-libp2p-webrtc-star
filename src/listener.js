@@ -55,6 +55,15 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
       const channel = new SimplePeer(spOptions)
 
+      const onError = (err) => {
+        log.error('incoming connectioned errored', err)
+      }
+
+      channel.on('error', onError)
+      channel.once('close', (...args) => {
+        channel.removeListener('error', onError)
+      })
+
       channel.once('signal', (signal) => {
         offer.signal = signal
         offer.answer = true
