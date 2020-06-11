@@ -1,3 +1,14 @@
+<a name="0.17.11"></a>
+## [0.17.11](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.10...v0.17.11) (2020-06-11)
+
+
+### Bug Fixes
+
+* add error handler for incoming connections ([#224](https://github.com/libp2p/js-libp2p-webrtc-star/issues/224)) ([4c68edb](https://github.com/libp2p/js-libp2p-webrtc-star/commit/4c68edb))
+* do not signal if channel destroyed ([#226](https://github.com/libp2p/js-libp2p-webrtc-star/issues/226)) ([23cfa02](https://github.com/libp2p/js-libp2p-webrtc-star/commit/23cfa02))
+
+
+
 <a name="0.17.10"></a>
 ## [0.17.10](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.17.9...v0.17.10) (2020-04-28)
 
