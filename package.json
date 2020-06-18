@@ -66,6 +66,7 @@
     "class-is": "^1.1.0",
     "debug": "^4.1.1",
     "err-code": "^2.0.0",
+    "ipfs-utils": "^2.3.0",
     "it-pipe": "^1.0.1",
     "libp2p-utils": "^0.1.0",
     "mafmt": "^7.0.1",
@@ -73,15 +74,13 @@
     "minimist": "^1.2.0",
     "multiaddr": "^7.1.0",
     "p-defer": "^3.0.0",
-    "peer-id": "~0.13.2",
-    "peer-info": "~0.17.0",
+    "peer-id": "~0.13.12",
     "prom-client": "^12.0.0",
     "simple-peer": "^9.6.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "stream-to-it": "^0.2.0",
-    "streaming-iterables": "^4.1.0",
-    "webrtcsupport": "github:ipfs/webrtcsupport"
+    "streaming-iterables": "^4.1.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
