@@ -10,7 +10,7 @@ const withIs = require('class-is')
 
 const { AbortError } = require('abortable-iterator')
 const SimplePeer = require('simple-peer')
-const webrtcSupport = require('webrtcsupport')
+const { supportsWebRTC: webrtcSupport } = require('ipfs-utils/src/supports')
 
 const multiaddr = require('multiaddr')
 const mafmt = require('mafmt')
@@ -194,7 +194,7 @@ class WebRTCStar {
    * @returns {Listener} A WebrtcStar listener
    */
   createListener (options = {}, handler) {
-    if (!webrtcSupport.support && !this.wrtc) {
+    if (!webrtcSupport && !this.wrtc) {
       throw errcode(new Error('no WebRTC support'), 'ERR_NO_WEBRTC_SUPPORT')
     }
 
