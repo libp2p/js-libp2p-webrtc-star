@@ -8,7 +8,7 @@ log.error = debug('libp2p:webrtc-star:listener:error')
 const multiaddr = require('multiaddr')
 
 const io = require('socket.io-client')
-const SimplePeer = require('simple-peer')
+const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
 
 const toConnection = require('./socket-to-conn')
