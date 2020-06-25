@@ -1,6 +1,6 @@
 {
   "name": "libp2p-webrtc-star",
-  "version": "0.18.5",
+  "version": "0.18.6",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
@@ -91,18 +91,18 @@
     "Pedro Teixeira <i@pgte.me>",
     "Maciej Krüger <mkg20001@gmail.com>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>",
-    "Dmitriy Ryajov <dryajov@gmail.com>",
     "Alex Potsides <alex@achingbrain.net>",
+    "Dmitriy Ryajov <dryajov@gmail.com>",
     "Alan Shaw <alan.shaw@protocol.ai>",
-    "Hugo Dias <hugomrdias@gmail.com>",
-    "michaelfakhri <fakhrimichael@live.com>",
+    "Hugo Dias <mail@hugodias.me>",
+    "Michael Fakhry <fakhrimichael@live.com>",
     "Richard Littauer <richard.littauer@gmail.com>",
     "SeungWon <ksw3894@gmail.com>",
     "Flarp <flurpdadurp@gmail.com>",
-    "Diogo Silva <fsdiogo@gmail.com>",
-    "Juan Benet <juan@benet.ai>",
     "dmitriy ryajov <dryajov@dmitriys-MBP.HomeNET>",
+    "Baris Gumustas <barisgumustas@gmail.com>",
     "interfect <interfect@gmail.com>",
-    "Baris Gumustas <barisgumustas@gmail.com>"
+    "Diogo Silva <fsdiogo@gmail.com>",
+    "Juan Benet <juan@benet.ai>"
   ]
 }
