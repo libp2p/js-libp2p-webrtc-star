@@ -9,7 +9,7 @@ const errcode = require('err-code')
 const withIs = require('class-is')
 
 const { AbortError } = require('abortable-iterator')
-const SimplePeer = require('simple-peer')
+const SimplePeer = require('libp2p-webrtc-peer')
 const { supportsWebRTC: webrtcSupport } = require('ipfs-utils/src/supports')
 
 const multiaddr = require('multiaddr')
