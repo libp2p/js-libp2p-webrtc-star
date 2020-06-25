@@ -1,3 +1,13 @@
+<a name="0.18.6"></a>
+## [0.18.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.18.5...v0.18.6) (2020-06-25)
+
+
+### Bug Fixes
+
+* use simple-peer fork that does not throw when setting error codes ([#231](https://github.com/libp2p/js-libp2p-webrtc-star/issues/231)) ([5795435](https://github.com/libp2p/js-libp2p-webrtc-star/commit/5795435))
+
+
+
 <a name="0.18.5"></a>
 ## [0.18.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.18.4...v0.18.5) (2020-06-18)
 
