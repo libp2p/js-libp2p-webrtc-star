@@ -99,11 +99,11 @@ await listener.close()
 
 [![](https://github.com/libp2p/interface-peer-discovery/raw/master/img/badge.png)](https://github.com/libp2p/interface-peer-discovery)
 
-## Rendezvous server (aka Signalling server)
+## Rendezvous server (aka Signaling server)
 
-Nodes using `libp2p-webrtc-star` will connect to a known point in the network, a rendezvous point where they can learn about other nodes (Discovery) and exchange their [SDP offers (signalling data)](https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/).
+Nodes using `libp2p-webrtc-star` will connect to a known point in the network, a rendezvous point where they can learn about other nodes (Discovery) and exchange their [SDP offers (signaling data)](https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/).
 
-`libp2p-webrtc-star` comes with its own signalling server, used for peers to handshake their signalling data and establish a connection. You can install it in your machine by installing the module globally:
+`libp2p-webrtc-star` comes with its own signaling server, used for peers to handshake their signaling data and establish a connection. You can install it in your machine by installing the module globally:
 
 ```bash
 > npm install --global libp2p-webrtc-star
@@ -122,9 +122,10 @@ Defaults:
 
 ## Hosted Rendezvous Server
 
-We host a signalling server at `star-signal.cloud.ipfs.team` that can be used for practical demos and experimentation, it **should not be used for apps in production**.
-A libp2p-webrtc-star address, using the signalling server we provide, looks like: 
+We host signaling servers at `wrtc-star1.par.dwebops.pub` and `wrtc-star2.sjc.dwebops.pub`, that can be used for practical demos and experimentation, it **should not be used for apps in production**. Check [Deployment.md](./DEPLOYMENT.md) for how to deploy your own server.
 
-`/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star/p2p/<your-peer-id>`
+A libp2p-webrtc-star address, using the signaling server we provide, looks like: 
+
+`/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/p2p/<your-peer-id>`
 
 Note: The address above indicates WebSockets Secure, which can be accessed from both http and https.
