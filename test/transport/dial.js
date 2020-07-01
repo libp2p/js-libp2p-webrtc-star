@@ -7,6 +7,8 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
+
+const { Buffer } = require('buffer')
 const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
 const { collect } = require('streaming-iterables')
