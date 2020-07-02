@@ -80,7 +80,7 @@
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "stream-to-it": "^0.2.0",
-    "streaming-iterables": "^4.1.0"
+    "streaming-iterables": "^5.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
