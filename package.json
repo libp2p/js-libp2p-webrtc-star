@@ -75,7 +75,7 @@
     "minimist": "^1.2.0",
     "multiaddr": "^7.1.0",
     "p-defer": "^3.0.0",
-    "peer-id": "~0.13.12",
+    "peer-id": "~0.14.0",
     "prom-client": "^12.0.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
