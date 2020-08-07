@@ -68,7 +68,7 @@
     "err-code": "^2.0.0",
     "ipfs-utils": "^2.3.0",
     "it-pipe": "^1.0.1",
-    "libp2p-utils": "^0.1.0",
+    "libp2p-utils": "^0.2.0",
     "libp2p-webrtc-peer": "^9.7.2",
     "mafmt": "^7.0.1",
     "menoetius": "0.0.2",
