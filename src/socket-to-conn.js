@@ -2,7 +2,6 @@
 
 const abortable = require('abortable-iterator')
 const toIterable = require('stream-to-it')
-const { Buffer } = require('buffer')
 const { CLOSE_TIMEOUT } = require('./constants')
 const toMultiaddr = require('libp2p-utils/src/ip-port-to-multiaddr')
 
@@ -41,7 +40,7 @@ module.exports = (socket, options = {}) => {
         await sink((async function * () {
           for await (const chunk of source) {
             // Convert BufferList to Buffer
-            yield Buffer.isBuffer(chunk) ? chunk : chunk.slice()
+            yield chunk instanceof Uint8Array ? chunk : chunk.slice()
           }
         })())
       } catch (err) {
