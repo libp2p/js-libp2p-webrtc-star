@@ -69,7 +69,7 @@
     "ipfs-utils": "^2.3.0",
     "it-pipe": "^1.0.1",
     "libp2p-utils": "^0.1.0",
-    "libp2p-webrtc-peer": "^9.7.2",
+    "libp2p-webrtc-peer": "^10.0.1",
     "mafmt": "^7.0.1",
     "menoetius": "0.0.2",
     "minimist": "^1.2.0",
