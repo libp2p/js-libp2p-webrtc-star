@@ -17,9 +17,9 @@
     "star-signal": "node src/sig-server/bin.js",
     "lint": "aegir lint",
     "build": "aegir build",
-    "test": "aegir test -t node -t browser",
-    "test:node": "aegir test -t node",
-    "test:browser": "aegir test -t browser",
+    "test": "aegir test -t node -t browser --grep \"abort while reading throws AbortError\" --invert",
+    "test:node": "aegir test -t node --grep \"abort while reading throws AbortError\" --invert",
+    "test:browser": "aegir test -t browser --grep \"abort while reading throws AbortError\" --invert",
     "test:dns": "WEBRTC_STAR_REMOTE_SIGNAL_DNS=1 aegir test -t browser",
     "test:ip": "WEBRTC_STAR_REMOTE_SIGNAL_IP=1 aegir test -t browser",
     "release": "aegir release -t node -t browser",
@@ -49,7 +49,7 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
-    "aegir": "^25.0.0",
+    "aegir": "^25.1.0",
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
@@ -79,7 +79,7 @@
     "prom-client": "^12.0.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "stream-to-it": "^0.2.0",
+    "stream-to-it": "^0.2.2",
     "streaming-iterables": "^5.0.2"
   },
   "contributors": [
