@@ -1,3 +1,27 @@
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.18.6...v0.19.0) (2020-08-12)
+
+
+### Bug Fixes
+
+* replace node buffers with uint8arrays ([#244](https://github.com/libp2p/js-libp2p-webrtc-star/issues/244)) ([68805b0](https://github.com/libp2p/js-libp2p-webrtc-star/commit/68805b0))
+* use relaxed webrtc check ([#249](https://github.com/libp2p/js-libp2p-webrtc-star/issues/249)) ([306b453](https://github.com/libp2p/js-libp2p-webrtc-star/commit/306b453))
+
+
+### BREAKING CHANGES
+
+* - All deps used by this module now use Uint8Arrays in place of node Buffers
+
+* chore: skip know test issues with aegir
+
+* fix: use simple-peer fork branch
+
+* chore: update libp2p-webrtc-peer
+
+Co-authored-by: Jacob Heun <jacobheun@gmail.com>
+
+
+
 <a name="0.18.6"></a>
 ## [0.18.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.18.5...v0.18.6) (2020-06-25)
 
