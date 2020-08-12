@@ -3,13 +3,11 @@
 
 'use strict'
 
-const chai = require('chai')
-const dirtyChai = require('dirty-chai')
-const expect = chai.expect
-chai.use(dirtyChai)
+const { expect } = require('aegir/utils/chai')
 const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
 const { collect } = require('streaming-iterables')
+const uint8ArrayFromString = require('uint8arrays/from-string')
 
 module.exports = (create) => {
   describe('dial', () => {
@@ -57,7 +55,7 @@ module.exports = (create) => {
       this.timeout(20 * 1000)
 
       const conn = await ws1.dial(ws2._signallingAddr)
-      const data = Buffer.from('some data')
+      const data = uint8ArrayFromString('some data')
       const values = await pipe(
         [data],
         conn,

@@ -3,10 +3,7 @@
 
 'use strict'
 
-const chai = require('chai')
-const dirtyChai = require('dirty-chai')
-const expect = chai.expect
-chai.use(dirtyChai)
+const { expect } = require('aegir/utils/chai')
 const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
 const pWaitFor = require('p-wait-for')
