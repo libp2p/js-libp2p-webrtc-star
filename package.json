@@ -60,7 +60,7 @@
     "wrtc": "^0.4.3"
   },
   "dependencies": {
-    "@hapi/hapi": "^18.4.0",
+    "@hapi/hapi": "^20.0.0",
     "@hapi/inert": "^5.2.2",
     "abortable-iterator": "^3.0.0",
     "class-is": "^1.1.0",
