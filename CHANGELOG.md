@@ -1,3 +1,18 @@
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.19.0...v0.20.0) (2020-08-25)
+
+
+### Chores
+
+* update deps ([#255](https://github.com/libp2p/js-libp2p-webrtc-star/issues/255)) ([bf6fcb0](https://github.com/libp2p/js-libp2p-webrtc-star/commit/bf6fcb0))
+
+
+### BREAKING CHANGES
+
+* - Hapi has dropped support for node < 12
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.18.6...v0.19.0) (2020-08-12)
 
