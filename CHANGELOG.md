@@ -1,3 +1,13 @@
+<a name="0.20.1"></a>
+## [0.20.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.0...v0.20.1) (2020-09-11)
+
+
+### Bug Fixes
+
+* do not assign read-only error.message ([b84dd66](https://github.com/libp2p/js-libp2p-webrtc-star/commit/b84dd66))
+
+
+
 <a name="0.20.0"></a>
 # [0.20.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.19.0...v0.20.0) (2020-08-25)
 
