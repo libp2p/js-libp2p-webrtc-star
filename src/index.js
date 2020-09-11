@@ -116,7 +116,8 @@ class WebRTCStar {
 
       const onError = (err) => {
         if (!connected) {
-          log.error(err)
+          const msg = `connection error ${cOpts.host}:${cOpts.port}: ${err.message}`
+          log.error(msg)
           done(err)
         }
       }
