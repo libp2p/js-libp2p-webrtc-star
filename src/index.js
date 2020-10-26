@@ -28,7 +28,7 @@ function noop () { }
  */
 class WebRTCStar {
   /**
-   * @constructor
+   * @class
    * @param {object} options
    * @param {Upgrader} options.upgrader
    */
@@ -69,7 +69,7 @@ class WebRTCStar {
    * @async
    * @param {Multiaddr} ma
    * @param {object} options
-   * @param {AbortSignal} options.signal Used to abort dial requests
+   * @param {AbortSignal} options.signal - Used to abort dial requests
    * @returns {Connection} An upgraded Connection
    */
   async dial (ma, options = {}) {
@@ -85,7 +85,7 @@ class WebRTCStar {
    * @private
    * @param {Multiaddr} ma
    * @param {object} options
-   * @param {AbortSignal} options.signal Used to abort dial requests
+   * @param {AbortSignal} options.signal - Used to abort dial requests
    * @returns {Promise<SimplePeer>} Resolves a SimplePeer Webrtc channel
    */
   _connect (ma, options = {}) {
@@ -187,7 +187,8 @@ class WebRTCStar {
    * Creates a WebrtcStar listener. The provided `handler` function will be called
    * anytime a new incoming Connection has been successfully upgraded via
    * `upgrader.upgradeInbound`.
-   * @param {object} [options] simple-peer options for listener
+   *
+   * @param {object} [options] - simple-peer options for listener
    * @param {function (Connection)} handler
    * @returns {Listener} A WebrtcStar listener
    */
@@ -208,6 +209,7 @@ class WebRTCStar {
 
   /**
    * Takes a list of `Multiaddr`s and returns only valid TCP addresses
+   *
    * @param {Multiaddr[]} multiaddrs
    * @returns {Multiaddr[]} Valid TCP multiaddrs
    */
