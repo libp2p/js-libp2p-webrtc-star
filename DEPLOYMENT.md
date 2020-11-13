@@ -58,4 +58,4 @@ volumes:
     nginx-html:
 ```
 
-Kudos to jjperezaguinaga for the initial proxy-wrap. Yes, it... just works. Better than the HAPI tls hack, no?
+Kudos to @jjperezaguinaga for the initial proxy-wrap.
