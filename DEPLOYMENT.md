@@ -4,7 +4,7 @@ libp2p-webrtc-star is integrated with the [libp2p Docker Hub](https://hub.docker
 
 ## SSL & Localhost Development
 
-Since working with localhost is a bit tricky at the moment, there have been recommendations for proxy servers. Here's a turnkey build for a signalling server which supports SSL.
+Since working with localhost is a bit tricky at the time of writing, we recommend using proxy servers for the deployment. Here's a turnkey build for a signalling server which supports SSL.
 
 1. `touch docker-compose.yml`, paste in the compose file below, and run `DOMAIN=<yourdomain.com> docker-compose up`. 
 2. Visit yourdomain.com:9999.  Voila! Tu
