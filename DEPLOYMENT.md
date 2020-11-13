@@ -25,7 +25,7 @@ services:
     nginx-proxy:
         image: jwilder/nginx-proxy
         ports:
-            - 9999:443
+            - 443:443
         container_name: nginx-proxy
         networks:
             service_network:
