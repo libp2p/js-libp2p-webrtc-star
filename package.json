@@ -78,7 +78,7 @@
     "peer-id": "^0.14.2",
     "prom-client": "^12.0.0",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
+    "socket.io-client": "^3.0.3",
     "stream-to-it": "^0.2.2",
     "streaming-iterables": "^5.0.3"
   },
