@@ -95,7 +95,8 @@ class WebRTCStar {
 
     const spOptions = {
       initiator: true,
-      trickle: false
+      trickle: false,
+      ...options.spOptions || {}
     }
 
     // Use custom WebRTC implementation
