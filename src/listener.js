@@ -25,8 +25,8 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   let listeningAddr
 
   listener.__connections = []
-  listener.__spChannels = {}
-  listener.__pendingIntents = {}
+  listener.__spChannels = new Map()
+  listener.__pendingIntents = new Map()
   listener.listen = (ma) => {
     const defer = pDefer()
 
@@ -46,11 +46,11 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       if (offer.answer || offer.err || !offer.intentId) {
         return
       }
-      if (!listener.__pendingIntents.hasOwnProperty(offer.intentId)) {
+      if (!listener.__pendingIntents.has(offer.intentId)) {
         listener.__pendingIntents[offer.intentId] = []
       }
       
-      if (listener.__spChannels.hasOwnProperty(offer.intentId)) {
+      if (listener.__spChannels.has(offer.intentId)) {
         listener.__spChannels[offer.intentId].signal(offer.signal)
         return
       } else if (offer.signal.type !== 'offer') {
