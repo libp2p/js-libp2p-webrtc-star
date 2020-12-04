@@ -47,14 +47,14 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         return
       }
       if (!listener.__pendingIntents.has(offer.intentId)) {
-        listener.__pendingIntents[offer.intentId] = []
+        listener.__pendingIntents.set(offer.intentId, [])
       }
-      
+
       if (listener.__spChannels.has(offer.intentId)) {
-        listener.__spChannels[offer.intentId].signal(offer.signal)
+        listener.__spChannels.get(offer.intentId).signal(offer.signal)
         return
       } else if (offer.signal.type !== 'offer') {
-        listener.__pendingIntents[offer.intentId].push(offer)
+        listener.__pendingIntents.get(offer.intentId).push(offer)
         return
       }
 
@@ -84,10 +84,10 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       })
 
       channel.signal(offer.signal)
-      for (let pendingOffer of listener.__pendingIntents[offer.intentId]) {
+      for (const pendingOffer of listener.__pendingIntents.get(offer.intentId)) {
         channel.signal(pendingOffer.signal)
       }
-      listener.__pendingIntents[offer.intentId] = []
+      listener.__pendingIntents.set(offer.intentId, [])
 
       channel.once('connect', async () => {
         const maConn = toConnection(channel)
@@ -116,7 +116,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         listener.emit('connection', conn)
         handler(conn)
       })
-      listener.__spChannels[offer.intentId] = channel
+      listener.__spChannels.set(offer.intentId, channel)
     }
 
     listener.io.once('connect_error', (err) => defer.reject(err))
