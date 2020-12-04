@@ -25,6 +25,8 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   let listeningAddr
 
   listener.__connections = []
+  listener.__spChannels = {}
+  listener.__pendingIntents = {}
   listener.listen = (ma) => {
     const defer = pDefer()
 
@@ -41,7 +43,18 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     listener.io = io.connect(sioUrl, sioOptions)
 
     const incommingDial = (offer) => {
-      if (offer.answer || offer.err) {
+      if (offer.answer || offer.err || !offer.intentId) {
+        return
+      }
+      if (!listener.__pendingIntents.hasOwnProperty(offer.intentId)) {
+        listener.__pendingIntents[offer.intentId] = []
+      }
+      
+      if (listener.__spChannels.hasOwnProperty(offer.intentId)) {
+        listener.__spChannels[offer.intentId].signal(offer.signal)
+        return
+      } else if (offer.signal.type !=== 'offer') {
+        listener.__pendingIntents[offer.intentId].push(offer)
         return
       }
 
@@ -64,13 +77,16 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         channel.removeListener('error', onError)
       })
 
-      channel.once('signal', (signal) => {
+      channel.on('signal', (signal) => {
         offer.signal = signal
         offer.answer = true
         listener.io.emit('ss-handshake', offer)
       })
 
       channel.signal(offer.signal)
+      for (let pendingOffer of listener.__pendingIntents[offer.intentId]) {
+        channel.signal(pendingOffer.signal)
+      }
 
       channel.once('connect', async () => {
         const maConn = toConnection(channel)
@@ -99,6 +115,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         listener.emit('connection', conn)
         handler(conn)
       })
+      listener.__spChannels[offer.intentId] = channel
     }
 
     listener.io.once('connect_error', (err) => defer.reject(err))
