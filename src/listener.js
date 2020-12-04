@@ -53,7 +53,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       if (listener.__spChannels.hasOwnProperty(offer.intentId)) {
         listener.__spChannels[offer.intentId].signal(offer.signal)
         return
-      } else if (offer.signal.type !=== 'offer') {
+      } else if (offer.signal.type !== 'offer') {
         listener.__pendingIntents[offer.intentId].push(offer)
         return
       }
