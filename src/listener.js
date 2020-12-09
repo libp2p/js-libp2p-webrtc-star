@@ -46,15 +46,20 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       if (offer.answer || offer.err || !offer.intentId) {
         return
       }
-      if (!listener.__pendingIntents.has(offer.intentId)) {
-        listener.__pendingIntents.set(offer.intentId, [])
+
+      const intentId = offer.intentId
+      let pendings = listener.__pendingIntents.get(intentId)
+      if (!pendings) {
+        pendings = []
+        listener.__pendingIntents.set(intentId, pendings)
       }
 
-      if (listener.__spChannels.has(offer.intentId)) {
-        listener.__spChannels.get(offer.intentId).signal(offer.signal)
+      let channel = listener.__spChannels.get(intentId)
+      if (channel) {
+        channel.signal(offer.signal)
         return
       } else if (offer.signal.type !== 'offer') {
-        listener.__pendingIntents.get(offer.intentId).push(offer)
+        pendings.push(offer)
         return
       }
 
@@ -66,7 +71,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       // Use custom WebRTC implementation
       if (WebRTCStar.wrtc) { spOptions.wrtc = WebRTCStar.wrtc }
 
-      const channel = new SimplePeer(spOptions)
+      channel = new SimplePeer(spOptions)
 
       const onError = (err) => {
         log.error('incoming connectioned errored', err)
@@ -111,12 +116,12 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
         log('inbound connection %s upgraded', maConn.remoteAddr)
 
-        trackConn(listener, maConn)
+        trackConn(listener, maConn, intentId)
 
         listener.emit('connection', conn)
         handler(conn)
       })
-      listener.__spChannels.set(offer.intentId, channel)
+      listener.__spChannels.set(intentId, channel)
     }
 
     listener.io.once('connect_error', (err) => defer.reject(err))
@@ -154,11 +159,13 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   return listener
 }
 
-function trackConn (listener, maConn) {
+function trackConn (listener, maConn, intentId) {
   listener.__connections.push(maConn)
 
   const untrackConn = () => {
     listener.__connections = listener.__connections.filter(c => c !== maConn)
+    listener.__spChannels.delete(intentId)
+    listener.__pendingIntents.delete(intentId)
   }
 
   maConn.conn.once('close', untrackConn)
