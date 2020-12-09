@@ -74,7 +74,6 @@ module.exports = (create) => {
       )
 
       expect(values).to.eql([data])
-      expect(listener2.__spChannels.size).to.equal(1)
     })
 
     it('dial offline / non-exist()ent node on IPv4, check promise rejected', async function () {
