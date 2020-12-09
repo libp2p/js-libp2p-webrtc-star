@@ -25,6 +25,8 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   let listeningAddr
 
   listener.__connections = []
+  listener.__spChannels = new Map()
+  listener.__pendingIntents = new Map()
   listener.listen = (ma) => {
     const defer = pDefer()
 
@@ -41,7 +43,23 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     listener.io = io.connect(sioUrl, sioOptions)
 
     const incommingDial = (offer) => {
-      if (offer.answer || offer.err) {
+      if (offer.answer || offer.err || !offer.intentId) {
+        return
+      }
+
+      const intentId = offer.intentId
+      let pendings = listener.__pendingIntents.get(intentId)
+      if (!pendings) {
+        pendings = []
+        listener.__pendingIntents.set(intentId, pendings)
+      }
+
+      let channel = listener.__spChannels.get(intentId)
+      if (channel) {
+        channel.signal(offer.signal)
+        return
+      } else if (offer.signal.type !== 'offer') {
+        pendings.push(offer)
         return
       }
 
@@ -53,7 +71,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       // Use custom WebRTC implementation
       if (WebRTCStar.wrtc) { spOptions.wrtc = WebRTCStar.wrtc }
 
-      const channel = new SimplePeer(spOptions)
+      channel = new SimplePeer(spOptions)
 
       const onError = (err) => {
         log.error('incoming connectioned errored', err)
@@ -64,13 +82,17 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
         channel.removeListener('error', onError)
       })
 
-      channel.once('signal', (signal) => {
+      channel.on('signal', (signal) => {
         offer.signal = signal
         offer.answer = true
         listener.io.emit('ss-handshake', offer)
       })
 
       channel.signal(offer.signal)
+      for (const pendingOffer of pendings) {
+        channel.signal(pendingOffer.signal)
+      }
+      listener.__pendingIntents.set(intentId, [])
 
       channel.once('connect', async () => {
         const maConn = toConnection(channel)
@@ -94,11 +116,12 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
         log('inbound connection %s upgraded', maConn.remoteAddr)
 
-        trackConn(listener, maConn)
+        trackConn(listener, maConn, intentId)
 
         listener.emit('connection', conn)
         handler(conn)
       })
+      listener.__spChannels.set(intentId, channel)
     }
 
     listener.io.once('connect_error', (err) => defer.reject(err))
@@ -136,11 +159,13 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   return listener
 }
 
-function trackConn (listener, maConn) {
+function trackConn (listener, maConn, intentId) {
   listener.__connections.push(maConn)
 
   const untrackConn = () => {
     listener.__connections = listener.__connections.filter(c => c !== maConn)
+    listener.__spChannels.delete(intentId)
+    listener.__pendingIntents.delete(intentId)
   }
 
   maConn.conn.once('close', untrackConn)

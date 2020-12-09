@@ -52,11 +52,15 @@ module.exports = (create) => {
 
       // Wait for the listener to begin tracking, this happens after signaling is complete
       await pWaitFor(() => remoteListener.__connections.length === 1)
+      expect(remoteListener.__spChannels.size).to.equal(1)
+      expect(remoteListener.__pendingIntents.size).to.equal(1)
 
       await conn.close()
 
       // Wait for tracking to clear
       await pWaitFor(() => remoteListener.__connections.length === 0)
+      expect(remoteListener.__spChannels.size).to.equal(0)
+      expect(remoteListener.__pendingIntents.size).to.equal(0)
     })
   })
 }

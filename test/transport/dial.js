@@ -8,6 +8,17 @@ const multiaddr = require('multiaddr')
 const pipe = require('it-pipe')
 const { collect } = require('streaming-iterables')
 const uint8ArrayFromString = require('uint8arrays/from-string')
+const SimplePeer = require('libp2p-webrtc-peer')
+const sinon = require('sinon')
+
+function fire (socket, event) {
+  const args = [].slice.call(arguments, 2)
+  const callbacks = socket._callbacks[`$${event}`]
+
+  for (const callback of callbacks) {
+    callback.apply(socket, args)
+  }
+}
 
 module.exports = (create) => {
   describe('dial', () => {
@@ -82,6 +93,62 @@ module.exports = (create) => {
 
     it.skip('dial on IPv6', (done) => {
       // TODO IPv6 not supported yet
+    })
+
+    it('receive ws-handshake event withou intentId, check channel not created', () => {
+      fire(listener2.io, 'ws-handshake', {
+        intentId: null,
+        srcMultiaddr: ma1.toString(),
+        dstMultiaddr: ma2.toString(),
+        signal: {}
+      })
+      expect(listener2.__spChannels.size).to.equal(0)
+    })
+
+    it('receive ws-handshake event but already exists channel, check channel.signal called', () => {
+      const channel = { signal: sinon.fake() }
+      listener2.__spChannels.set('itent-id', channel)
+      fire(listener2.io, 'ws-handshake', {
+        intentId: 'itent-id',
+        srcMultiaddr: ma1.toString(),
+        dstMultiaddr: ma2.toString(),
+        signal: {}
+      })
+      expect(channel.signal.callCount).to.equal(1)
+    })
+
+    it('receive ws-handshake event but signal type is not offer, check message saved to peedingIntents', () => {
+      const message = {
+        intentId: 'itent-id',
+        srcMultiaddr: ma1.toString(),
+        dstMultiaddr: ma2.toString(),
+        signal: {}
+      }
+      fire(listener2.io, 'ws-handshake', message)
+      expect(listener2.__pendingIntents.get('itent-id')).to.deep.equal([message])
+    })
+
+    it('receive ws-handshake event, the signal type is offer and exists peeding intents, check peeding intents consumed', () => {
+      const message = {
+        intentId: 'itent-id',
+        srcMultiaddr: ma1.toString(),
+        dstMultiaddr: ma2.toString(),
+        signal: {}
+      }
+      listener2.__pendingIntents.set('itent-id', [message])
+      const fake = sinon.fake()
+      const stub = sinon.stub(SimplePeer.prototype, 'signal').callsFake(fake)
+      fire(listener2.io, 'ws-handshake', {
+        intentId: 'itent-id',
+        srcMultiaddr: ma1.toString(),
+        dstMultiaddr: ma2.toString(),
+        signal: { type: 'offer' }
+      })
+      expect(listener2.__spChannels.size).to.equal(1)
+      expect(listener2.__pendingIntents.get('itent-id').length).to.equal(0)
+      // create the channel and consume the peeding intent
+      expect(fake.callCount).to.equal(2)
+      stub.restore()
     })
   })
 }
