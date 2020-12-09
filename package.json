@@ -1,6 +1,6 @@
 {
   "name": "libp2p-webrtc-star",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
@@ -91,22 +91,22 @@
     "Pedro Teixeira <i@pgte.me>",
     "Alex Potsides <alex@achingbrain.net>",
     "Maciej Krüger <mkg20001@gmail.com>",
-    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>",
     "Alan Shaw <alan.shaw@protocol.ai>",
-    "Michael Fakhry <fakhrimichael@live.com>",
+    "Smite Chow <xiaopengyou2no1@gmail.com>",
     "Hugo Dias <mail@hugodias.me>",
+    "michaelfakhri <fakhrimichael@live.com>",
+    "Juan Benet <juan@benet.ai>",
+    "Jacob Friedman <friedjacob@gmail.com>",
     "Richard Littauer <richard.littauer@gmail.com>",
     "SeungWon <ksw3894@gmail.com>",
-    "Smite Chow <xiaopengyou@live.com>",
     "Flarp <flurpdadurp@gmail.com>",
-    "Juan Benet <juan@benet.ai>",
     "anders <andersb@tuta.io>",
-    "Baris Gumustas <barisgumustas@gmail.com>",
+    "Diogo Silva <fsdiogo@gmail.com>",
     "dmitriy ryajov <dryajov@dmitriys-MBP.HomeNET>",
     "Andrey Petrov <shazow@gmail.com>",
-    "interfect <interfect@gmail.com>",
-    "Diogo Silva <fsdiogo@gmail.com>",
-    "Jacob Friedman <friedjacob@gmail.com>"
+    "Baris Gumustas <barisgumustas@gmail.com>",
+    "interfect <interfect@gmail.com>"
   ]
 }
