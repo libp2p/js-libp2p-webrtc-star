@@ -89,10 +89,10 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       })
 
       channel.signal(offer.signal)
-      for (const pendingOffer of listener.__pendingIntents.get(offer.intentId)) {
+      for (const pendingOffer of pendings) {
         channel.signal(pendingOffer.signal)
       }
-      listener.__pendingIntents.set(offer.intentId, [])
+      listener.__pendingIntents.set(intentId, [])
 
       channel.once('connect', async () => {
         const maConn = toConnection(channel)
