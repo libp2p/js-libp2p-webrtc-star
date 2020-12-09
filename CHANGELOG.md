@@ -1,3 +1,12 @@
+## [0.20.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.2...v0.20.3) (2020-12-09)
+
+
+### Features
+
+* support webrtc trickle ([#282](https://github.com/libp2p/js-libp2p-webrtc-star/issues/282)) ([d2a2478](https://github.com/libp2p/js-libp2p-webrtc-star/commit/d2a24783c9c3d1c800a6319494fd69926b98a79b))
+
+
+
 ## [0.20.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.1...v0.20.2) (2020-12-03)
 
 
