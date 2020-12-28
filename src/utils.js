@@ -44,6 +44,7 @@ function cleanMultiaddr (maStr) {
   return maStr
 }
 
-exports = module.exports
-exports.cleanUrlSIO = cleanUrlSIO
-exports.cleanMultiaddr = cleanMultiaddr
+module.exports = {
+  cleanUrlSIO,
+  cleanMultiaddr
+}
