@@ -10,37 +10,37 @@ const log = config.log
 const menoetius = require('menoetius')
 const path = require('path')
 
-exports = module.exports
+module.exports = {
+  start: async (options = {}) => {
+    const port = options.port || config.hapi.port
+    const host = options.host || config.hapi.host
 
-exports.start = async (options = {}) => {
-  const port = options.port || config.hapi.port
-  const host = options.host || config.hapi.host
-
-  const http = new Hapi.Server({
-    ...config.hapi.options,
-    port,
-    host
-  })
-
-  await http.register(Inert)
-  await http.start()
-
-  log('signaling server has started on: ' + http.info.uri)
-
-  http.peers = require('./routes-ws')(http, options.metrics).peers
-
-  http.route({
-    method: 'GET',
-    path: '/',
-    handler: (request, reply) => reply.file(path.join(__dirname, 'index.html'), {
-      confine: false
+    const http = new Hapi.Server({
+      ...config.hapi.options,
+      port,
+      host
     })
-  })
 
-  if (options.metrics) {
-    log('enabling metrics')
-    await menoetius.instrument(http)
+    await http.register(Inert)
+    await http.start()
+
+    log('signaling server has started on: ' + http.info.uri)
+
+    http.peers = require('./routes-ws')(http, options.metrics).peers
+
+    http.route({
+      method: 'GET',
+      path: '/',
+      handler: (request, reply) => reply.file(path.join(__dirname, 'index.html'), {
+        confine: false
+      })
+    })
+
+    if (options.metrics) {
+      log('enabling metrics')
+      await menoetius.instrument(http)
+    }
+
+    return http
   }
-
-  return http
 }
