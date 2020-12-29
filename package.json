@@ -56,7 +56,7 @@
     "libp2p-interfaces": "^0.7.1",
     "p-wait-for": "^3.1.0",
     "sinon": "^9.2.0",
-    "uint8arrays": "^1.1.0",
+    "uint8arrays": "^2.0.5",
     "wrtc": "^0.4.6"
   },
   "dependencies": {
