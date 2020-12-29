@@ -1,3 +1,7 @@
+## [0.20.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.5...v0.20.6) (2020-12-29)
+
+
+
 ## [0.20.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.4...v0.20.5) (2020-12-14)
 
 
