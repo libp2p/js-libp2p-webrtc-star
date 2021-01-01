@@ -63,6 +63,8 @@ module.exports = (socket, options = {}) => {
 
     timeline: { open: Date.now() },
 
+    transportTag: 'WebRTCStar',
+
     close () {
       if (socket.destroyed) return
 
