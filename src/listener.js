@@ -7,7 +7,7 @@ log.error = debug('libp2p:webrtc-star:listener:error')
 
 const multiaddr = require('multiaddr')
 
-const io = require('socket.io-client-next')
+const io = require('socket.io-client')
 const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
 
@@ -17,8 +17,7 @@ const { CODE_P2P } = require('./constants')
 
 const sioOptions = {
   transports: ['websocket'],
-  'force new connection': true,
-  path: '/socket.io-next/' // This should be removed when socket.io@2 support is removed
+  'force new connection': true
 }
 
 module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {

@@ -6,7 +6,6 @@ const electronWebRTC = require('electron-webrtc')
 const PeerId = require('peer-id')
 const WStar = require('..')
 
-require('./sig-server-next.js')
 require('./sig-server.js')
 
 const mockUpgrader = {
