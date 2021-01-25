@@ -1,3 +1,12 @@
+## [0.20.8](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.7...v0.20.8) (2021-01-25)
+
+
+### Reverts
+
+* Revert "chore: update socket.io to 3 (#292)" ([3c3cd94](https://github.com/libp2p/js-libp2p-webrtc-star/commit/3c3cd94f0e398b1d4f9f6f7a64585fb2066511da)), closes [#292](https://github.com/libp2p/js-libp2p-webrtc-star/issues/292)
+
+
+
 ## [0.20.7](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.6...v0.20.7) (2021-01-25)
 
 
