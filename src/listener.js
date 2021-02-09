@@ -38,6 +38,8 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       WebRTCStar._signallingAddr = ma
     }
 
+    listener.on('error', () => defer.reject())
+
     const sioUrl = cleanUrlSIO(ma)
 
     log('Dialing to Signalling Server on: ' + sioUrl)
