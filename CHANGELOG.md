@@ -1,3 +1,12 @@
+## [0.21.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.21.0...v0.21.1) (2021-02-10)
+
+
+### Bug Fixes
+
+* add error event listener to event emitter ([#303](https://github.com/libp2p/js-libp2p-webrtc-star/issues/303)) ([aa770af](https://github.com/libp2p/js-libp2p-webrtc-star/commit/aa770af369cc215b7981befdbb49f7fee1368f77))
+
+
+
 # [0.21.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.20.8...v0.21.0) (2021-01-25)
 
 
