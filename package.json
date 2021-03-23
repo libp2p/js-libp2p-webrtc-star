@@ -55,7 +55,7 @@
     "electron-webrtc": "~0.3.0",
     "libp2p-interfaces": "^0.8.1",
     "p-wait-for": "^3.1.0",
-    "sinon": "^9.2.0",
+    "sinon": "^10.0.0",
     "socket.io-client": "^2.3.0",
     "uint8arrays": "^2.0.5",
     "wrtc": "^0.4.6"
