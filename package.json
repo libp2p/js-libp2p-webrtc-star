@@ -74,7 +74,7 @@
     "mafmt": "^8.0.0",
     "menoetius": "0.0.2",
     "minimist": "^1.2.5",
-    "multiaddr": "^8.0.0",
+    "multiaddr": "^9.0.1",
     "p-defer": "^3.0.0",
     "peer-id": "^0.14.2",
     "prom-client": "^13.0.0",
