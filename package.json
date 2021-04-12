@@ -32,8 +32,7 @@
     "lint"
   ],
   "engines": {
-    "node": ">=10.0.0",
-    "npm": ">=6.0.0"
+    "node": ">=14.0.0"
   },
   "repository": {
     "type": "git",
@@ -49,13 +48,13 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
-    "aegir": "^30.2.0",
-    "chai": "^4.2.0",
+    "aegir": "^30.3.0",
+    "chai": "^4.3.4",
     "dirty-chai": "^2.0.1",
     "electron-webrtc": "~0.3.0",
-    "libp2p-interfaces": "^0.8.1",
+    "libp2p-interfaces": "^0.9.0",
     "p-wait-for": "^3.1.0",
-    "sinon": "^9.2.0",
+    "sinon": "^10.0.1",
     "socket.io-client": "^2.3.0",
     "uint8arrays": "^2.0.5",
     "wrtc": "^0.4.6"
@@ -69,18 +68,18 @@
     "err-code": "^3.0.1",
     "ipfs-utils": "^6.0.0",
     "it-pipe": "^1.1.0",
-    "libp2p-utils": "^0.2.1",
+    "libp2p-utils": "^0.3.0",
     "libp2p-webrtc-peer": "^10.0.1",
     "mafmt": "^8.0.0",
     "menoetius": "0.0.2",
     "minimist": "^1.2.5",
-    "multiaddr": "^8.0.0",
+    "multiaddr": "^9.0.1",
     "p-defer": "^3.0.0",
     "peer-id": "^0.14.2",
     "prom-client": "^13.0.0",
     "socket.io": "^2.3.0",
-    "socket.io-next": "npm:socket.io@^3.0.4",
-    "socket.io-client-next": "npm:socket.io-client@^3.0.4",
+    "socket.io-next": "npm:socket.io@^3.1.2",
+    "socket.io-client-next": "npm:socket.io-client@^3.1.2",
     "stream-to-it": "^0.2.2",
     "streaming-iterables": "^5.0.3"
   },

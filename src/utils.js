@@ -1,6 +1,6 @@
 'use strict'
 
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 
 function cleanUrlSIO (ma) {
   const maStrSplit = ma.toString().split('/')
@@ -12,16 +12,16 @@ function cleanUrlSIO (ma) {
     throw new Error('invalid multiaddr: ' + ma.toString())
   }
 
-  if (!multiaddr.isName(ma)) {
+  if (!Multiaddr.isName(ma)) {
     return 'http://' + maStrSplit[2] + ':' + maStrSplit[4]
   }
 
   if (wsProto === 'ws') {
-    return 'http://' + maStrSplit[2] + (tcpPort === 80 ? '' : ':' + tcpPort)
+    return 'http://' + maStrSplit[2] + (tcpPort === '80' ? '' : ':' + tcpPort)
   }
 
   if (wsProto === 'wss') {
-    return 'https://' + maStrSplit[2] + (tcpPort === 443 ? '' : ':' + tcpPort)
+    return 'https://' + maStrSplit[2] + (tcpPort === '443' ? '' : ':' + tcpPort)
   }
 }
 
@@ -30,7 +30,7 @@ function cleanMultiaddr (maStr) {
 
   if (maStr.indexOf(legacy) !== -1) {
     maStr = maStr.substring(legacy.length, maStr.length)
-    let ma = multiaddr(maStr)
+    let ma = new Multiaddr(maStr)
     const tuppleIPFS = ma.stringTuples().filter((tupple) => {
       return tupple[0] === 421 // ipfs code
     })[0]

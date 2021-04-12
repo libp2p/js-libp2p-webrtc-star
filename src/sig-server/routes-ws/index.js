@@ -18,6 +18,8 @@ module.exports = (http, hasMetrics) => {
   const io = new SocketIO(http.listener)
   io.on('connection', handle)
 
+  http.events.on('stop', () => io.close())
+
   const peers = {}
 
   const peersMetric = hasMetrics ? new client.Gauge({ name: 'webrtc_star_peers', help: 'peers online now' }) : fake.gauge
@@ -29,6 +31,10 @@ module.exports = (http, hasMetrics) => {
   const joinsTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total', help: 'all joins since server started' }) : fake.counter
 
   const refreshMetrics = () => peersMetric.set(Object.keys(peers).length)
+
+  this.io = () => {
+    return io
+  }
 
   this.peers = () => {
     return peers

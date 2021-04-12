@@ -12,7 +12,7 @@ const { AbortError } = require('abortable-iterator')
 const SimplePeer = require('libp2p-webrtc-peer')
 const { supportsWebRTCDataChannels: webrtcSupport } = require('ipfs-utils/src/supports')
 
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const mafmt = require('mafmt')
 const PeerId = require('peer-id')
 
@@ -232,7 +232,7 @@ class WebRTCStar {
     log('Peer Discovered:', maStr)
     maStr = cleanMultiaddr(maStr)
 
-    const ma = multiaddr(maStr)
+    const ma = new Multiaddr(maStr)
     const peerId = PeerId.createFromB58String(ma.getPeerId())
 
     this.discovery.emit('peer', {

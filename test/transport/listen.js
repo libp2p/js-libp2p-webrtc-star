@@ -3,13 +3,13 @@
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 
 module.exports = (create) => {
   describe('listen', () => {
     let ws
 
-    const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+    const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     before(async () => {
       ws = await create()
@@ -54,7 +54,7 @@ module.exports = (create) => {
 
     it('should throw an error if it cannot listen on the given multiaddr', async () => {
       const listener = ws.createListener(() => { })
-      const ma = multiaddr('/ip4/127.0.0.1/tcp/15554/ws/p2p-webrtc-star')
+      const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15554/ws/p2p-webrtc-star')
 
       await expect(listener.listen(ma))
         .to.eventually.be.rejected()
@@ -62,7 +62,7 @@ module.exports = (create) => {
 
     it('getAddrs', async () => {
       const listener = ws.createListener(() => {})
-      const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+      const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
       await listener.listen(ma)
 
@@ -74,7 +74,7 @@ module.exports = (create) => {
 
     it('getAddrs with peer id', async () => {
       const listener = ws.createListener(() => {})
-      const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
+      const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
 
       await listener.listen(ma)
 

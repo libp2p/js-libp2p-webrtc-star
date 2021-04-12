@@ -4,7 +4,7 @@
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const pipe = require('it-pipe')
 const { collect } = require('streaming-iterables')
 const uint8ArrayFromString = require('uint8arrays/from-string')
@@ -26,11 +26,12 @@ module.exports = (create) => {
     let ws2
     let ma1
     let ma2
+    let listener1
     let listener2
 
-    const maHSDNS = multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
-    const maHSIP = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
-    const maLS = multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
+    const maHSDNS = new Multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
+    const maHSIP = new Multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
+    const maLS = new Multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
 
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS) {
       // test with deployed signalling server using DNS
@@ -50,7 +51,7 @@ module.exports = (create) => {
     beforeEach(async () => {
       // first
       ws1 = await create()
-      const listener1 = ws1.createListener((conn) => {
+      listener1 = ws1.createListener((conn) => {
         expect(conn.remoteAddr).to.exist()
         pipe(conn, conn)
       })
@@ -60,6 +61,10 @@ module.exports = (create) => {
       listener2 = ws2.createListener((conn) => pipe(conn, conn))
 
       await Promise.all([listener1.listen(ma1), listener2.listen(ma2)])
+    })
+
+    afterEach(async () => {
+      await Promise.all([listener1, listener2].map(l => l.close()))
     })
 
     it('dial on IPv4, check promise', async function () {
@@ -78,7 +83,7 @@ module.exports = (create) => {
 
     it('dial offline / non-exist()ent node on IPv4, check promise rejected', async function () {
       this.timeout(20 * 1000)
-      const maOffline = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
+      const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
       try {
         await ws1.dial(maOffline)

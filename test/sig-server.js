@@ -3,7 +3,7 @@
 
 const { expect } = require('aegir/utils/chai')
 const io = require('socket.io-client')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 
 const sigServer = require('../src/sig-server')
 
@@ -24,10 +24,10 @@ describe('signalling', () => {
     return `/ip4/127.0.0.1/tcp/9090/ws/p2p-webrtc-star/ipfs/${id}`
   }
 
-  const c1mh = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'))
-  const c2mh = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo2'))
-  const c3mh = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo3'))
-  const c4mh = multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo4'))
+  const c1mh = new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo1'))
+  const c2mh = new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo2'))
+  const c3mh = new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo3'))
+  const c4mh = new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSoooo4'))
 
   it('start and stop signalling server (default port)', async () => {
     const server = await sigServer.start()
@@ -54,6 +54,9 @@ describe('signalling', () => {
       cl.emit('ss-handshake', {})
 
       await server.stop()
+    })
+    cl.on('disconnect', () => {
+      cl.close()
     })
   })
 

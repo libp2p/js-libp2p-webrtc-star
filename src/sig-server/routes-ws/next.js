@@ -19,6 +19,8 @@ module.exports = (http, hasMetrics) => {
     path: '/socket.io-next/' // This should be removed when socket.io@2 support is removed
   })
 
+  http.events.on('stop', () => io.close())
+
   io.on('connection', handle)
 
   const peers = {}
@@ -32,6 +34,10 @@ module.exports = (http, hasMetrics) => {
   const joinsTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_next_joins_total', help: 'all joins since server started' }) : fake.counter
 
   const refreshMetrics = () => peersMetric.set(Object.keys(peers).length)
+
+  this.io = () => {
+    return io
+  }
 
   this.peers = () => {
     return peers
