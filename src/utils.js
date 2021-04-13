@@ -44,7 +44,16 @@ function cleanMultiaddr (maStr) {
   return maStr
 }
 
+/**
+ * @param {Multiaddr} ma
+ */
+function createListenerRefString (ma) {
+  const listenerRefOptions = ma.toOptions()
+  return `${listenerRefOptions.host}:${listenerRefOptions.port}`
+}
+
 module.exports = {
   cleanUrlSIO,
-  cleanMultiaddr
+  cleanMultiaddr,
+  createListenerRefString
 }

@@ -5,13 +5,12 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star:listener')
 log.error = debug('libp2p:webrtc-star:listener:error')
 
-const { Multiaddr } = require('multiaddr')
 const io = require('socket.io-client-next')
 const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
 
 const toConnection = require('./socket-to-conn')
-const { cleanUrlSIO } = require('./utils')
+const { cleanUrlSIO, createListenerRefString } = require('./utils')
 const { CODE_P2P } = require('./constants')
 
 const sioOptions = {
@@ -22,7 +21,7 @@ const sioOptions = {
 
 module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   const listener = new EventEmitter()
-  let listeningAddr
+  let listeningAddrs = []
 
   listener.__connections = []
   listener.__spChannels = new Map()
@@ -30,7 +29,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   listener.listen = (ma) => {
     const defer = pDefer()
 
-    listeningAddr = ma
+    listeningAddrs.push(ma)
     if (!ma.protoCodes().includes(CODE_P2P) && upgrader.localPeer) {
       WebRTCStar._signallingAddr = ma.encapsulate(`/p2p/${upgrader.localPeer.toB58String()}`)
     } else {
@@ -144,26 +143,35 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       defer.resolve()
     })
 
+    const refString = createListenerRefString(ma)
+    if (WebRTCStar.listenersRefs[refString]) {
+      // TODO: Check if already existing and throw?
+      // Interface will error...
+    }
+    WebRTCStar.listenersRefs[refString] = listener
     return defer.promise
   }
 
   listener.close = async () => {
-    if (listener.io) {
-      listener.io.emit('ss-leave')
-      listener.io.close()
+    for (const list in Object.values(WebRTCStar.listenersRefs)) {
+      if (list.io) {
+        list.io.emit('ss-leave')
+        list.io.close()
+      }
     }
 
     await Promise.all(listener.__connections.map(maConn => maConn.close()))
     listener.emit('close')
-
     listener.removeAllListeners()
+
+    // Reset state
+    listeningAddrs = []
+    WebRTCStar.listenersRefs = {}
   }
 
   listener.getAddrs = () => {
-    return [listeningAddr]
+    return listeningAddrs
   }
-
-  WebRTCStar.listenersRefs[Multiaddr.toString()] = listener
 
   return listener
 }

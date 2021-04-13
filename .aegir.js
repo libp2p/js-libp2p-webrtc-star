@@ -2,24 +2,39 @@
 
 const sigServer = require('./src/sig-server')
 let firstRun = true
-let sigS
+let sigServers = []
 
 async function boot () {
-  const options = {
+  const options1 = {
     port: 15555,
     host: '127.0.0.1',
     metrics: firstRun
   }
 
+  const options2 = {
+    port: 15556,
+    host: '127.0.0.1',
+    metrics: false
+  }
+
+  const options3 = {
+    port: 15557,
+    host: '127.0.0.1',
+    metrics: false
+  }
+
   if (firstRun) { firstRun = false }
 
-  sigS = await sigServer.start(options)
+  sigServers.push(await sigServer.start(options1))
+  sigServers.push(await sigServer.start(options2))
+  sigServers.push(await sigServer.start(options3))
 
-  console.log('signalling on:', sigS.info.uri)
+  console.log('signalling on:')
+  sigServers.forEach((sig) => console.log(sig.info.uri))
 }
 
 async function stop () {
-  await sigS.stop()
+  await Promise.all(sigServers.map(s => s.stop()))
 }
 
 module.exports = {

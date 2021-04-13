@@ -19,7 +19,7 @@ const PeerId = require('peer-id')
 const { CODE_CIRCUIT } = require('./constants')
 const createListener = require('./listener')
 const toConnection = require('./socket-to-conn')
-const { cleanMultiaddr } = require('./utils')
+const { cleanMultiaddr, createListenerRefString } = require('./utils')
 
 function noop () { }
 
@@ -105,8 +105,10 @@ class WebRTCStar {
     const cOpts = ma.toOptions()
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
+
     const sioClient = this
-      .listenersRefs[Object.keys(this.listenersRefs)[0]].io
+      .listenersRefs[createListenerRefString(ma)].io
+    // console.log('get sio client 2', sioClient)
 
     return new Promise((resolve, reject) => {
       const start = Date.now()

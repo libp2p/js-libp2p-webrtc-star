@@ -29,6 +29,7 @@ describe('transport: with wrtc', () => {
 
   require('./transport/dial.js')(create)
   require('./transport/listen.js')(create)
+  require('./transport/multiple-signal-servers.js')(create)
   require('./transport/track.js')(create)
   require('./transport/discovery.js')(create)
   require('./transport/filter.js')(create)
@@ -43,6 +44,7 @@ describe.skip('transport: with electron-webrtc', () => {
 
   require('./transport/dial.js')(create)
   require('./transport/listen.js')(create)
+  require('./transport/multiple-signal-servers.js')(create)
   require('./transport/track.js')(create)
   require('./transport/discovery.js')(create)
   require('./transport/filter.js')(create)
