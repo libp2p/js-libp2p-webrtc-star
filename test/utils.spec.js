@@ -3,7 +3,7 @@
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const { cleanMultiaddr } = require('../src/utils')
 const { cleanUrlSIO } = require('../src/utils')
 
@@ -23,14 +23,14 @@ describe('utils', () => {
   const invalidMultiaddrStringDNS3 = '/dns4/star-signal.cloud.ipfs.team/ws/p2p-webrtc-star/p2p/QmWxLfixekyv6GAzvDEtXfXjj7gb1z3G8i5aQNHLhw1zA1'
 
   // Create actual multiaddrs
-  const modernMultiaddrDNS = multiaddr(modernMultiaddrStringDNS)
-  const modernMultiaddrDNS2 = multiaddr(modernMultiaddrStringDNS2)
-  const modernMultiaddrDNS3 = multiaddr(modernMultiaddrStringDNS3)
-  const modernMultiaddrDNS4 = multiaddr(modernMultiaddrStringDNS4)
+  const modernMultiaddrDNS = new Multiaddr(modernMultiaddrStringDNS)
+  const modernMultiaddrDNS2 = new Multiaddr(modernMultiaddrStringDNS2)
+  const modernMultiaddrDNS3 = new Multiaddr(modernMultiaddrStringDNS3)
+  const modernMultiaddrDNS4 = new Multiaddr(modernMultiaddrStringDNS4)
 
-  const invalidMultiaddrDNS = multiaddr(invalidMultiaddrStringDNS)
-  const invalidMultiaddrDNS2 = multiaddr(invalidMultiaddrStringDNS2)
-  const invalidMultiaddrDNS3 = multiaddr(invalidMultiaddrStringDNS3)
+  const invalidMultiaddrDNS = new Multiaddr(invalidMultiaddrStringDNS)
+  const invalidMultiaddrDNS2 = new Multiaddr(invalidMultiaddrStringDNS2)
+  const invalidMultiaddrDNS3 = new Multiaddr(invalidMultiaddrStringDNS3)
 
   it('cleanUrlSIO webrtc-star modern', () => {
     const newUrlSIOStringDNS = cleanUrlSIO(modernMultiaddrDNS)

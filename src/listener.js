@@ -5,8 +5,7 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star:listener')
 log.error = debug('libp2p:webrtc-star:listener:error')
 
-const multiaddr = require('multiaddr')
-
+const { Multiaddr } = require('multiaddr')
 const io = require('socket.io-client-next')
 const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
@@ -149,16 +148,23 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   }
 
   listener.close = async () => {
-    listener.io && listener.io.emit('ss-leave')
+    if (listener.io) {
+      listener.io.emit('ss-leave')
+      listener.io.close()
+    }
+
     await Promise.all(listener.__connections.map(maConn => maConn.close()))
     listener.emit('close')
+
+    listener.removeAllListeners()
   }
 
   listener.getAddrs = () => {
     return [listeningAddr]
   }
 
-  WebRTCStar.listenersRefs[multiaddr.toString()] = listener
+  WebRTCStar.listenersRefs[Multiaddr.toString()] = listener
+
   return listener
 }
 

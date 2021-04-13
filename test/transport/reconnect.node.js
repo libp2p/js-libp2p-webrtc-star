@@ -3,7 +3,7 @@
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const sigServer = require('../../src/sig-server')
 
 const SERVER_PORT = 13580
@@ -14,7 +14,7 @@ module.exports = (create) => {
     let ws1
     let ws2
     let ws3
-    const signallerAddr = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+    const signallerAddr = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     before(async () => {
       sigS = await sigServer.start({ port: SERVER_PORT })

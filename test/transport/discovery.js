@@ -3,7 +3,7 @@
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 
 module.exports = (create) => {
   describe('peer discovery', () => {
@@ -12,7 +12,7 @@ module.exports = (create) => {
     let ws3
     let ws4
     let ws1Listener
-    const signallerAddr = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+    const signallerAddr = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     it('listen on the first', async () => {
       ws1 = await create()

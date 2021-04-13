@@ -6,7 +6,7 @@ const wrtc = require('wrtc')
 const sinon = require('sinon')
 const testsTransport = require('libp2p-interfaces/src/transport/tests')
 const testsDiscovery = require('libp2p-interfaces/src/peer-discovery/tests')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 
 const WStar = require('../src')
 
@@ -21,9 +21,9 @@ describe('interface-transport compliance', function () {
       }
 
       const addrs = [
-        multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')),
-        multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')),
-        multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2c'))
+        new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')),
+        new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')),
+        new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2c'))
       ]
 
       // Used by the dial tests to simulate a delayed connect
