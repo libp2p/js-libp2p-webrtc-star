@@ -70,7 +70,7 @@
     "it-pipe": "^1.1.0",
     "libp2p-utils": "^0.3.0",
     "libp2p-webrtc-peer": "^10.0.1",
-    "mafmt": "^8.0.0",
+    "mafmt": "^9.0.0",
     "menoetius": "0.0.2",
     "minimist": "^1.2.5",
     "multiaddr": "^9.0.1",
