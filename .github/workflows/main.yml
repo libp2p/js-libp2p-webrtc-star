@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm install @mapbox/node-pre-gyp -g
       - run: npm install
-      - run: npx nyc --reporter=lcov aegir test -t node -- --bail
+      - run: npx aegir test -t node --cov --bail
       - uses: codecov/codecov-action@v1
   test-chrome:
     needs: check
