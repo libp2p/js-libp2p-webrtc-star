@@ -52,7 +52,10 @@ module.exports = (create) => {
       this.timeout(20e3)
       expect(listener.__connections).to.have.lengthOf(0)
 
-      const conn = await ws1.dial(ws2._signallingAddr)
+      // Use one of the signal addresses
+      const [sigRefs] = ws2.sigReferences.values()
+
+      const conn = await ws1.dial(sigRefs.signallingAddr)
 
       // Wait for the listener to begin tracking, this happens after signaling is complete
       await pWaitFor(() => remoteListener.__connections.length === 1)

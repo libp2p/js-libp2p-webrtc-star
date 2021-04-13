@@ -70,7 +70,10 @@ module.exports = (create) => {
     it('dial on IPv4, check promise', async function () {
       this.timeout(20 * 1000)
 
-      const conn = await ws1.dial(ws2._signallingAddr)
+      // Use one of the signal addresses
+      const [sigRefs] = ws2.sigReferences.values()
+
+      const conn = await ws1.dial(sigRefs.signallingAddr)
       const data = uint8ArrayFromString('some data')
       const values = await pipe(
         [data],
