@@ -5,6 +5,7 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star:listener')
 log.error = debug('libp2p:webrtc-star:listener:error')
 
+const errCode = require('err-code')
 const io = require('socket.io-client-next')
 const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
@@ -28,6 +29,11 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   listener.__spChannels = new Map()
   listener.__pendingIntents = new Map()
   listener.listen = (ma) => {
+    // Should only be used if not already listening
+    if (listeningAddr) {
+      throw errCode(new Error('listener already in use'), 'ERR_ALREADY_LISTENING')
+    }
+
     const defer = pDefer()
 
     // Should be kept unmodified
@@ -169,7 +175,6 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     listener.removeAllListeners()
 
     // Reset state
-    // TODO: Throw if already listening on this listener?
     listeningAddr = undefined
     WebRTCStar.sigReferences.delete(sioUrl)
   }
