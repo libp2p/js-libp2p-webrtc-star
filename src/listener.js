@@ -23,7 +23,7 @@ const sioOptions = {
 module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   const listener = new EventEmitter()
   let listeningAddr
-  let sioUrl
+  let signallingUrl
 
   listener.__connections = []
   listener.__spChannels = new Map()
@@ -48,10 +48,10 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
     listener.on('error', () => defer.reject())
 
-    sioUrl = cleanUrlSIO(ma)
+    signallingUrl = cleanUrlSIO(ma)
 
-    log('Dialing to Signalling Server on: ' + sioUrl)
-    listener.io = io.connect(sioUrl, sioOptions)
+    log('Dialing to Signalling Server on: ' + signallingUrl)
+    listener.io = io.connect(signallingUrl, sioOptions)
 
     const incommingDial = (offer) => {
       if (offer.answer || offer.err || !offer.intentId) {
@@ -154,7 +154,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     })
 
     // Store listen and signal reference addresses
-    WebRTCStar.sigReferences.set(sioUrl, {
+    WebRTCStar.sigReferences.set(signallingUrl, {
       listener,
       signallingAddr
     })
@@ -164,7 +164,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
   listener.close = async () => {
     // Close listener
-    const ref = WebRTCStar.sigReferences.get(sioUrl)
+    const ref = WebRTCStar.sigReferences.get(signallingUrl)
     if (ref && ref.listener.io) {
       ref.listener.io.emit('ss-leave')
       ref.listener.io.close()
@@ -176,7 +176,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
     // Reset state
     listeningAddr = undefined
-    WebRTCStar.sigReferences.delete(sioUrl)
+    WebRTCStar.sigReferences.delete(signallingUrl)
   }
 
   listener.getAddrs = () => {
