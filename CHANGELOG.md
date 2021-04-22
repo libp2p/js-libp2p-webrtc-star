@@ -1,3 +1,12 @@
+## [0.22.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.22.0...v0.22.1) (2021-04-22)
+
+
+### Features
+
+* support multiple listeners ([#330](https://github.com/libp2p/js-libp2p-webrtc-star/issues/330)) ([5b7b142](https://github.com/libp2p/js-libp2p-webrtc-star/commit/5b7b14212615cc789836319694cc0b7c16f8dfe4))
+
+
+
 # [0.22.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.21.2...v0.22.0) (2021-04-13)
 
 
