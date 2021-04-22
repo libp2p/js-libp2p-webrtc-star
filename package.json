@@ -28,9 +28,6 @@
     "coverage": "aegir coverage",
     "coverage-publish": "aegir coverage --provider coveralls"
   },
-  "pre-push": [
-    "lint"
-  ],
   "engines": {
     "node": ">=14.0.0"
   },

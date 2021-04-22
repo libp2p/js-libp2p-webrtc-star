@@ -38,7 +38,10 @@ module.exports = (create) => {
 
       const p = new Promise((resolve) => {
         ws1.discovery.once('peer', ({ multiaddrs }) => {
-          expect(multiaddrs.some((m) => m.equals(ws2._signallingAddr))).to.equal(true)
+          // Check first of the signal addresses
+          const [sigRefs] = ws2.sigReferences.values()
+
+          expect(multiaddrs.some((m) => m.equals(sigRefs.signallingAddr))).to.equal(true)
           resolve()
         })
       })
@@ -69,7 +72,10 @@ module.exports = (create) => {
 
       await new Promise((resolve) => {
         ws1.discovery.once('peer', ({ multiaddrs }) => {
-          expect(multiaddrs.some((m) => m.equals(ws3._signallingAddr))).to.equal(true)
+          // Check first of the signal addresses
+          const [sigRefs] = ws3.sigReferences.values()
+
+          expect(multiaddrs.some((m) => m.equals(sigRefs.signallingAddr))).to.equal(true)
           resolve()
         })
       })

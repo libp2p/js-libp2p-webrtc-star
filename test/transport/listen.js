@@ -19,7 +19,7 @@ module.exports = (create) => {
       const listener = ws.createListener(() => {})
 
       await listener.listen(ma)
-      listener.close()
+      await listener.close()
     })
 
     it('listen, check for listening event', async () => {
@@ -69,7 +69,7 @@ module.exports = (create) => {
       const addrs = listener.getAddrs()
       expect(addrs[0]).to.deep.equal(ma)
 
-      listener.close()
+      await listener.close()
     })
 
     it('getAddrs with peer id', async () => {
@@ -81,7 +81,22 @@ module.exports = (create) => {
       const addrs = listener.getAddrs()
       expect(addrs[0]).to.deep.equal(ma)
 
-      listener.close()
+      await listener.close()
+    })
+
+    it('can only listen on one address per listener', async () => {
+      const listener = ws.createListener(() => { })
+
+      await listener.listen(ma)
+
+      try {
+        await listener.listen(ma)
+      } catch (err) {
+        expect(err).to.exist()
+        await listener.close()
+        return
+      }
+      throw new Error('can only listen on one address per listener')
     })
   })
 }

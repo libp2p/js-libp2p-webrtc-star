@@ -19,7 +19,7 @@ const PeerId = require('peer-id')
 const { CODE_CIRCUIT } = require('./constants')
 const createListener = require('./listener')
 const toConnection = require('./socket-to-conn')
-const { cleanMultiaddr } = require('./utils')
+const { cleanMultiaddr, cleanUrlSIO } = require('./utils')
 
 function noop () { }
 
@@ -39,8 +39,6 @@ class WebRTCStar {
 
     this._upgrader = options.upgrader
 
-    this._signallingAddr = undefined
-
     this.sioOptions = {
       transports: ['websocket'],
       'force new connection': true
@@ -50,7 +48,8 @@ class WebRTCStar {
       this.wrtc = options.wrtc
     }
 
-    this.listenersRefs = {}
+    // Keep Signalling references
+    this.sigReferences = new Map()
 
     // Discovery
     this.discovery = new EventEmitter()
@@ -105,8 +104,9 @@ class WebRTCStar {
     const cOpts = ma.toOptions()
 
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
-    const sioClient = this
-      .listenersRefs[Object.keys(this.listenersRefs)[0]].io
+
+    const sio = this.sigReferences.get(cleanUrlSIO(ma))
+    const sioClient = sio.listener.io
 
     return new Promise((resolve, reject) => {
       const start = Date.now()
@@ -162,7 +162,7 @@ class WebRTCStar {
       channel.on('signal', (signal) => {
         sioClient.emit('ss-handshake', {
           intentId: intentId,
-          srcMultiaddr: this._signallingAddr.toString(),
+          srcMultiaddr: sio.signallingAddr.toString(),
           dstMultiaddr: ma.toString(),
           signal: signal
         })

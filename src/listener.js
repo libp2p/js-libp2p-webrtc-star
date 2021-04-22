@@ -5,7 +5,7 @@ const debug = require('debug')
 const log = debug('libp2p:webrtc-star:listener')
 log.error = debug('libp2p:webrtc-star:listener:error')
 
-const { Multiaddr } = require('multiaddr')
+const errCode = require('err-code')
 const io = require('socket.io-client-next')
 const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
@@ -23,26 +23,35 @@ const sioOptions = {
 module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
   const listener = new EventEmitter()
   let listeningAddr
+  let signallingUrl
 
   listener.__connections = []
   listener.__spChannels = new Map()
   listener.__pendingIntents = new Map()
   listener.listen = (ma) => {
+    // Should only be used if not already listening
+    if (listeningAddr) {
+      throw errCode(new Error('listener already in use'), 'ERR_ALREADY_LISTENING')
+    }
+
     const defer = pDefer()
 
+    // Should be kept unmodified
     listeningAddr = ma
+
+    let signallingAddr
     if (!ma.protoCodes().includes(CODE_P2P) && upgrader.localPeer) {
-      WebRTCStar._signallingAddr = ma.encapsulate(`/p2p/${upgrader.localPeer.toB58String()}`)
+      signallingAddr = ma.encapsulate(`/p2p/${upgrader.localPeer.toB58String()}`)
     } else {
-      WebRTCStar._signallingAddr = ma
+      signallingAddr = ma
     }
 
     listener.on('error', () => defer.reject())
 
-    const sioUrl = cleanUrlSIO(ma)
+    signallingUrl = cleanUrlSIO(ma)
 
-    log('Dialing to Signalling Server on: ' + sioUrl)
-    listener.io = io.connect(sioUrl, sioOptions)
+    log('Dialing to Signalling Server on: ' + signallingUrl)
+    listener.io = io.connect(signallingUrl, sioOptions)
 
     const incommingDial = (offer) => {
       if (offer.answer || offer.err || !offer.intentId) {
@@ -136,7 +145,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     listener.io.on('ws-peer', WebRTCStar._peerDiscovered)
 
     listener.io.on('connect', () => {
-      listener.io.emit('ss-join', WebRTCStar._signallingAddr.toString())
+      listener.io.emit('ss-join', signallingAddr.toString())
     })
 
     listener.io.once('connect', () => {
@@ -144,26 +153,35 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       defer.resolve()
     })
 
+    // Store listen and signal reference addresses
+    WebRTCStar.sigReferences.set(signallingUrl, {
+      listener,
+      signallingAddr
+    })
+
     return defer.promise
   }
 
   listener.close = async () => {
-    if (listener.io) {
-      listener.io.emit('ss-leave')
-      listener.io.close()
+    // Close listener
+    const ref = WebRTCStar.sigReferences.get(signallingUrl)
+    if (ref && ref.listener.io) {
+      ref.listener.io.emit('ss-leave')
+      ref.listener.io.close()
     }
 
     await Promise.all(listener.__connections.map(maConn => maConn.close()))
     listener.emit('close')
-
     listener.removeAllListeners()
+
+    // Reset state
+    listeningAddr = undefined
+    WebRTCStar.sigReferences.delete(signallingUrl)
   }
 
   listener.getAddrs = () => {
     return [listeningAddr]
   }
-
-  WebRTCStar.listenersRefs[Multiaddr.toString()] = listener
 
   return listener
 }
