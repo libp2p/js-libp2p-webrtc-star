@@ -102,13 +102,17 @@ class WebRTCStar {
     if (this.wrtc) { spOptions.wrtc = this.wrtc }
 
     const cOpts = ma.toOptions()
-
     const intentId = (~~(Math.random() * 1e9)).toString(36) + Date.now()
 
-    const sio = this.sigReferences.get(cleanUrlSIO(ma))
-    const sioClient = sio.listener.io
-
     return new Promise((resolve, reject) => {
+      const sio = this.sigReferences.get(cleanUrlSIO(ma))
+
+      if (!sio || !sio.listener) {
+        return reject(errcode(new Error('unknown signal server to use'), 'ERR_UNKNOWN_SIGNAL_SERVER'))
+      }
+
+      const sioClient = sio.listener.io
+
       const start = Date.now()
       let connected
 
