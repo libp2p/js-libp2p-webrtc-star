@@ -88,30 +88,14 @@ module.exports = (create) => {
       this.timeout(20 * 1000)
       const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
-      try {
-        await ws1.dial(maOffline)
-      } catch (err) {
-        expect(err).to.be.an.instanceOf(Error)
-        expect(err).to.have.property('code', 'ERR_SIGNALLING_FAILED')
-        return
-      }
-
-      throw new Error('dial did not fail')
+      return expect(ws1.dial(maOffline)).to.eventually.be.rejected.and.have.property('code', 'ERR_SIGNALLING_FAILED')
     })
 
     it('dial unknown signal server, check promise rejected', async function () {
       this.timeout(20 * 1000)
       const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15559/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
-      try {
-        await ws1.dial(maOffline)
-      } catch (err) {
-        expect(err).to.be.an.instanceOf(Error)
-        expect(err).to.have.property('code', 'ERR_UNKNOWN_SIGNAL_SERVER')
-        return
-      }
-
-      throw new Error('dial did not fail')
+      return expect(ws1.dial(maOffline)).to.eventually.be.rejected.and.have.property('code', 'ERR_UNKNOWN_SIGNAL_SERVER')
     })
 
     it.skip('dial on IPv6', (done) => {
