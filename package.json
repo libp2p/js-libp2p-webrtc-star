@@ -1,6 +1,6 @@
 {
   "name": "libp2p-webrtc-star",
-  "version": "0.22.2",
+  "version": "0.22.3",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
@@ -86,8 +86,8 @@
     "Jacob Heun <jacobheun@gmail.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Yahya <ya7yaz@gmail.com>",
-    "Pedro Teixeira <i@pgte.me>",
     "Alex Potsides <alex@achingbrain.net>",
+    "Pedro Teixeira <i@pgte.me>",
     "Maciej Krüger <mkg20001@gmail.com>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>",
