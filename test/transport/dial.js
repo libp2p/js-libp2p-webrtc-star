@@ -21,7 +21,7 @@ function fire (socket, event) {
 }
 
 module.exports = (create) => {
-  describe('dial', () => {
+  describe.only('dial', () => {
     let ws1
     let ws2
     let ma1

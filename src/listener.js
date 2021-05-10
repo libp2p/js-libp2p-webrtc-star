@@ -84,12 +84,16 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
       channel = new SimplePeer(spOptions)
 
+      console.log('income 1')
+
       const onError = (err) => {
+        console.log('errrrr', error)
         log.error('incoming connectioned errored', err)
       }
 
       channel.on('error', onError)
       channel.once('close', (...args) => {
+        console.log('close')
         channel.removeListener('error', onError)
       })
 
@@ -106,6 +110,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       listener.__pendingIntents.set(intentId, [])
 
       channel.once('connect', async () => {
+        console.log('income 2')
         const maConn = toConnection(channel)
         log('new inbound connection %s', maConn.remoteAddr)
 
@@ -135,7 +140,10 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       listener.__spChannels.set(intentId, channel)
     }
 
-    listener.io.once('connect_error', (err) => defer.reject(err))
+    listener.io.once('connect_error', async (err) => {
+      await listener.close()
+      defer.reject(err)
+    })
     listener.io.once('error', (err) => {
       listener.emit('error', err)
       listener.emit('close')
@@ -171,6 +179,14 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     }
 
     await Promise.all(listener.__connections.map(maConn => maConn.close()))
+
+    // Clean up on going connection attempts
+    listener.__spChannels.forEach((channel) => {
+      // TODO: Not working as expected
+      channel.destroy()
+      channel.removeAllListeners()
+    })
+
     listener.emit('close')
     listener.removeAllListeners()
 

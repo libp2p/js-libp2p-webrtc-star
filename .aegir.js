@@ -4,7 +4,7 @@ const sigServer = require('./src/sig-server')
 let firstRun = true
 let sigServers = []
 
-async function boot () {
+async function before () {
   const options1 = {
     port: 15555,
     host: '127.0.0.1',
@@ -33,13 +33,13 @@ async function boot () {
   sigServers.forEach((sig) => console.log(sig.info.uri))
 }
 
-async function stop () {
+async function after () {
   await Promise.all(sigServers.map(s => s.stop()))
 }
 
 module.exports = {
-  hooks: {
-    pre: boot,
-    post: stop
+  test: {
+    before,
+    after
   }
 }
