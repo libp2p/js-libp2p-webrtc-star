@@ -78,7 +78,7 @@
     "socket.io-next": "npm:socket.io@^3.1.2",
     "socket.io-client-next": "npm:socket.io-client@^3.1.2",
     "stream-to-it": "^0.2.2",
-    "streaming-iterables": "^5.0.3"
+    "streaming-iterables": "^6.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
