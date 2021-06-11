@@ -37,6 +37,7 @@ async function stop () {
   await Promise.all(sigServers.map(s => s.stop()))
 }
 
+/** @type {import('aegir').PartialOptions} */
 module.exports = {
   test: {
     before: boot,
