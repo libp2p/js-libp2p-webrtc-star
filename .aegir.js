@@ -38,8 +38,8 @@ async function stop () {
 }
 
 module.exports = {
-  hooks: {
-    pre: boot,
-    post: stop
+  test: {
+    before: boot,
+    after: stop
   }
 }
