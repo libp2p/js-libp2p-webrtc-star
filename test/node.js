@@ -6,8 +6,30 @@ const electronWebRTC = require('electron-webrtc')
 const PeerId = require('peer-id')
 const WStar = require('..')
 
-require('./sig-server-next.js')
-require('./sig-server.js')
+// Test v4, v3 and v2 clients against the socket server
+require('./sig-server.js')(
+  'socket.io-client@v4',
+  require('socket.io-client'), {
+    transports: ['websocket'],
+    forceNew: true,
+    path: '/socket.io-next/' // TODO: This should be removed when socket.io@2 support is removed
+  }
+)
+require('./sig-server.js')(
+  'socket.io-client@v3',
+  require('socket.io-client-v3'), {
+    transports: ['websocket'],
+    forceNew: true,
+    path: '/socket.io-next/' // TODO: This should be removed when socket.io@2 support is removed
+  }
+)
+require('./sig-server.js')(
+  'socket.io-client@v2',
+  require('socket.io-client-v2'), {
+    transports: ['websocket'],
+    forceNew: true
+  }
+)
 
 const mockUpgrader = {
   upgradeInbound: maConn => maConn,

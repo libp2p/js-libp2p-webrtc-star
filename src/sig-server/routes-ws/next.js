@@ -2,7 +2,7 @@
 
 const config = require('../config')
 const log = config.log
-const socketIO = require('socket.io-next')
+const socketIO = require('socket.io')
 const client = require('prom-client')
 
 const fake = {

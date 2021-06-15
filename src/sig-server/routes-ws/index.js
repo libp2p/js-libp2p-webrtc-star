@@ -2,7 +2,7 @@
 
 const config = require('../config')
 const log = config.log
-const SocketIO = require('socket.io')
+const socketIO = require('socket.io-v2')
 const client = require('prom-client')
 
 const fake = {
@@ -15,7 +15,7 @@ const fake = {
 }
 
 module.exports = (http, hasMetrics) => {
-  const io = new SocketIO(http.listener)
+  const io = socketIO(http.listener)
   io.on('connection', handle)
 
   http.events.on('stop', () => io.close())
