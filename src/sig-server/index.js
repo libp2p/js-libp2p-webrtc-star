@@ -29,7 +29,7 @@ module.exports = {
     const peers = require('./routes-ws')(http, options.metrics).peers
 
     http.peers = () => ({
-      ...peers(),
+      ...peers()
     })
 
     http.route({
