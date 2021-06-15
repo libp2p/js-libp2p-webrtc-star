@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm install @mapbox/node-pre-gyp -g
       - run: npm install
-      - run: npx aegir test -t node --cov --bail
+      - run: npm run test:node -- --cov --bail
       - uses: codecov/codecov-action@v1
   test-chrome:
     needs: check
@@ -39,11 +39,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
-      - run: npx aegir test -t browser --bail
+      - run: npm run test:browser -- --bail
   test-firefox:
     needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: npm install
-      - run: npx aegir test -t browser --bail -- --browser firefox
+      - run: npm run test:browser -- --browser firefox  --bail
