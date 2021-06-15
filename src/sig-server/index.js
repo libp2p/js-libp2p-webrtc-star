@@ -27,11 +27,9 @@ module.exports = {
     log('signaling server has started on: ' + http.info.uri)
 
     const peers = require('./routes-ws')(http, options.metrics).peers
-    const nextPeers = require('./routes-ws/next')(http, options.metrics).peers
 
     http.peers = () => ({
       ...peers(),
-      ...nextPeers()
     })
 
     http.route({

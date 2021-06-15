@@ -2,7 +2,7 @@
 
 const config = require('../config')
 const log = config.log
-const socketIO = require('socket.io-v2')
+const socketIO = require('socket.io')
 const client = require('prom-client')
 
 const fake = {
@@ -15,7 +15,15 @@ const fake = {
 }
 
 module.exports = (http, hasMetrics) => {
-  const io = socketIO(http.listener)
+  const io = socketIO({
+    allowEIO3: true // allow socket.io v2 clients to connect
+  })
+  io.attach(http.listener, {
+    path: '/socket.io' // v2/v3/v4 clients can use this path
+  })
+  io.attach(http.listener, {
+    path: '/socket.io-next' // v3/v4 clients might be using this path
+  })
   io.on('connection', handle)
 
   http.events.on('stop', () => io.close())
