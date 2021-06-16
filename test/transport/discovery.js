@@ -32,7 +32,7 @@ module.exports = (create) => {
           // Check first of the signal addresses
           const [sigRefs] = ws2.sigReferences.values()
 
-          expect(multiaddrs.some((m) => m.equals(sigRefs.signallingAddr))).to.equal(true)
+          expect(multiaddrs.map(m => m.toString())).to.include(sigRefs.signallingAddr.toString())
           resolve()
         })
       })

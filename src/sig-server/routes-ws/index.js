@@ -2,7 +2,7 @@
 
 const config = require('../config')
 const log = config.log
-const SocketIO = require('socket.io')
+const socketIO = require('socket.io')
 const client = require('prom-client')
 
 const fake = {
@@ -15,7 +15,15 @@ const fake = {
 }
 
 module.exports = (http, hasMetrics) => {
-  const io = new SocketIO(http.listener)
+  const io = socketIO({
+    allowEIO3: true // allow socket.io v2 clients to connect
+  })
+  io.attach(http.listener, {
+    path: '/socket.io' // v2/v3/v4 clients can use this path
+  })
+  io.attach(http.listener, {
+    path: '/socket.io-next' // v3/v4 clients might be using this path
+  })
   io.on('connection', handle)
 
   http.events.on('stop', () => io.close())
@@ -23,10 +31,10 @@ module.exports = (http, hasMetrics) => {
   const peers = {}
 
   const peersMetric = hasMetrics ? new client.Gauge({ name: 'webrtc_star_peers', help: 'peers online now' }) : fake.gauge
-  const dialsSuccessTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_dials_total_success', help: 'sucessfully completed dials since server started' }) : fake.counter
+  const dialsSuccessTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_dials_total_success', help: 'successfully completed dials since server started' }) : fake.counter
   const dialsFailureTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_dials_total_failure', help: 'failed dials since server started' }) : fake.counter
   const dialsTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_dials_total', help: 'all dials since server started' }) : fake.counter
-  const joinsSuccessTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total_success', help: 'sucessfully completed joins since server started' }) : fake.counter
+  const joinsSuccessTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total_success', help: 'successfully completed joins since server started' }) : fake.counter
   const joinsFailureTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total_failure', help: 'failed joins since server started' }) : fake.counter
   const joinsTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total', help: 'all joins since server started' }) : fake.counter
 

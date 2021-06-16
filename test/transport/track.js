@@ -49,7 +49,6 @@ module.exports = (create) => {
     })
 
     it('should untrack conn after being closed', async function () {
-      this.timeout(20e3)
       expect(listener.__connections).to.have.lengthOf(0)
 
       // Use one of the signal addresses

@@ -5,9 +5,55 @@ const wrtc = require('wrtc')
 const electronWebRTC = require('electron-webrtc')
 const PeerId = require('peer-id')
 const WStar = require('..')
+const sigServerTests = require('./sig-server')
 
-require('./sig-server-next.js')
-require('./sig-server.js')
+// Test v4, v3 and v2 clients against the socket server
+
+sigServerTests(
+  'socket.io-client@v4 (next path)',
+  require('socket.io-client'), {
+    transports: ['websocket'],
+    forceNew: true,
+    path: '/socket.io-next/' // TODO: This should be removed when socket.io@2 support is removed
+  }
+)
+sigServerTests(
+  'socket.io-client@v3 (next path)',
+  require('socket.io-client-v3'), {
+    transports: ['websocket'],
+    forceNew: true,
+    path: '/socket.io-next/' // TODO: This should be removed when socket.io@2 support is removed
+  }
+)
+sigServerTests(
+  'socket.io-client@v2 (next path)',
+  require('socket.io-client-v2'), {
+    transports: ['websocket'],
+    forceNew: true,
+    path: '/socket.io-next/' // TODO: This should be removed when socket.io@2 support is removed
+  }
+)
+sigServerTests(
+  'socket.io-client@v4 (root path)',
+  require('socket.io-client'), {
+    transports: ['websocket'],
+    forceNew: true
+  }
+)
+sigServerTests(
+  'socket.io-client@v3 (root path)',
+  require('socket.io-client-v3'), {
+    transports: ['websocket'],
+    forceNew: true
+  }
+)
+sigServerTests(
+  'socket.io-client@v2 (root path)',
+  require('socket.io-client-v2'), {
+    transports: ['websocket'],
+    forceNew: true
+  }
+)
 
 const mockUpgrader = {
   upgradeInbound: maConn => maConn,

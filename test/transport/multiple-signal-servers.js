@@ -36,7 +36,6 @@ module.exports = (create) => {
     })
 
     it('can dial the first listener using multiple signal servers in one listener', async function () {
-      this.timeout(20 * 1000)
       // Listen on two signalling servers in one instance
       const listener1m1 = ws1.createListener((conn) => pipe(conn, conn))
       await listener1m1.listen(ma1)
@@ -65,7 +64,6 @@ module.exports = (create) => {
     })
 
     it('can dial the last listener using multiple signal servers in one listener', async function () {
-      this.timeout(20 * 1000)
       // Listen on two signalling servers in one instance
       const listener1m1 = ws1.createListener((conn) => pipe(conn, conn))
       await listener1m1.listen(ma1)
@@ -94,8 +92,6 @@ module.exports = (create) => {
     })
 
     it('can close a single listener', async function () {
-      this.timeout(20 * 1000)
-
       const listener1m1 = ws1.createListener(() => { })
       await listener1m1.listen(ma1)
 

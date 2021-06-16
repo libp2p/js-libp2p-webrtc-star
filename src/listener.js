@@ -6,7 +6,7 @@ const log = debug('libp2p:webrtc-star:listener')
 log.error = debug('libp2p:webrtc-star:listener:error')
 
 const errCode = require('err-code')
-const io = require('socket.io-client-next')
+const io = require('socket.io-client')
 const SimplePeer = require('libp2p-webrtc-peer')
 const pDefer = require('p-defer')
 
@@ -53,7 +53,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
     log('Dialing to Signalling Server on: ' + signallingUrl)
     listener.io = io.connect(signallingUrl, sioOptions)
 
-    const incommingDial = (offer) => {
+    const incomingDial = (offer) => {
       if (offer.answer || offer.err || !offer.intentId) {
         return
       }
@@ -85,7 +85,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       channel = new SimplePeer(spOptions)
 
       const onError = (err) => {
-        log.error('incoming connectioned errored', err)
+        log.error('incoming connection errored', err)
       }
 
       channel.on('error', onError)
@@ -141,7 +141,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
       listener.emit('close')
     })
 
-    listener.io.on('ws-handshake', incommingDial)
+    listener.io.on('ws-handshake', incomingDial)
     listener.io.on('ws-peer', WebRTCStar._peerDiscovered)
 
     listener.io.on('connect', () => {
