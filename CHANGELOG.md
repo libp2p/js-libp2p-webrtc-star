@@ -1,3 +1,17 @@
+# [0.23.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.22.4...v0.23.0) (2021-07-07)
+
+
+### chore
+
+* update deps ([#365](https://github.com/libp2p/js-libp2p-webrtc-star/issues/365)) ([e4360f2](https://github.com/libp2p/js-libp2p-webrtc-star/commit/e4360f28fe77fecd1e16568e85c6b17bb6a25ade))
+
+
+### BREAKING CHANGES
+
+* uses new major of multiaddr, mafmt and friends
+
+
+
 ## [0.22.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/v0.22.3...v0.22.4) (2021-06-16)
 
 
