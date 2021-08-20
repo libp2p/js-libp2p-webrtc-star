@@ -7,7 +7,7 @@ const { expect } = require('aegir/utils/chai')
 const { Multiaddr } = require('multiaddr')
 const pipe = require('it-pipe')
 const { collect } = require('streaming-iterables')
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 const SimplePeer = require('libp2p-webrtc-peer')
 const sinon = require('sinon')
 
