@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "reset": "npm run clean && rimraf ./node_modules ./package-lock.json packages/*/node_modules packages/*/package-lock.json",
+    "link": "lerna link",
     "clean": "lerna run clean",
     "test": "lerna run test",
     "test:node": "lerna run test:node",

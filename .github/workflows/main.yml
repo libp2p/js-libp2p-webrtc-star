@@ -29,8 +29,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
            npm install
-           npm run build
-           npm run link
+           npm run build --if-present
+           npm run link --if-present
 
   check:
     name: Check
@@ -56,8 +56,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           npm install
-          npm run build
-          npm run link
+          npm run build --if-present
+          npm run link --if-present
       - run: |
           npm run lint
           npm run dep-check -- -- -- -p
@@ -93,8 +93,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           npm install
-          npm run build
-          npm run link
+          npm run build --if-present
+          npm run link --if-present
       - run: npm run test:node -- --since ${{ github.event.pull_request.base.sha }} --concurrency 1
 
   test-browser:
@@ -131,8 +131,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           npm install
-          npm run build
-          npm run link
+          npm run build --if-present
+          npm run link --if-present
       - run: npm run test:browser -- --since ${{ github.event.pull_request.base.sha }} --concurrency 1 -- -- -- --browser ${{ matrix.browser }}
 
   test-electron-main:
@@ -161,8 +161,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           npm install
-          npm run build
-          npm run link
+          npm run build --if-present
+          npm run link --if-present
       - uses: GabrielBB/xvfb-action@v1
         with:
           run: npm run test:electron-main -- --since ${{ github.event.pull_request.base.sha }} --concurrency 1 -- -- --bail
@@ -193,8 +193,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           npm install
-          npm run build
-          npm run link
+          npm run build --if-present
+          npm run link --if-present
       - uses: GabrielBB/xvfb-action@v1
         with:
           run: npm run test:electron-renderer -- --since ${{ github.event.pull_request.base.sha }} --concurrency 1 -- -- --bail
