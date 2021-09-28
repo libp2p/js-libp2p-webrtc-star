@@ -1,113 +1,37 @@
 {
   "name": "libp2p-webrtc-star",
-  "version": "0.23.0",
+  "version": "1.0.0",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
-  "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
-  "main": "src/index.js",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "bin": {
-    "webrtc-star": "src/sig-server/bin.js",
-    "star-sig": "src/sig-server/bin.js",
-    "star-signal": "src/sig-server/bin.js"
-  },
+  "private": true,
   "scripts": {
-    "star-signal": "node src/sig-server/bin.js",
-    "lint": "aegir lint",
-    "build": "aegir build",
-    "test": "aegir test -t node -t browser --timeout 20000 -- --exit",
-    "test:node": "aegir test -t node --timeout 20000 -- --exit",
-    "test:browser": "aegir test -t browser --timeout 20000 -- --exit",
-    "test:dns": "WEBRTC_STAR_REMOTE_SIGNAL_DNS=1 aegir test -t browser --timeout 20000 -- --exit",
-    "test:ip": "WEBRTC_STAR_REMOTE_SIGNAL_IP=1 aegir test -t browser --timeout 20000 -- --exit",
-    "release": "aegir release -t node -t browser",
-    "release-minor": "aegir release --type minor -t node -t browser",
-    "release-major": "aegir release --type major -t node -t browser",
-    "coverage": "aegir coverage",
-    "coverage-publish": "aegir coverage --provider coveralls"
+    "reset": "npm run clean && rimraf ./node_modules ./package-lock.json packages/*/node_modules packages/*/package-lock.json",
+    "clean": "lerna run clean",
+    "test": "lerna run test",
+    "test:node": "lerna run test:node",
+    "test:browser": "lerna run test:browser",
+    "test:webworker": "lerna run test:webworker",
+    "test:electron-main": "lerna run test:electron-main",
+    "test:electron-renderer": "lerna run test:electron-renderer",
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "release": "lerna run build && lerna publish",
+    "dep-check": "lerna run dep-check"
   },
-  "engines": {
-    "node": ">=14.0.0"
-  },
+  "homepage": "https://github.com/ipfs/js-ipfs-interfaces/tree/master#readme",
+  "bugs": "https://github.com/ipfs/js-ipfs-interfaces/issues",
+  "license": "(Apache-2.0 OR MIT)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/libp2p/js-libp2p-webrtc-star.git"
+    "url": "git+https://github.com/ipfs/js-ipfs-interfaces.git"
   },
-  "keywords": [
-    "IPFS",
-    "libp2p"
+  "workspaces": [
+    "packages/*"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/libp2p/js-libp2p-webrtc-star/issues"
-  },
-  "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
-  "devDependencies": {
-    "aegir": "^35.0.0",
-    "electron-webrtc": "~0.3.0",
-    "libp2p-interfaces": "^1.1.0",
-    "libp2p-interfaces-compliance-tests": "^1.1.0",
-    "node-pre-gyp": "^0.17.0",
-    "p-wait-for": "^3.1.0",
-    "sinon": "^11.1.0",
-    "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
-    "socket.io-client-v3": "npm:socket.io-client@^3.1.2",
-    "uint8arrays": "^3.0.0",
-    "util": "^0.12.4",
-    "wrtc": "^0.4.6"
-  },
   "dependencies": {
-    "@hapi/hapi": "^20.0.0",
-    "@hapi/inert": "^6.0.3",
-    "abortable-iterator": "^3.0.0",
-    "class-is": "^1.1.0",
-    "debug": "^4.2.0",
-    "err-code": "^3.0.1",
-    "ipfs-utils": "^8.1.2",
-    "it-pipe": "^1.1.0",
-    "libp2p-utils": "^0.4.0",
-    "libp2p-webrtc-peer": "^10.0.1",
-    "mafmt": "^10.0.0",
-    "menoetius": "0.0.2",
-    "minimist": "^1.2.5",
-    "multiaddr": "^10.0.0",
-    "p-defer": "^3.0.0",
-    "peer-id": "^0.15.0",
-    "prom-client": "^13.0.0",
-    "socket.io": "^4.1.2",
-    "socket.io-client": "^4.1.2",
-    "stream-to-it": "^0.2.2",
-    "streaming-iterables": "^6.0.0"
+    "lerna": "^4.0.0",
+    "rimraf": "^3.0.2"
   },
-  "contributors": [
-    "David Dias <daviddias.p@gmail.com>",
-    "Vasco Santos <vasco.santos@moxy.studio>",
-    "Jacob Heun <jacobheun@gmail.com>",
-    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
-    "Yahya <ya7yaz@gmail.com>",
-    "Alex Potsides <alex@achingbrain.net>",
-    "Pedro Teixeira <i@pgte.me>",
-    "Maciej Krüger <mkg20001@gmail.com>",
-    "Dmitriy Ryajov <dryajov@gmail.com>",
-    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>",
-    "Alan Shaw <alan.shaw@protocol.ai>",
-    "Smite Chow <xiaopengyou2no1@gmail.com>",
-    "Hugo Dias <mail@hugodias.me>",
-    "michaelfakhri <fakhrimichael@live.com>",
-    "Juan Benet <juan@benet.ai>",
-    "Jacob Friedman <friedjacob@gmail.com>",
-    "Richard Littauer <richard.littauer@gmail.com>",
-    "SeungWon <ksw3894@gmail.com>",
-    "Steverman <Steverman@users.noreply.github.com>",
-    "Flarp <flurpdadurp@gmail.com>",
-    "anders <andersb@tuta.io>",
-    "Diogo Silva <fsdiogo@gmail.com>",
-    "dmitriy ryajov <dryajov@dmitriys-MBP.HomeNET>",
-    "Andrey Petrov <shazow@gmail.com>",
-    "Baris Gumustas <barisgumustas@gmail.com>",
-    "interfect <interfect@gmail.com>",
-    "kumavis <kumavis@users.noreply.github.com>"
-  ]
+  "engines": {
+    "npm": ">=7.0.0"
+  }
 }
