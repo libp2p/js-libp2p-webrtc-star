@@ -2,7 +2,6 @@
   "name": "libp2p-webrtc-star",
   "version": "0.23.0",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
-  "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
   "files": [
     "dist",
