@@ -82,7 +82,7 @@ await listener.close()
 
 ## Signalling server
 
-This module has an accompanying signalling server which is used to perform peer discovery.
+This module has an accompanying signalling server which is used to discover other peers running the libp2p-webrtc-star transport.
 
 Please see the [libp2p-webrtc-star-signalling-server](https://npmjs.com/package/libp2p-webrtc-star-signalling-server) module for more information.
 
