@@ -13,6 +13,7 @@
 - [Usage](#usage)
   - [Using this module in Node.js (read: not in the browser)](#using-this-module-in-nodejs-read-not-in-the-browser)
   - [Using this module in the Browser](#using-this-module-in-the-browser)
+- [Signalling server](#signalling-server)
 - [API](#api)
   - [Transport](#transport)
   - [Connection](#connection)
@@ -78,6 +79,12 @@ console.log(`Value: ${values.toString()}`)
 // Close connection after reading
 await listener.close()
 ```
+
+## Signalling server
+
+This module has an accompanying signalling server which is used to perform peer discovery.
+
+Please see the [libp2p-webrtc-star-signalling-server](https://npmjs.com/package/libp2p-webrtc-star-signalling-server) module for more information.
 
 ## API
 
