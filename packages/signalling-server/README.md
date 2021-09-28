@@ -9,18 +9,15 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Description](#description)
+- [Install](#install)
 - [Usage](#usage)
-  - [Install](#install)
-- [Usage](#usage-1)
 - [Hosted Rendezvous Server](#hosted-rendezvous-server)
 
 ## Description
 
 Nodes using the `libp2p-webrtc-star` transport will connect to a known point in the network, a rendezvous point where they can learn about other nodes (Discovery) and exchange their [SDP offers (signalling data)](https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/).
 
-## Usage
-
-### Install
+## Install
 
 ```bash
 > npm install -g libp2p-webrtc-star-signalling-server

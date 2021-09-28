@@ -9,9 +9,8 @@
 ## Table of Contents <!-- omit in toc -->
 
 - [Description](#description)
+- [Install](#install)
 - [Usage](#usage)
-  - [Install](#install)
-- [Usage](#usage-1)
   - [Using this module in Node.js (read: not in the browser)](#using-this-module-in-nodejs-read-not-in-the-browser)
   - [Using this module in the Browser](#using-this-module-in-the-browser)
 - [API](#api)
@@ -23,9 +22,7 @@
 
 `libp2p-webrtc-star` is one of the WebRTC transports available for libp2p.
 
-## Usage
-
-### Install
+## Install
 
 ```bash
 > npm install libp2p-webrtc-star
