@@ -3,7 +3,7 @@ FROM node:lts-alpine as node
 FROM node as builder
 
 # Install deps
-RUN apk add --update git build-base python3 libressl-dev ca-certificates
+RUN apk add build-base python3 libressl-dev ca-certificates
 
 # Setup directories for the `node` user
 RUN mkdir -p /home/node/app/webrtc-star/node_modules && chown -R node:node /home/node/app/webrtc-star
@@ -11,13 +11,13 @@ RUN mkdir -p /home/node/app/webrtc-star/node_modules && chown -R node:node /home
 WORKDIR /home/node/app/webrtc-star
 
 # Install node modules
-COPY package.json ./
+COPY packages/signalling-server/package.json ./
 # Switch to the node user for installation
 RUN npm install --production
 
 # Copy over source files under the node user
-COPY ./src ./src
-COPY ./README.md ./
+COPY ./packages/signalling-server/src ./src
+COPY ./packages/signalling-server/README.md ./
 
 # Start from a clean node image
 FROM node as server
@@ -36,4 +36,4 @@ EXPOSE 9090
 #   --port=9090 --host=0.0.0.0 --disableMetrics=false
 # Server logging can be enabled via the DEBUG environment variable:
 #   DEBUG=signalling-server,signalling-server:error
-CMD [ "node", "src/sig-server/bin.js"]
+CMD [ "node", "src/bin.js"]

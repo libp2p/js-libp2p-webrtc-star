@@ -4,7 +4,7 @@
 const { expect } = require('aegir/utils/chai')
 const { Multiaddr } = require('multiaddr')
 
-const sigServer = require('../src/sig-server')
+const sigServer = require('../src')
 
 module.exports = (clientName, io, sioOptions) => {
   describe(`signalling ${clientName}`, () => {

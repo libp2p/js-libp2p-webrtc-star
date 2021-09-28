@@ -1,6 +1,6 @@
 'use strict'
 
-const sigServer = require('./src/sig-server')
+const sigServer = require('libp2p-webrtc-star-signalling-server')
 let firstRun = true
 let sigServers = []
 

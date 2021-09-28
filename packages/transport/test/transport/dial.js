@@ -6,7 +6,7 @@
 const { expect } = require('aegir/utils/chai')
 const { Multiaddr } = require('multiaddr')
 const pipe = require('it-pipe')
-const { collect } = require('streaming-iterables')
+const all = require('it-all')
 const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 const SimplePeer = require('libp2p-webrtc-peer')
 const sinon = require('sinon')
@@ -76,7 +76,7 @@ module.exports = (create) => {
       const values = await pipe(
         [data],
         conn,
-        collect
+        all
       )
 
       expect(values).to.eql([data])
