@@ -34,7 +34,7 @@
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-webrtc-star/issues"
   },
-  "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star/tree/master/packages/transport#readme",
   "devDependencies": {
     "@mapbox/node-pre-gyp": "^1.0.5",
     "aegir": "^33.2.0",
