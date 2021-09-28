@@ -37,7 +37,7 @@
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star/tree/master/packages/transport#readme",
   "devDependencies": {
     "@mapbox/node-pre-gyp": "^1.0.5",
-    "aegir": "^33.2.0",
+    "aegir": "^35.1.1",
     "electron-webrtc": "~0.3.0",
     "it-all": "^1.0.5",
     "libp2p-interfaces-compliance-tests": "^1.1.1",
