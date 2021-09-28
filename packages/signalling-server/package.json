@@ -22,7 +22,8 @@
     "release-minor": "aegir release --type minor",
     "release-major": "aegir release --type major",
     "coverage": "aegir coverage",
-    "coverage-publish": "aegir coverage --provider coveralls"
+    "coverage-publish": "aegir coverage --provider coveralls",
+    "dep-check": "aegir dep-check"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -42,39 +43,19 @@
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "devDependencies": {
     "aegir": "^33.2.0",
-    "electron-webrtc": "~0.3.0",
-    "libp2p-interfaces": "^0.12.1",
-    "node-pre-gyp": "^0.17.0",
-    "p-wait-for": "^3.1.0",
-    "sinon": "^11.1.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
-    "socket.io-client-v3": "npm:socket.io-client@^3.1.2",
-    "uint8arrays": "^3.0.0",
-    "util": "^0.12.4",
-    "wrtc": "^0.4.6"
+    "socket.io-client-v3": "npm:socket.io-client@^3.1.2"
   },
   "dependencies": {
     "@hapi/hapi": "^20.0.0",
     "@hapi/inert": "^6.0.3",
-    "abortable-iterator": "^3.0.0",
-    "class-is": "^1.1.0",
     "debug": "^4.2.0",
-    "err-code": "^3.0.1",
-    "ipfs-utils": "^8.1.2",
-    "it-pipe": "^1.1.0",
-    "libp2p-utils": "^0.4.0",
-    "libp2p-webrtc-peer": "^10.0.1",
-    "mafmt": "^10.0.0",
     "menoetius": "0.0.2",
     "minimist": "^1.2.5",
     "multiaddr": "^10.0.0",
-    "p-defer": "^3.0.0",
-    "peer-id": "^0.15.0",
     "prom-client": "^13.0.0",
     "socket.io": "^4.1.2",
-    "socket.io-client": "^4.1.2",
-    "stream-to-it": "^0.2.2",
-    "streaming-iterables": "^6.0.0"
+    "socket.io-client": "^4.1.2"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
