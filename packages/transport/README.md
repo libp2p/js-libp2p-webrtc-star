@@ -53,8 +53,7 @@ const ws2 = new WStar({ wrtc: electronWebRTC() })
 ```JavaScript
 const WStar = require('libp2p-webrtc-star')
 const multiaddr = require('multiaddr')
-const pipe = require('it-pipe')
-const { collect } = require('streaming-iterables')
+const all = require('it-all')
 
 const addr = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
 
@@ -72,10 +71,7 @@ await listener.listen(addr)
 console.log('listening')
 
 const socket = await ws.dial(addr)
-const values = await pipe(
-  socket,
-  collect
-)
+const values = await all(socket)
 
 console.log(`Value: ${values.toString()}`)
 
