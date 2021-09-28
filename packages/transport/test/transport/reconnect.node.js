@@ -4,7 +4,7 @@
 
 const { expect } = require('aegir/utils/chai')
 const { Multiaddr } = require('multiaddr')
-const sigServer = require('../../src/sig-server')
+const sigServer = require('libp2p-webrtc-star-signalling-server')
 
 const SERVER_PORT = 13580
 
