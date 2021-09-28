@@ -53,7 +53,7 @@
     "sinon": "^11.1.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
     "socket.io-client-v3": "npm:socket.io-client@^3.1.2",
-    "uint8arrays": "^2.0.5",
+    "uint8arrays": "^3.0.0",
     "util": "^0.12.4",
     "wrtc": "^0.4.6"
   },
