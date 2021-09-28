@@ -20,7 +20,7 @@
     "release-major": "aegir release --type major -t node -t browser",
     "coverage": "aegir coverage",
     "coverage-publish": "aegir coverage --provider coveralls",
-    "dep-check": "aegir dep-check -i @mapbox/node-pre-gyp"
+    "dep-check": "aegir dep-check -i @mapbox/node-pre-gyp -i util"
   },
   "repository": {
     "type": "git",
