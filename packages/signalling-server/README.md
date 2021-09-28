@@ -36,6 +36,21 @@ Defaults:
 - `port` - 9090
 - `host` - '0.0.0.0'
 
+Or in JavaScript:
+
+```js
+import { start } from 'libp2p-webrtc-star-signalling-server'
+
+const server = await start({
+  port: 24642,
+  host: '0.0.0.0',
+  metrics: false
+})
+
+// some time later
+await server.stop()
+```
+
 ## Hosted Rendezvous Server
 
 We host signaling servers at `wrtc-star1.par.dwebops.pub` and `wrtc-star2.sjc.dwebops.pub`, that can be used for practical demos and experimentation, it **should not be used for apps in production**. Check [Deployment.md](./DEPLOYMENT.md) for how to deploy your own server.
