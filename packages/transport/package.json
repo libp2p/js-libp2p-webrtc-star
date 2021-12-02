@@ -37,7 +37,7 @@
     "aegir": "^36.0.2",
     "electron-webrtc": "~0.3.0",
     "it-all": "^1.0.5",
-    "libp2p-interfaces-compliance-tests": "^1.1.1",
+    "libp2p-interfaces-compliance-tests": "^2.0.1",
     "libp2p-webrtc-star-signalling-server": "^0.1.1",
     "p-wait-for": "^3.1.0",
     "sinon": "^12.0.1",
@@ -57,7 +57,7 @@
     "mafmt": "^10.0.0",
     "multiaddr": "^10.0.0",
     "p-defer": "^3.0.0",
-    "peer-id": "^0.15.0",
+    "peer-id": "^0.16.0",
     "socket.io-client": "^4.1.2",
     "stream-to-it": "^0.2.2"
   },
