@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/libp2p-webrtc-star@0.24.1...libp2p-webrtc-star@0.25.0) (2021-12-02)
+
+
+### chore
+
+* update to new peer-id and libp2p-crypto ([#387](https://github.com/libp2p/js-libp2p-webrtc-star/issues/387)) ([28db4a0](https://github.com/libp2p/js-libp2p-webrtc-star/commit/28db4a0f8fbf78fe4023ac1e2e54dc72e0314d80))
+
+
+### BREAKING CHANGES
+
+* requires node 15+
+
+
+
+
+
 ## 0.24.1 (2021-11-30)
 
 

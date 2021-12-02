@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/libp2p-webrtc-star-signalling-server@0.1.1...libp2p-webrtc-star-signalling-server@0.1.2) (2021-12-02)
+
+**Note:** Version bump only for package libp2p-webrtc-star-signalling-server
+
+
+
+
+
 ## 0.1.1 (2021-11-30)
 
 
