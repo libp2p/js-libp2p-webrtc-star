@@ -111,7 +111,7 @@ module.exports = ({ handler, upgrader }, WebRTCStar, options = {}) => {
 
         let conn
         try {
-          conn = await upgrader.upgradeInbound(maConn)
+          conn = await upgrader.upgradeInbound(maConn, options)
         } catch (err) {
           log.error('inbound connection failed to upgrade', err)
           return maConn.close()

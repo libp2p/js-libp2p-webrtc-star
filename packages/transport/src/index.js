@@ -75,7 +75,7 @@ class WebRTCStar {
     const rawConn = await this._connect(ma, options)
     const maConn = toConnection(rawConn, { remoteAddr: ma, signal: options.signal })
     log('new outbound connection %s', maConn.remoteAddr)
-    const conn = await this._upgrader.upgradeOutbound(maConn)
+    const conn = await this._upgrader.upgradeOutbound(maConn, options)
     log('outbound connection %s upgraded', maConn.remoteAddr)
     return conn
   }
