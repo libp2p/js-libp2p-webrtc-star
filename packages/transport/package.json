@@ -51,7 +51,7 @@
     "debug": "^4.2.0",
     "err-code": "^3.0.1",
     "ipfs-utils": "^9.0.1",
-    "it-pipe": "^1.1.0",
+    "it-pipe": "^2.0.0",
     "libp2p-utils": "^0.4.0",
     "libp2p-webrtc-peer": "^10.0.1",
     "mafmt": "^10.0.0",
