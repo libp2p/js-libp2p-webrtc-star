@@ -46,7 +46,7 @@
     "wrtc": "^0.4.6"
   },
   "dependencies": {
-    "abortable-iterator": "^3.0.0",
+    "abortable-iterator": "^4.0.1",
     "class-is": "^1.1.0",
     "debug": "^4.2.0",
     "err-code": "^3.0.1",
