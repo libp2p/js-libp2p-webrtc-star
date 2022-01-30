@@ -1,0 +1,159 @@
+{
+  "name": "@libp2p/webrtc-star-signalling-server",
+  "version": "0.1.2",
+  "description": "signalling server to use with the libp2p WebRTC transport",
+  "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star/tree/master/packages/signalling-server#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-webrtc-star.git"
+  },
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-webrtc-star/issues"
+  },
+  "keywords": [
+    "IPFS",
+    "libp2p"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "bin": {
+    "webrtc-star": "bin/index.js",
+    "star-sig": "bin/index.js",
+    "star-signal": "bin/index.js"
+  },
+  "type": "module",
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "src",
+    "dist/src",
+    "!dist/test",
+    "!**/*.tsbuildinfo"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
+  },
+  "eslintConfig": {
+    "extends": "ipfs",
+    "parserOptions": {
+      "sourceType": "module"
+    }
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "breaking": true,
+              "release": "major"
+            },
+            {
+              "revert": true,
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "chore",
+              "release": "patch"
+            },
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "scope": "no-release",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "docs",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "test",
+                "section": "Tests"
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "aegir test -f ./dist/test/**/*.js",
+    "test:node": "npm run test -- -t node --cov",
+    "start": "node src/sig-server/bin.js"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.0.0",
+    "@hapi/inert": "^6.0.3",
+    "@libp2p/webrtc-star-protocol": "^0.0.0",
+    "@multiformats/multiaddr": "^10.1.2",
+    "debug": "^4.2.0",
+    "menoetius": "0.0.3",
+    "minimist": "^1.2.5",
+    "prom-client": "^14.0.0",
+    "socket.io": "^4.1.2",
+    "socket.io-client": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/hapi__hapi": "^20.0.10",
+    "@types/hapi__inert": "^5.2.3",
+    "aegir": "^36.1.3",
+    "p-event": "^5.0.1",
+    "p-wait-for": "^4.1.0",
+    "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
+    "socket.io-client-v3": "npm:socket.io-client@^3.1.2"
+  }
+}
