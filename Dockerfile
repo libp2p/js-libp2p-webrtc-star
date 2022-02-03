@@ -16,6 +16,7 @@ COPY packages/webrtc-star-signalling-server/package.json ./
 RUN npm install --production
 
 # Copy over source files under the node user
+COPY ./packages/webrtc-star-signalling-server/bin ./bin
 COPY ./packages/webrtc-star-signalling-server/src ./src
 COPY ./packages/webrtc-star-signalling-server/dist ./dist
 COPY ./packages/webrtc-star-signalling-server/README.md ./
@@ -37,4 +38,5 @@ EXPOSE 9090
 #   --port=9090 --host=0.0.0.0 --disableMetrics=false
 # Server logging can be enabled via the DEBUG environment variable:
 #   DEBUG=signalling-server,signalling-server:error
-CMD [ "node", "dist/src/bin.js"]
+RUN chmod +x bin/index.js
+CMD [ "node", "bin/index.js"]

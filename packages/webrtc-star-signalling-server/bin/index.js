@@ -3,7 +3,7 @@
 
 // Usage: $0 [--host <host>] [--port <port>] [--disable-metrics]
 
-import { sigServer } from './dist/src/index.js'
+import { sigServer } from '../dist/src/index.js'
 import minimist from 'minimist'
 
 const argv = minimist(process.argv.slice(2), {
