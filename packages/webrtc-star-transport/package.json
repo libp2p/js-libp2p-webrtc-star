@@ -143,8 +143,11 @@
     "@multiformats/multiaddr": "^10.1.2",
     "abortable-iterator": "^4.0.2",
     "debug": "^4.2.0",
+    "delay": "^5.0.0",
     "err-code": "^3.0.1",
+    "iso-random-stream": "^2.0.2",
     "it-pipe": "^2.0.3",
+    "it-pushable": "^2.0.1",
     "p-defer": "^4.0.0",
     "p-event": "^5.0.1",
     "socket.io-client": "^4.1.2"
