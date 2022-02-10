@@ -9,6 +9,7 @@ import testsDiscovery from '@libp2p/interface-compliance-tests/peer-discovery'
 import { WebRTCStar } from '../src/index.js'
 import { PeerId } from '@libp2p/peer-id'
 import { mockUpgrader } from '@libp2p/interface-compliance-tests/transport/utils'
+import pWaitFor from 'p-wait-for'
 
 describe('interface-transport compliance', function () {
   testsTransport({
@@ -54,7 +55,19 @@ describe('interface-discovery compliance', () => {
       const ws = new WebRTCStar({ upgrader: mockUpgrader(), wrtc, peerId })
       const maStr = '/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d'
 
-      intervalId = setInterval(() => ws.peerDiscovered(maStr), 1000)
+      // only discover peers while discovery is running
+      void pWaitFor(() => ws.discovery.isStarted())
+        .then(() => {
+          intervalId = setInterval(() => {
+            if (ws.discovery.isStarted()) {
+              ws.peerDiscovered(maStr)
+            }
+          }, 1000)
+
+          if (intervalId.unref != null) {
+            intervalId.unref()
+          }
+        })
 
       return ws.discovery
     },

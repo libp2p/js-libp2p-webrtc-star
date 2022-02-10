@@ -56,7 +56,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       listener2 = ws2.createListener()
 
       await listener2.listen(signallerAddr)
-      const { multiaddrs } = await pEvent<'peer', { multiaddrs: Multiaddr[] }>(ws1.discovery, 'peer')
+      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')
 
       // Check first of the signal addresses
       const [sigRefs] = ws2.sigServers.values()
@@ -82,7 +82,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       listener3 = ws3.createListener()
       await listener3.listen(signallerAddr)
 
-      const { multiaddrs } = await pEvent<'peer', { multiaddrs: Multiaddr[] }>(ws1.discovery, 'peer')
+      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')
 
       // Check first of the signal addresses
       const [sigRefs] = ws3.sigServers.values()

@@ -127,7 +127,7 @@
   },
   "scripts": {
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
     "build": "tsc",
     "pretest": "npm run build",
     "test": "aegir test -f ./dist/test/**/*.js",
@@ -137,9 +137,9 @@
   "dependencies": {
     "@hapi/hapi": "^20.0.0",
     "@hapi/inert": "^6.0.3",
+    "@libp2p/logger": "^1.0.2",
     "@libp2p/webrtc-star-protocol": "^0.0.0",
     "@multiformats/multiaddr": "^10.1.2",
-    "debug": "^4.2.0",
     "menoetius": "0.0.3",
     "minimist": "^1.2.5",
     "prom-client": "^14.0.0",
@@ -147,7 +147,6 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.7",
     "@types/hapi__hapi": "^20.0.10",
     "@types/hapi__inert": "^5.2.3",
     "aegir": "^36.1.3",

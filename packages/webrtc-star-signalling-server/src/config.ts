@@ -1,8 +1,6 @@
-import debug from 'debug'
+import { logger } from '@libp2p/logger'
 
-const log = Object.assign(debug('signalling-server'), {
-  error: debug('signalling-server:error')
-})
+const log = logger('signalling-server')
 
 export const config = {
   log: log,

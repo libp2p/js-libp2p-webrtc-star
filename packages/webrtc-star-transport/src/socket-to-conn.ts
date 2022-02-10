@@ -1,14 +1,12 @@
 import { abortableSource } from 'abortable-iterator'
 import { CLOSE_TIMEOUT } from './constants.js'
-import debug from 'debug'
+import { logger } from '@libp2p/logger'
 import type { MultiaddrConnection } from '@libp2p/interfaces/transport'
 import type { WebRTCPeer } from './peer/peer.js'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
-const log = Object.assign(debug('libp2p:webrtc-star:socket'), {
-  error: debug('libp2p:webrtc-star:socket:error')
-})
+const log = logger('libp2p:webrtc-star:socket')
 
 export interface ToMultiaddrConnectionOptions extends AbortOptions {
   remoteAddr: Multiaddr

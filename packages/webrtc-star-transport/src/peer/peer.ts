@@ -1,4 +1,4 @@
-import debug from 'debug'
+import { logger } from '@libp2p/logger'
 import { EventEmitter } from 'events'
 import errCode from 'err-code'
 import randombytes from 'iso-random-stream/src/random.js'
@@ -68,9 +68,7 @@ export class WebRTCPeer extends EventEmitter implements Duplex<Uint8Array> {
     super()
 
     this.id = opts.id ?? uint8ArrayToString(randombytes(4), 'hex').slice(0, 7)
-    this.log = Object.assign(debug(`libp2p:webrtc-star:peer:${opts.logPrefix}:${this.id}`), {
-      error: debug(`libp2p:webrtc-star:peer:${opts.logPrefix}:${this.id}:error`)
-    })
+    this.log = logger(`libp2p:webrtc-star:peer:${opts.logPrefix}:${this.id}`)
     this.wrtc = opts.wrtc ?? getBrowserRTC()
     this.peerConnection = new this.wrtc.RTCPeerConnection(
       Object.assign({}, DEFAULT_PEER_CONNECTION_CONFIG, opts.peerConnectionConfig)

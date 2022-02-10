@@ -1,5 +1,4 @@
-import debug from 'debug'
-import { EventEmitter } from 'events'
+import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { AbortError } from 'abortable-iterator'
 import { Multiaddr } from '@multiformats/multiaddr'
@@ -12,23 +11,22 @@ import { cleanMultiaddr, cleanUrlSIO } from './utils.js'
 import { WebRTCInitiator } from './peer/initiator.js'
 import randomBytes from 'iso-random-stream/src/random.js'
 import { toString as uint8ArrayToString } from 'uint8arrays'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 import type { WRTC } from './peer/interface.js'
 import type { Connection } from '@libp2p/interfaces/connection'
-import type { Transport, Upgrader, ListenerOptions, MultiaddrConnection } from '@libp2p/interfaces/transport'
-import type { PeerDiscovery } from '@libp2p/interfaces/peer-discovery'
+import type { Transport, Upgrader, ListenerOptions, MultiaddrConnection, Listener } from '@libp2p/interfaces/transport'
+import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { WebRTCInitiatorOptions } from './peer/initiator.js'
 import type { WebRTCReceiver, WebRTCReceiverOptions } from './peer/receiver.js'
 import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
 
 const webrtcSupport = 'RTCPeerConnection' in globalThis
-const log = Object.assign(debug('libp2p:webrtc-star'), {
-  error: debug('libp2p:webrtc-star:error')
-})
+const log = logger('libp2p:webrtc-star')
 
 const noop = () => {}
 
-class WebRTCStarDiscovery extends EventEmitter implements PeerDiscovery {
+class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery {
   public tag = 'webRTCStar'
   private started = false
 
@@ -68,24 +66,20 @@ export interface WebRTCStarListenerOptions extends ListenerOptions, WebRTCInitia
   channelOptions?: WebRTCReceiverOptions
 }
 
-interface SigServerEvents {
-  'error': Error
-  'listening': never
-  'peer': string
-  'connection': Connection
+export interface SignalServerServerEvents {
+  'error': CustomEvent<Error>
+  'listening': CustomEvent
+  'peer': CustomEvent<string>
+  'connection': CustomEvent<Connection>
 }
 
-export interface SignalServer {
+export interface SignalServer extends EventEmitter<SignalServerServerEvents> {
   signallingAddr: Multiaddr
   socket: WebRTCStarSocket
   connections: MultiaddrConnection[]
   channels: Map<string, WebRTCReceiver>
   pendingSignals: Map<string, HandshakeSignal[]>
   close: () => Promise<void>
-
-  on: (<U extends keyof SigServerEvents> (event: U, listener: (event: SigServerEvents[U]) => void) => this)
-  once: (<U extends keyof SigServerEvents> (event: U, listener: (event: SigServerEvents[U]) => void) => this)
-  emit: (<U extends keyof SigServerEvents> (name: U, event: SigServerEvents[U]) => boolean)
 }
 
 /**
@@ -228,7 +222,7 @@ export class WebRTCStar implements Transport<WebRTCStarDialOptions, WebRTCStarLi
    * anytime a new incoming Connection has been successfully upgraded via
    * `upgrader.upgradeInbound`.
    */
-  createListener (options?: WebRTCStarListenerOptions) {
+  createListener (options?: WebRTCStarListenerOptions): Listener {
     if (!webrtcSupport && this.wrtc == null) {
       throw errcode(new Error('no WebRTC support'), 'ERR_NO_WEBRTC_SUPPORT')
     }
@@ -271,10 +265,12 @@ export class WebRTCStar implements Transport<WebRTCStarDialOptions, WebRTCStarLi
 
     const peerId = PeerId.fromString(peerIdStr)
 
-    this.discovery.emit('peer', {
-      id: peerId,
-      multiaddrs: [ma],
-      protocols: []
-    })
+    this.discovery.dispatchEvent(new CustomEvent('peer', {
+      detail: {
+        id: peerId,
+        multiaddrs: [ma],
+        protocols: []
+      }
+    }))
   }
 }
