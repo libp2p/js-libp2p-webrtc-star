@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/webrtc-star",
-  "version": "0.25.0",
+  "version": "1.0.0",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star/tree/master/packages/webrtc-star-transport#readme",
