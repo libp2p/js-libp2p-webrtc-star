@@ -2,37 +2,40 @@
   "name": "libp2p-webrtc-star",
   "version": "1.0.0",
   "description": "libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star",
-  "private": true,
-  "scripts": {
-    "reset": "npm run clean && rimraf ./node_modules ./package-lock.json packages/*/node_modules packages/*/package-lock.json",
-    "link": "lerna link",
-    "clean": "lerna run clean",
-    "test": "lerna run test",
-    "test:node": "lerna run test:node",
-    "test:browser": "lerna run test:browser",
-    "test:webworker": "lerna run test:webworker",
-    "test:electron-main": "lerna run test:electron-main",
-    "test:electron-renderer": "lerna run test:electron-renderer",
-    "build": "lerna run build",
-    "lint": "lerna run lint",
-    "release": "lerna run build && lerna publish",
-    "dep-check": "lerna run dep-check"
-  },
-  "homepage": "https://github.com/ipfs/js-ipfs-interfaces/tree/master#readme",
-  "bugs": "https://github.com/ipfs/js-ipfs-interfaces/issues",
-  "license": "(Apache-2.0 OR MIT)",
+  "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ipfs/js-ipfs-interfaces.git"
+    "url": "git+https://github.com/libp2p/js-libp2p-webrtc-star.git"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-webrtc-star/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "private": true,
+  "scripts": {
+    "reset": "lerna run clean && rimraf ./node_modules ./package-lock.json packages/*/node_modules packages/*/package-lock.json packages/*/dist",
+    "test": "lerna run --concurrency 1 test -- --",
+    "test:node": "lerna run --concurrency 1 test:node -- --",
+    "test:chrome": "lerna run --concurrency 1 test:chrome -- --",
+    "test:chrome-webworker": "lerna --concurrency 1 run test:chrome-webworker -- --",
+    "test:firefox": "lerna run --concurrency 1 test:firefox -- --",
+    "test:firefox-webworker": "lerna run --concurrency 1 test:firefox-webworker -- --",
+    "test:electron-main": "lerna run --concurrency 1 test:electron-main -- --",
+    "test:electron-renderer": "lerna run --concurrency 1 test:electron-renderer -- --",
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "dep-check": "lerna run dep-check",
+    "release": "lerna exec --concurrency 1 -- semantic-release -e semantic-release-monorepo"
+  },
   "dependencies": {
     "lerna": "^4.0.0",
     "rimraf": "^3.0.2"
   },
-  "engines": {
-    "npm": ">=7.0.0"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }

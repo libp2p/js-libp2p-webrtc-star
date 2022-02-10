@@ -11,13 +11,15 @@ RUN mkdir -p /home/node/app/webrtc-star/node_modules && chown -R node:node /home
 WORKDIR /home/node/app/webrtc-star
 
 # Install node modules
-COPY packages/signalling-server/package.json ./
+COPY packages/webrtc-star-signalling-server/package.json ./
 # Switch to the node user for installation
 RUN npm install --production
 
 # Copy over source files under the node user
-COPY ./packages/signalling-server/src ./src
-COPY ./packages/signalling-server/README.md ./
+COPY ./packages/webrtc-star-signalling-server/bin ./bin
+COPY ./packages/webrtc-star-signalling-server/src ./src
+COPY ./packages/webrtc-star-signalling-server/dist ./dist
+COPY ./packages/webrtc-star-signalling-server/README.md ./
 
 # Start from a clean node image
 FROM node as server
@@ -36,4 +38,5 @@ EXPOSE 9090
 #   --port=9090 --host=0.0.0.0 --disableMetrics=false
 # Server logging can be enabled via the DEBUG environment variable:
 #   DEBUG=signalling-server,signalling-server:error
-CMD [ "node", "src/bin.js"]
+RUN chmod +x bin/index.js
+CMD [ "node", "bin/index.js"]
