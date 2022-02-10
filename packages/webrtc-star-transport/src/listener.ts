@@ -183,6 +183,7 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
   async close () {
     // Close listener
     this.socket.emit('ss-leave', this.signallingAddr.toString())
+    this.socket.removeAllListeners()
     this.socket.close()
 
     await Promise.all([

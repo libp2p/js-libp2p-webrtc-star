@@ -42,13 +42,12 @@ class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements P
     this.started = false
   }
 
-  emit (...args: any[]) {
+  dispatchEvent (event: Event) {
     if (!this.isStarted()) {
       return false
     }
 
-    // @ts-expect-error args type is wrong
-    return super.emit(...args)
+    return super.dispatchEvent(event)
   }
 }
 
