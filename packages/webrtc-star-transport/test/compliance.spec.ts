@@ -7,9 +7,9 @@ import { Multiaddr } from '@multiformats/multiaddr'
 import testsTransport from '@libp2p/interface-compliance-tests/transport'
 import testsDiscovery from '@libp2p/interface-compliance-tests/peer-discovery'
 import { WebRTCStar } from '../src/index.js'
-import { PeerId } from '@libp2p/peer-id'
 import { mockUpgrader } from '@libp2p/interface-compliance-tests/transport/utils'
 import pWaitFor from 'p-wait-for'
+import { peerIdFromString } from '@libp2p/peer-id'
 
 describe('interface-transport compliance', function () {
   testsTransport({
@@ -19,7 +19,7 @@ describe('interface-transport compliance', function () {
       }
 
       const { upgrader } = args
-      const peerId = PeerId.fromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+      const peerId = peerIdFromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
       const ws = new WebRTCStar({ upgrader, wrtc, peerId })
 
       const base = (id: string) => {
@@ -51,7 +51,7 @@ describe('interface-discovery compliance', () => {
 
   testsDiscovery({
     async setup () {
-      const peerId = PeerId.fromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d')
+      const peerId = peerIdFromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d')
       const ws = new WebRTCStar({ upgrader: mockUpgrader(), wrtc, peerId })
       const maStr = '/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d'
 
