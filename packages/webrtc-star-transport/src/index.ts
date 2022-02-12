@@ -3,7 +3,6 @@ import errcode from 'err-code'
 import { AbortError } from 'abortable-iterator'
 import { Multiaddr } from '@multiformats/multiaddr'
 import * as mafmt from '@multiformats/mafmt'
-import { PeerId } from '@libp2p/peer-id'
 import { CODE_CIRCUIT } from './constants.js'
 import { createListener } from './listener.js'
 import { toMultiaddrConnection } from './socket-to-conn.js'
@@ -12,6 +11,8 @@ import { WebRTCInitiator } from './peer/initiator.js'
 import randomBytes from 'iso-random-stream/src/random.js'
 import { toString as uint8ArrayToString } from 'uint8arrays'
 import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import { peerIdFromString } from '@libp2p/peer-id'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { WRTC } from './peer/interface.js'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type { Transport, Upgrader, ListenerOptions, MultiaddrConnection, Listener } from '@libp2p/interfaces/transport'
@@ -262,7 +263,7 @@ export class WebRTCStar implements Transport<WebRTCStarDialOptions, WebRTCStarLi
       return
     }
 
-    const peerId = PeerId.fromString(peerIdStr)
+    const peerId = peerIdFromString(peerIdStr)
 
     this.discovery.dispatchEvent(new CustomEvent('peer', {
       detail: {
