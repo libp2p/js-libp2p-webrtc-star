@@ -7,7 +7,7 @@ import { Multiaddr } from '@multiformats/multiaddr'
 import testsTransport from '@libp2p/interface-compliance-tests/transport'
 import testsDiscovery from '@libp2p/interface-compliance-tests/peer-discovery'
 import { WebRTCStar } from '../src/index.js'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/transport/utils'
+import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 import pWaitFor from 'p-wait-for'
 import { peerIdFromString } from '@libp2p/peer-id'
 

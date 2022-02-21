@@ -5,7 +5,7 @@ import wrtc from 'wrtc'
 // @ts-expect-error no types
 import electronWebRTC from 'electron-webrtc'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/transport/utils'
+import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 import { WebRTCStar } from '../src/index.js'
 import dialTests from './transport/dial.js'
 import listenTests from './transport/listen.js'
