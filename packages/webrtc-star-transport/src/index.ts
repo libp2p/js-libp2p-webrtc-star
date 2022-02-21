@@ -43,7 +43,7 @@ class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements P
     this.started = false
   }
 
-  dispatchEvent (event: Event) {
+  dispatchEvent (event: CustomEvent) {
     if (!this.isStarted()) {
       return false
     }

@@ -2,7 +2,7 @@
 
 import { expect } from 'aegir/utils/chai.js'
 import { WebRTCStar } from '../../src/index.js'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/transport/utils'
+import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 import { peerIdFromString } from '@libp2p/peer-id'
 
 describe('instantiate the transport', () => {
