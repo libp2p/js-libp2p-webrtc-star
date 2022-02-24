@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-signalling-server-v1.0.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v1.0.1...@libp2p/webrtc-star-signalling-server-v1.0.2) (2022-02-24)
+
+
+### Bug Fixes
+
+* fix docker build ([#408](https://github.com/libp2p/js-libp2p-webrtc-star/issues/408)) ([982f1f9](https://github.com/libp2p/js-libp2p-webrtc-star/commit/982f1f9b5827fca95d1e36233eb62e3105e6381e))
+
 ## [@libp2p/webrtc-star-signalling-server-v1.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v1.0.0...@libp2p/webrtc-star-signalling-server-v1.0.1) (2022-02-24)
 
 
