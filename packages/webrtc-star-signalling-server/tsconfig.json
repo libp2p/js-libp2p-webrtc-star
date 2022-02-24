@@ -12,9 +12,6 @@
   "references": [
     {
       "path": "../webrtc-star-protocol"
-    },
-    {
-      "path": "../webrtc-star-transport"
     }
   ]
 }
