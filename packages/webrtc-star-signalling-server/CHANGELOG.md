@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-signalling-server-v1.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v1.0.0...@libp2p/webrtc-star-signalling-server-v1.0.1) (2022-02-24)
+
+
+### Trivial Changes
+
+* update project references ([#407](https://github.com/libp2p/js-libp2p-webrtc-star/issues/407)) ([09be6cf](https://github.com/libp2p/js-libp2p-webrtc-star/commit/09be6cfabdbe70fc39811451fd6812e58b146458))
+
 ## @libp2p/webrtc-star-signalling-server-v1.0.0 (2022-02-10)
 
 
