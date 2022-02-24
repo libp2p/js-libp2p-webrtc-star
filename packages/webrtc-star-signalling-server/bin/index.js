@@ -5,6 +5,10 @@
 
 import { sigServer } from '../dist/src/index.js'
 import minimist from 'minimist'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const info = require('../package.json')
 
 const argv = minimist(process.argv.slice(2), {
   alias: {
@@ -21,6 +25,7 @@ const argv = minimist(process.argv.slice(2), {
     metrics: !(argv.disableMetrics || process.env.DISABLE_METRICS)
   })
 
+  console.log(`${info.name}@${info.version}`)
   console.log('Listening on:', server.info.uri)
 
   process.on('SIGINT', async () => {
