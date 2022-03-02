@@ -11,7 +11,7 @@
 
 ## Structure
 
-* [`/packages/signalling-server`](./packages/signalling-server) A signalling server to allow peer discovery
+* [`/packages/signalling-server`](./packages/webrtc-star-signalling-server) A signalling server to allow peer discovery
 * [`/packages/transport`](./packages/transport) The webrtc-star transport
 
 ## Contribute
