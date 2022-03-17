@@ -6,7 +6,6 @@ import { WebRTCReceiver } from './peer/receiver.js'
 import { toMultiaddrConnection } from './socket-to-conn.js'
 import { cleanUrlSIO } from './utils.js'
 import { CODE_P2P } from './constants.js'
-import { base58btc } from 'multiformats/bases/base58'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Upgrader, ConnectionHandler, Listener, MultiaddrConnection, ListenerEvents } from '@libp2p/interfaces/transport'
@@ -227,7 +226,7 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
 
     let signallingAddr: Multiaddr
     if (!ma.protoCodes().includes(CODE_P2P)) {
-      signallingAddr = ma.encapsulate(`/p2p/${this.peerId.toString(base58btc)}`)
+      signallingAddr = ma.encapsulate(`/p2p/${this.peerId.toString()}`)
     } else {
       signallingAddr = ma
     }
@@ -258,7 +257,7 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
 
       if (conn.remoteAddr == null) {
         try {
-          conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toString(base58btc)}`)
+          conn.remoteAddr = ma.decapsulateCode(CODE_P2P).encapsulate(`/p2p/${conn.remotePeer.toString()}`)
         } catch (err) {
           log.error('could not determine remote address', err)
         }

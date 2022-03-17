@@ -2,31 +2,18 @@
 
 import { WebRTCStar } from '../src/index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { mockRegistrar, mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 import dialTests from './transport/dial.js'
 import listenTests from './transport/listen.js'
 import discoveryTests from './transport/discovery.js'
 import filterTests from './transport/filter.js'
-import { pipe } from 'it-pipe'
+import { Components } from '@libp2p/interfaces/components'
 
 describe('browser RTC', () => {
   const create = async () => {
-    const protocol = '/echo/1.0.0'
-    const registrar = mockRegistrar()
-    void registrar.handle(protocol, (evt) => {
-      void pipe(
-        evt.detail.stream,
-        evt.detail.stream
-      )
-    })
-    const upgrader = mockUpgrader({
-      registrar
-    })
+    const ws = new WebRTCStar()
+    ws.init(new Components({ peerId: await createEd25519PeerId() }))
 
-    return new WebRTCStar({
-      peerId: await createEd25519PeerId(),
-      upgrader
-    })
+    return ws
   }
 
   dialTests(create)

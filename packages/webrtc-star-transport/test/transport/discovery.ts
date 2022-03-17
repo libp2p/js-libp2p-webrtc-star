@@ -6,6 +6,7 @@ import { pEvent } from 'p-event'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
 import type { Listener } from '@libp2p/interfaces/src/transport'
+import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 
 export default (create: () => Promise<WebRTCStar>) => {
   describe('peer discovery', () => {
@@ -24,7 +25,7 @@ export default (create: () => Promise<WebRTCStar>) => {
 
     it('listen on the first', async () => {
       ws1 = await create()
-      ws1Listener = ws1.createListener()
+      ws1Listener = ws1.createListener({ upgrader: mockUpgrader() })
       await ws1.discovery.start()
 
       await ws1Listener.listen(signallerAddr)
@@ -32,7 +33,7 @@ export default (create: () => Promise<WebRTCStar>) => {
 
     it('listen on the second, discover the first', async () => {
       ws2 = await create()
-      const listener = ws2.createListener()
+      const listener = ws2.createListener({ upgrader: mockUpgrader() })
       await ws2.discovery.start()
 
       await listener.listen(signallerAddr)
@@ -63,7 +64,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       })
 
       ws3 = await create()
-      const listener = ws3.createListener()
+      const listener = ws3.createListener({ upgrader: mockUpgrader() })
       await ws3.discovery.start()
 
       await listener.listen(signallerAddr)
@@ -91,7 +92,7 @@ export default (create: () => Promise<WebRTCStar>) => {
 
       void ws1.discovery.stop()
       ws4 = await create()
-      const listener = ws4.createListener()
+      const listener = ws4.createListener({ upgrader: mockUpgrader() })
       void ws4.discovery.start()
 
       await listener.listen(signallerAddr)

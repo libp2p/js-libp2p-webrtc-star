@@ -8,9 +8,10 @@ import sinon from 'sinon'
 import { WebRTCReceiver } from '../../src/peer/receiver.js'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
-import type { Listener } from '@libp2p/interfaces/src/transport'
+import type { Listener, Upgrader } from '@libp2p/interfaces/src/transport'
 import pWaitFor from 'p-wait-for'
 import type { HandshakeSignal } from '@libp2p/webrtc-star-protocol'
+import { mockRegistrar, mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 
 export default (create: () => Promise<WebRTCStar>) => {
   describe('dial', () => {
@@ -20,6 +21,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     let ma2: Multiaddr
     let listener1: Listener
     let listener2: Listener
+    let upgrader: Upgrader
 
     const maHSDNS = new Multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
     const maHSIP = new Multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
@@ -41,13 +43,26 @@ export default (create: () => Promise<WebRTCStar>) => {
     }
 
     beforeEach(async () => {
+      const protocol = '/echo/1.0.0'
+      const registrar = mockRegistrar()
+      void registrar.handle(protocol, ({ stream }) => {
+        void pipe(
+          stream,
+          stream
+        )
+      })
+      upgrader = mockUpgrader({
+        registrar
+      })
+
       // first
       ws1 = await create()
       listener1 = ws1.createListener({
+        upgrader,
         handler: (conn) => {
           expect(conn.remoteAddr).to.exist()
 
-          void conn.newStream(['/echo/1.0.0'])
+          void conn.newStream([protocol])
             .then(({ stream }) => {
               void pipe(stream, stream)
             })
@@ -57,10 +72,11 @@ export default (create: () => Promise<WebRTCStar>) => {
       // second
       ws2 = await create()
       listener2 = ws2.createListener({
+        upgrader,
         handler: (conn) => {
           expect(conn.remoteAddr).to.exist()
 
-          void conn.newStream(['/echo/1.0.0'])
+          void conn.newStream([protocol])
             .then(({ stream }) => {
               void pipe(stream, stream)
             })
@@ -83,7 +99,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       // Use one of the signal addresses
       const [sigRefs] = ws2.sigServers.values()
 
-      const conn = await ws1.dial(sigRefs.signallingAddr)
+      const conn = await ws1.dial(sigRefs.signallingAddr, { upgrader })
       const { stream } = await conn.newStream(['/echo/1.0.0'])
       const data = uint8ArrayFromString('some data')
       const values = await pipe(
@@ -98,13 +114,13 @@ export default (create: () => Promise<WebRTCStar>) => {
     it('dial offline / non-exist()ent node on IPv4, check promise rejected', function () {
       const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
-      return expect(ws1.dial(maOffline)).to.eventually.be.rejected().and.have.property('code', 'ERR_SIGNALLING_FAILED')
+      return expect(ws1.dial(maOffline, { upgrader })).to.eventually.be.rejected().and.have.property('code', 'ERR_SIGNALLING_FAILED')
     })
 
     it('dial unknown signal server, check promise rejected', function () {
       const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15559/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
-      return expect(ws1.dial(maOffline)).to.eventually.be.rejected().and.have.property('code', 'ERR_UNKNOWN_SIGNAL_SERVER')
+      return expect(ws1.dial(maOffline, { upgrader })).to.eventually.be.rejected().and.have.property('code', 'ERR_UNKNOWN_SIGNAL_SERVER')
     })
 
     it.skip('dial on IPv6', (done) => {

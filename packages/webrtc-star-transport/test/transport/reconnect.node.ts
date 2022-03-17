@@ -7,6 +7,7 @@ import { pEvent } from 'p-event'
 import type { SigServer } from '@libp2p/webrtc-star-signalling-server'
 import type { WebRTCStar } from '../../src/index.js'
 import type { Listener } from '@libp2p/interfaces/transport'
+import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 
 const SERVER_PORT = 13580
 
@@ -44,7 +45,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     it('listen on the first', async () => {
       ws1 = await create()
 
-      listener1 = ws1.createListener()
+      listener1 = ws1.createListener({ upgrader: mockUpgrader() })
       await ws1.discovery.start()
 
       await listener1.listen(signallerAddr)
@@ -53,7 +54,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     it('listen on the second, discover the first', async () => {
       ws2 = await create()
 
-      listener2 = ws2.createListener()
+      listener2 = ws2.createListener({ upgrader: mockUpgrader() })
 
       await listener2.listen(signallerAddr)
       const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')
@@ -79,7 +80,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     it('listen on the third, first discovers it', async () => {
       ws3 = await create()
 
-      listener3 = ws3.createListener()
+      listener3 = ws3.createListener({ upgrader: mockUpgrader() })
       await listener3.listen(signallerAddr)
 
       const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')

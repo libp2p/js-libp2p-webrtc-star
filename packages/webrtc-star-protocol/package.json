@@ -126,7 +126,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@multiformats/multiaddr": "^10.1.2",
+    "@multiformats/multiaddr": "^10.1.7",
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {

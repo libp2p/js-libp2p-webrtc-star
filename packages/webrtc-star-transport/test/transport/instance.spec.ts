@@ -2,15 +2,10 @@
 
 import { expect } from 'aegir/utils/chai.js'
 import { WebRTCStar } from '../../src/index.js'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
-import { peerIdFromString } from '@libp2p/peer-id'
 
 describe('instantiate the transport', () => {
   it('create', () => {
-    const wstar = new WebRTCStar({
-      peerId: peerIdFromString('12D3KooWJKCJW8Y26pRFNv78TCMGLNTfyN8oKaFswMRYXTzSbSst'),
-      upgrader: mockUpgrader()
-    })
+    const wstar = new WebRTCStar()
     expect(wstar).to.exist()
   })
 
