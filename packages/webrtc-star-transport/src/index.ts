@@ -10,24 +10,24 @@ import { cleanMultiaddr, cleanUrlSIO } from './utils.js'
 import { WebRTCInitiator } from './peer/initiator.js'
 import randomBytes from 'iso-random-stream/src/random.js'
 import { toString as uint8ArrayToString } from 'uint8arrays'
-import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import { EventEmitter, CustomEvent, Startable } from '@libp2p/interfaces'
 import { peerIdFromString } from '@libp2p/peer-id'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
+import { symbol } from '@libp2p/interfaces/transport'
 import type { WRTC } from './peer/interface.js'
 import type { Connection } from '@libp2p/interfaces/connection'
-import type { Transport, Upgrader, ListenerOptions, MultiaddrConnection, Listener } from '@libp2p/interfaces/transport'
+import type { Transport, MultiaddrConnection, Listener, DialOptions, CreateListenerOptions } from '@libp2p/interfaces/transport'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
-import type { AbortOptions } from '@libp2p/interfaces'
 import type { WebRTCInitiatorOptions } from './peer/initiator.js'
 import type { WebRTCReceiver, WebRTCReceiverOptions } from './peer/receiver.js'
 import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
+import { Components, Initializable } from '@libp2p/interfaces/components'
 
 const webrtcSupport = 'RTCPeerConnection' in globalThis
 const log = logger('libp2p:webrtc-star')
 
 const noop = () => {}
 
-class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery {
+class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
   public tag = 'webRTCStar'
   private started = false
 
@@ -53,16 +53,14 @@ class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements P
 }
 
 export interface WebRTCStarOptions {
-  upgrader: Upgrader
-  peerId: PeerId
   wrtc?: WRTC
 }
 
-export interface WebRTCStarDialOptions extends AbortOptions {
+export interface WebRTCStarDialOptions extends DialOptions {
   channelOptions?: WebRTCInitiatorOptions
 }
 
-export interface WebRTCStarListenerOptions extends ListenerOptions, WebRTCInitiatorOptions {
+export interface WebRTCStarListenerOptions extends CreateListenerOptions, WebRTCInitiatorOptions {
   channelOptions?: WebRTCReceiverOptions
 }
 
@@ -85,23 +83,14 @@ export interface SignalServer extends EventEmitter<SignalServerServerEvents> {
 /**
  * @class WebRTCStar
  */
-export class WebRTCStar implements Transport<WebRTCStarDialOptions, WebRTCStarListenerOptions> {
+export class WebRTCStar implements Transport, Initializable {
   public wrtc?: WRTC
-  public discovery: PeerDiscovery
+  public discovery: PeerDiscovery & Startable
   public sigServers: Map<string, SignalServer>
+  private components: Components = new Components()
 
-  private readonly upgrader: Upgrader
-  private readonly peerId: PeerId
-
-  constructor (options: WebRTCStarOptions) {
-    if (options.upgrader == null) {
-      throw new Error('An upgrader must be provided. See https://github.com/libp2p/interface-transport#upgrader.')
-    }
-
-    this.upgrader = options.upgrader
-    this.peerId = options.peerId
-
-    if (options.wrtc != null) {
+  constructor (options?: WebRTCStarOptions) {
+    if (options?.wrtc != null) {
       this.wrtc = options.wrtc
     }
 
@@ -113,12 +102,23 @@ export class WebRTCStar implements Transport<WebRTCStarDialOptions, WebRTCStarLi
     this.peerDiscovered = this.peerDiscovered.bind(this)
   }
 
-  async dial (ma: Multiaddr, options?: WebRTCStarDialOptions) {
-    options = options ?? {}
+  get [symbol] (): true {
+    return true
+  }
+
+  get [Symbol.toStringTag] () {
+    return this.constructor.name
+  }
+
+  init (components: Components) {
+    this.components = components
+  }
+
+  async dial (ma: Multiaddr, options: WebRTCStarDialOptions) {
     const rawConn = await this._connect(ma, options)
     const maConn = toMultiaddrConnection(rawConn, { remoteAddr: ma, signal: options.signal })
     log('new outbound connection %s', maConn.remoteAddr)
-    const conn = await this.upgrader.upgradeOutbound(maConn)
+    const conn = await options.upgrader.upgradeOutbound(maConn)
     log('outbound connection %s upgraded', maConn.remoteAddr)
     return conn
   }
@@ -222,19 +222,18 @@ export class WebRTCStar implements Transport<WebRTCStarDialOptions, WebRTCStarLi
    * anytime a new incoming Connection has been successfully upgraded via
    * `upgrader.upgradeInbound`.
    */
-  createListener (options?: WebRTCStarListenerOptions): Listener {
+  createListener (options: WebRTCStarListenerOptions): Listener {
     if (!webrtcSupport && this.wrtc == null) {
       throw errcode(new Error('no WebRTC support'), 'ERR_NO_WEBRTC_SUPPORT')
     }
 
-    options = options ?? {}
     options.channelOptions = options.channelOptions ?? {}
 
     if (this.wrtc != null) {
       options.channelOptions.wrtc = this.wrtc
     }
 
-    return createListener(this.upgrader, options.handler ?? noop, this.peerId, this, options)
+    return createListener(options.upgrader, options.handler ?? noop, this.components.getPeerId(), this, options)
   }
 
   /**

@@ -7,7 +7,10 @@ import { pipe } from 'it-pipe'
 import pWaitFor from 'p-wait-for'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
-import type { Listener } from '@libp2p/interfaces/src/transport'
+import type { Listener, Upgrader } from '@libp2p/interfaces/transport'
+import { mockRegistrar, mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
+
+const protocol = '/echo/1.0.0'
 
 export default (create: () => Promise<WebRTCStar>) => {
   describe('track connections', () => {
@@ -16,6 +19,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     let ma: Multiaddr
     let listener: Listener
     let remoteListener: Listener
+    let upgrader: Upgrader
 
     const maHSDNS = new Multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
     const maHSIP = new Multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
@@ -34,11 +38,23 @@ export default (create: () => Promise<WebRTCStar>) => {
     }
 
     beforeEach(async () => {
+      const registrar = mockRegistrar()
+      void registrar.handle(protocol, ({ stream }) => {
+        void pipe(
+          stream,
+          stream
+        )
+      })
+      upgrader = mockUpgrader({
+        registrar
+      })
+
       // first
       ws1 = await create()
       listener = ws1.createListener({
+        upgrader,
         handler: (conn) => {
-          void conn.newStream(['echo'])
+          void conn.newStream([protocol])
             .then(({ stream }) => {
               void pipe(stream, stream)
             })
@@ -48,8 +64,9 @@ export default (create: () => Promise<WebRTCStar>) => {
       // second
       ws2 = await create()
       remoteListener = ws2.createListener({
+        upgrader,
         handler: (conn) => {
-          void conn.newStream(['echo'])
+          void conn.newStream([protocol])
             .then(({ stream }) => {
               void pipe(stream, stream)
             })
@@ -75,7 +92,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       // Use one of the signal addresses
       const [sigRef] = ws2.sigServers.values()
 
-      const conn = await ws1.dial(sigRef.signallingAddr)
+      const conn = await ws1.dial(sigRef.signallingAddr, { upgrader })
 
       const remoteServer = ws2.sigServers.get(cleanUrlSIO(ma))
 

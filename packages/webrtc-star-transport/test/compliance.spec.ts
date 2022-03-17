@@ -7,20 +7,16 @@ import { Multiaddr } from '@multiformats/multiaddr'
 import testsTransport from '@libp2p/interface-compliance-tests/transport'
 import testsDiscovery from '@libp2p/interface-compliance-tests/peer-discovery'
 import { WebRTCStar } from '../src/index.js'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
 import pWaitFor from 'p-wait-for'
 import { peerIdFromString } from '@libp2p/peer-id'
+import { Components } from '@libp2p/interfaces/components'
 
 describe('interface-transport compliance', function () {
   testsTransport({
-    async setup (args) {
-      if (args == null) {
-        throw new Error('No args')
-      }
-
-      const { upgrader } = args
+    async setup () {
       const peerId = peerIdFromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
-      const ws = new WebRTCStar({ upgrader, wrtc, peerId })
+      const ws = new WebRTCStar({ wrtc })
+      ws.init(new Components({ peerId }))
 
       const base = (id: string) => {
         return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/${id}`
@@ -47,19 +43,28 @@ describe('interface-transport compliance', function () {
 })
 
 describe('interface-discovery compliance', () => {
-  let intervalId: NodeJS.Timer
+  let intervalId: ReturnType<typeof setInterval>
+  let running: boolean = false
 
   testsDiscovery({
     async setup () {
       const peerId = peerIdFromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d')
-      const ws = new WebRTCStar({ upgrader: mockUpgrader(), wrtc, peerId })
+      const ws = new WebRTCStar({ wrtc })
+      ws.init(new Components({ peerId }))
       const maStr = '/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d'
 
-      // only discover peers while discovery is running
-      void pWaitFor(() => ws.discovery.isStarted())
+      const discovery = ws.discovery
+      running = true
+
+      // only discover peers while the test is running and after discovery has been started
+      void pWaitFor(() => !running || discovery.isStarted())
         .then(() => {
+          if (!running) {
+            return
+          }
+
           intervalId = setInterval(() => {
-            if (ws.discovery.isStarted()) {
+            if (discovery.isStarted()) {
               ws.peerDiscovered(maStr)
             }
           }, 1000)
@@ -72,6 +77,7 @@ describe('interface-discovery compliance', () => {
       return ws.discovery
     },
     async teardown () {
+      running = false
       clearInterval(intervalId)
     }
   })
