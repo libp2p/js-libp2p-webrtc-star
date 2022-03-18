@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v1.0.4](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.3...@libp2p/webrtc-star-v1.0.4) (2022-03-18)
+
+
+### Bug Fixes
+
+* splits webrtc peer out into it's own module ([#412](https://github.com/libp2p/js-libp2p-webrtc-star/issues/412)) ([b50bd81](https://github.com/libp2p/js-libp2p-webrtc-star/commit/b50bd81bed1720673b08643e8064fd55f3024956))
+
 ## [@libp2p/webrtc-star-v1.0.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.2...@libp2p/webrtc-star-v1.0.3) (2022-03-17)
 
 
