@@ -136,6 +136,7 @@
     "@libp2p/logger": "^1.1.2",
     "@libp2p/peer-id": "^1.1.8",
     "@libp2p/utils": "^1.0.9",
+    "@libp2p/webrtc-peer": "^1.0.0",
     "@libp2p/webrtc-star-protocol": "^1.0.0",
     "@multiformats/mafmt": "^11.0.2",
     "@multiformats/multiaddr": "^10.1.7",

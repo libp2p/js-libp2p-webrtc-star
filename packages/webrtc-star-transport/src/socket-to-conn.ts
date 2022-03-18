@@ -2,7 +2,7 @@ import { abortableSource } from 'abortable-iterator'
 import { CLOSE_TIMEOUT } from './constants.js'
 import { logger } from '@libp2p/logger'
 import type { MultiaddrConnection } from '@libp2p/interfaces/transport'
-import type { WebRTCPeer } from './peer/peer.js'
+import type { WebRTCPeer } from '@libp2p/webrtc-peer'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
@@ -75,13 +75,15 @@ export function toMultiaddrConnection (socket: WebRTCPeer, options: ToMultiaddrC
     }
   }
 
-  socket.once('close', () => {
+  socket.addEventListener('close', () => {
     // In instances where `close` was not explicitly called,
     // such as an iterable stream ending, ensure we have set the close
     // timeline
     if (maConn.timeline.close == null) {
       maConn.timeline.close = Date.now()
     }
+  }, {
+    once: true
   })
 
   return maConn

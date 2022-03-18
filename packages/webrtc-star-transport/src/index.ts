@@ -7,18 +7,16 @@ import { CODE_CIRCUIT } from './constants.js'
 import { createListener } from './listener.js'
 import { toMultiaddrConnection } from './socket-to-conn.js'
 import { cleanMultiaddr, cleanUrlSIO } from './utils.js'
-import { WebRTCInitiator } from './peer/initiator.js'
+import { WebRTCInitiator } from '@libp2p/webrtc-peer'
 import randomBytes from 'iso-random-stream/src/random.js'
 import { toString as uint8ArrayToString } from 'uint8arrays'
 import { EventEmitter, CustomEvent, Startable } from '@libp2p/interfaces'
 import { peerIdFromString } from '@libp2p/peer-id'
 import { symbol } from '@libp2p/interfaces/transport'
-import type { WRTC } from './peer/interface.js'
+import type { WRTC, WebRTCInitiatorInit, WebRTCReceiver, WebRTCReceiverInit } from '@libp2p/webrtc-peer'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type { Transport, MultiaddrConnection, Listener, DialOptions, CreateListenerOptions } from '@libp2p/interfaces/transport'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
-import type { WebRTCInitiatorOptions } from './peer/initiator.js'
-import type { WebRTCReceiver, WebRTCReceiverOptions } from './peer/receiver.js'
 import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
 import { Components, Initializable } from '@libp2p/interfaces/components'
 
@@ -52,16 +50,16 @@ class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements P
   }
 }
 
-export interface WebRTCStarOptions {
+export interface WebRTCStarInit {
   wrtc?: WRTC
 }
 
 export interface WebRTCStarDialOptions extends DialOptions {
-  channelOptions?: WebRTCInitiatorOptions
+  channelOptions?: WebRTCInitiatorInit
 }
 
-export interface WebRTCStarListenerOptions extends CreateListenerOptions, WebRTCInitiatorOptions {
-  channelOptions?: WebRTCReceiverOptions
+export interface WebRTCStarListenerOptions extends CreateListenerOptions, WebRTCInitiatorInit {
+  channelOptions?: WebRTCReceiverInit
 }
 
 export interface SignalServerServerEvents {
@@ -89,7 +87,7 @@ export class WebRTCStar implements Transport, Initializable {
   public sigServers: Map<string, SignalServer>
   private components: Components = new Components()
 
-  constructor (options?: WebRTCStarOptions) {
+  constructor (options?: WebRTCStarInit) {
     if (options?.wrtc != null) {
       this.wrtc = options.wrtc
     }
@@ -152,7 +150,9 @@ export class WebRTCStar implements Transport, Initializable {
       log('dialing %s:%s', cOpts.host, cOpts.port)
       const channel = new WebRTCInitiator(channelOptions)
 
-      const onError = (err: Error) => {
+      const onError = (evt: CustomEvent<Error>) => {
+        const err = evt.detail
+
         if (!connected) {
           const msg = `connection error ${cOpts.host}:${cOpts.port}: ${err.message}`
           log.error(msg)
@@ -175,7 +175,7 @@ export class WebRTCStar implements Transport, Initializable {
       }
 
       const done = (err?: Error) => {
-        channel.removeListener('ready', onReady)
+        channel.removeEventListener('ready', onReady)
         options.signal?.removeEventListener('abort', onAbort)
 
         if (err == null) {
@@ -185,14 +185,17 @@ export class WebRTCStar implements Transport, Initializable {
         }
       }
 
-      channel.on('error', onError)
-      channel.once('ready', onReady)
-      channel.on('close', () => {
-        channel.removeListener('error', onError)
+      channel.addEventListener('ready', onReady, {
+        once: true
+      })
+      channel.addEventListener('close', () => {
+        channel.removeEventListener('error', onError)
       })
       options.signal?.addEventListener('abort', onAbort)
 
-      channel.on('signal', (signal) => {
+      channel.addEventListener('signal', (evt) => {
+        const signal = evt.detail
+
         sio.socket.emit('ss-handshake', {
           intentId: intentId,
           srcMultiaddr: sio.signallingAddr.toString(),

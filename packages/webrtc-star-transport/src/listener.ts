@@ -2,7 +2,7 @@ import { logger } from '@libp2p/logger'
 import errCode from 'err-code'
 import { connect } from 'socket.io-client'
 import pDefer from 'p-defer'
-import { WebRTCReceiver } from './peer/receiver.js'
+import { WebRTCReceiver } from '@libp2p/webrtc-peer'
 import { toMultiaddrConnection } from './socket-to-conn.js'
 import { cleanUrlSIO } from './utils.js'
 import { CODE_P2P } from './constants.js'
@@ -10,8 +10,8 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Upgrader, ConnectionHandler, Listener, MultiaddrConnection, ListenerEvents } from '@libp2p/interfaces/transport'
 import type { WebRTCStar, WebRTCStarListenerOptions, SignalServer, SignalServerServerEvents } from './index.js'
-import type { WebRTCReceiverOptions } from './peer/receiver'
-import type { WebRTCStarSocket, HandshakeSignal, Signal } from '@libp2p/webrtc-star-protocol'
+import type { WebRTCReceiverInit } from '@libp2p/webrtc-peer'
+import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
 import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 
 const log = logger('libp2p:webrtc-star:listener')
@@ -31,9 +31,9 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
 
   private readonly upgrader: Upgrader
   private readonly handler: ConnectionHandler
-  private readonly channelOptions?: WebRTCReceiverOptions
+  private readonly channelOptions?: WebRTCReceiverInit
 
-  constructor (signallingUrl: string, signallingAddr: Multiaddr, upgrader: Upgrader, handler: ConnectionHandler, channelOptions?: WebRTCReceiverOptions) {
+  constructor (signallingUrl: string, signallingAddr: Multiaddr, upgrader: Upgrader, handler: ConnectionHandler, channelOptions?: WebRTCReceiverInit) {
     super()
 
     this.signallingAddr = signallingAddr
@@ -72,22 +72,28 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
   }
 
   _createChannel (intentId: string, srcMultiaddr: string, dstMultiaddr: string) {
-    const channelOptions: WebRTCReceiverOptions = {
+    const channelOptions: WebRTCReceiverInit = {
       ...this.channelOptions
     }
 
     const channel = new WebRTCReceiver(channelOptions)
 
-    const onError = (err: Error) => {
+    const onError = (evt: CustomEvent<Error>) => {
+      const err = evt.detail
+
       log.error('incoming connection errored', err)
     }
 
-    channel.on('error', onError)
-    channel.once('close', () => {
-      channel.removeListener('error', onError)
+    channel.addEventListener('error', onError)
+    channel.addEventListener('close', () => {
+      channel.removeEventListener('error', onError)
+    }, {
+      once: true
     })
 
-    channel.on('signal', (signal: Signal) => {
+    channel.addEventListener('signal', (evt) => {
+      const signal = evt.detail
+
       this.socket.emit('ss-handshake', {
         intentId,
         srcMultiaddr,
@@ -97,7 +103,7 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
       })
     })
 
-    channel.once('ready', () => {
+    channel.addEventListener('ready', () => {
       const maConn = toMultiaddrConnection(channel, { remoteAddr: this.signallingAddr })
       log('new inbound connection %s', maConn.remoteAddr)
 
@@ -114,7 +120,9 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
               this.pendingSignals.delete(intentId)
             }
 
-            channel.once('close', untrackConn)
+            channel.addEventListener('close', untrackConn, {
+              once: true
+            })
 
             this.dispatchEvent(new CustomEvent('connection', {
               detail: conn
@@ -133,6 +141,8 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
           log.error('inbound connection failed to close after failing to upgrade', err)
         })
       }
+    }, {
+      once: true
     })
 
     return channel
