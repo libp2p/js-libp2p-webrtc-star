@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v1.0.6](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.5...@libp2p/webrtc-star-v1.0.6) (2022-03-19)
+
+
+### Trivial Changes
+
+* enable node testing ([#414](https://github.com/libp2p/js-libp2p-webrtc-star/issues/414)) ([4cdc7b2](https://github.com/libp2p/js-libp2p-webrtc-star/commit/4cdc7b2dbce272cd1ee3b8d1180ce3fdd5e75254))
+
 ## [@libp2p/webrtc-star-v1.0.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.4...@libp2p/webrtc-star-v1.0.5) (2022-03-19)
 
 
