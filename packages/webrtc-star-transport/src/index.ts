@@ -105,7 +105,7 @@ export class WebRTCStar implements Transport, Initializable {
   }
 
   get [Symbol.toStringTag] () {
-    return this.constructor.name
+    return '@libp2p/webrtc-star'
   }
 
   init (components: Components) {

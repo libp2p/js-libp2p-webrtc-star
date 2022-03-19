@@ -15,6 +15,10 @@ import trackTests from './transport/track.js'
 import reconnectTests from './transport/reconnect.node.js'
 import { Components } from '@libp2p/interfaces/components'
 
+// TODO: Temporary fix per wrtc issue
+// https://github.com/node-webrtc/node-webrtc/issues/636#issuecomment-774171409
+process.on('beforeExit', (code) => process.exit(code))
+
 describe('transport: with wrtc', () => {
   const create = async () => {
     const peerId = await createEd25519PeerId()

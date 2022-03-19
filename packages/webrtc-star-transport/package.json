@@ -126,6 +126,7 @@
     "build": "tsc",
     "pretest": "npm run build",
     "test": "aegir test -f \"./dist/test/**/*.spec.js\"",
+    "test:node": "npm run test -- -t node -f ./dist/test/node.js ",
     "test:chrome": "npm run test -- -t browser -f ./dist/test/browser.js ",
     "test:firefox": "npm run test -- -t browser -- --browser firefox -f ./dist/test/browser.js",
     "test:dns": "WEBRTC_STAR_REMOTE_SIGNAL_DNS=1 aegir test -t browser",
