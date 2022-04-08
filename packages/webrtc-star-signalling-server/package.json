@@ -126,18 +126,19 @@
     ]
   },
   "scripts": {
+    "clean": "aegir clean",
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc",
-    "pretest": "npm run build",
-    "test": "aegir test -f \"./dist/test/**/*.js\"",
-    "test:node": "npm run test -- -t node --cov",
-    "start": "node src/sig-server/bin.js"
+    "dep-check": "aegir dep-check",
+    "build": "aegir build",
+    "test": "aegir test -t node",
+    "test:node": "aegir test -t node --cov",
+    "start": "node src/sig-server/bin.js",
+    "release": "aegir release"
   },
   "dependencies": {
     "@hapi/hapi": "^20.0.0",
     "@hapi/inert": "^6.0.3",
-    "@libp2p/logger": "^1.1.2",
+    "@libp2p/logger": "^1.1.3",
     "@libp2p/webrtc-star-protocol": "^1.0.0",
     "@multiformats/multiaddr": "^10.1.7",
     "menoetius": "0.0.3",
@@ -149,7 +150,7 @@
   "devDependencies": {
     "@types/hapi__hapi": "^20.0.10",
     "@types/hapi__inert": "^5.2.3",
-    "aegir": "^36.1.3",
+    "aegir": "^37.0.7",
     "p-event": "^5.0.1",
     "p-wait-for": "^4.1.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
