@@ -1,5 +1,3 @@
-'use strict'
-
 let firstRun = true
 let sigServers = []
 
@@ -41,9 +39,12 @@ async function stop () {
 }
 
 /** @type {import('aegir').PartialOptions} */
-module.exports = {
+export default {
   test: {
     before: boot,
     after: stop
+  },
+  build: {
+    bundle: false
   }
 }

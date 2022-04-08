@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { WebRTCStar } from '../../src/index.js'
 
 describe('instantiate the transport', () => {

@@ -29,7 +29,7 @@
     "build": "lerna run build",
     "lint": "lerna run lint",
     "dep-check": "lerna run dep-check",
-    "release": "lerna exec --concurrency 1 -- semantic-release -e semantic-release-monorepo"
+    "release": "lerna run --concurrency 1 release -- --"
   },
   "dependencies": {
     "lerna": "^4.0.0",

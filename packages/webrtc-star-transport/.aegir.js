@@ -1,13 +1,13 @@
-'use strict'
-
 // TODO: Temporary fix per wrtc issue
 // https://github.com/node-webrtc/node-webrtc/issues/636#issuecomment-774171409
 process.on('beforeExit', (code) => process.exit(code))
 
+import { sigServer } from '@libp2p/webrtc-star-signalling-server'
+
 let firstRun = true
 
 /** @type {import('aegir').PartialOptions} */
-module.exports = {
+export default {
   test: {
     async before () {
       const options1 = {
@@ -32,7 +32,6 @@ module.exports = {
         firstRun = false
       }
 
-      const { sigServer } = await import('@libp2p/webrtc-star-signalling-server')
       const sigServers = []
 
       sigServers.push(await sigServer(options1))

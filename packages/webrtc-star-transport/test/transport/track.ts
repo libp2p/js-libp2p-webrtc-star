@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /* eslint-disable no-console */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
 import pWaitFor from 'p-wait-for'
