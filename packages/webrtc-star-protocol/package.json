@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/webrtc-star-protocol",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "shared types used by the libp2p webrtc transport and signalling server",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star/tree/master/packages/webrtc-star-protocol#readme",
