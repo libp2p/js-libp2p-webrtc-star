@@ -6,6 +6,7 @@ import { SigServer, sigServer } from '../src/index.js'
 import pWaitFor from 'p-wait-for'
 import { pEvent } from 'p-event'
 import type { WebRTCStarSocket } from '@libp2p/webrtc-star-protocol'
+import { get as httpGet } from 'http'
 
 export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSocket, sioOptions: any) => {
   describe(`signalling ${clientName}`, () => {
@@ -68,10 +69,33 @@ export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSo
       }
 
       const server = await sigServer(options)
+      const response = await fetch(`${server.info.uri}`)
 
       expect(server.info.port).to.equal(12345)
       expect(server.info.protocol).to.equal('http')
       expect(server.info.address).to.equal('0.0.0.0')
+
+      expect(response.status).to.equal(404)
+
+      await server.stop()
+    })
+
+    it('start and stop signalling server (alternate default route)', async () => {
+      const options = {
+        noDefaultRoute: true
+      }
+
+      const server = await sigServer(options)
+      server.route({
+        method: 'GET',
+        path: '/',
+        handler: (_, reply) => reply.file('./src/index.html', {
+          confine: false
+        })
+      })
+      const response = await fetch(`${server.info.uri}/`)
+
+      expect(response.status).to.equal(200)
 
       await server.stop()
     })
@@ -222,5 +246,14 @@ export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSo
 
       await sigS.stop()
     })
+  })
+}
+
+async function fetch (url: string): Promise<{ status: number }> {
+  return await new Promise((resolve, reject) => {
+    httpGet(url, (res) => {
+      const { statusCode } = res
+      resolve({ status: statusCode ?? -1 })
+    }).on('error', reject)
   })
 }
