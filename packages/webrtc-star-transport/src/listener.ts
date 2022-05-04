@@ -12,7 +12,7 @@ import type { Upgrader, ConnectionHandler, Listener, MultiaddrConnection, Listen
 import type { WebRTCStar, WebRTCStarListenerOptions, SignalServer, SignalServerServerEvents } from './index.js'
 import type { WebRTCReceiverInit } from '@libp2p/webrtc-peer'
 import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
-import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces/events'
 
 const log = logger('libp2p:webrtc-star:listener')
 

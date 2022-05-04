@@ -2,14 +2,14 @@
 // https://github.com/node-webrtc/node-webrtc/issues/636#issuecomment-774171409
 process.on('beforeExit', (code) => process.exit(code))
 
-import { sigServer } from '@libp2p/webrtc-star-signalling-server'
-
 let firstRun = true
 
 /** @type {import('aegir').PartialOptions} */
 export default {
   test: {
     async before () {
+      const { sigServer } = await import('@libp2p/webrtc-star-signalling-server')
+
       const options1 = {
         port: 15555,
         host: '127.0.0.1',
