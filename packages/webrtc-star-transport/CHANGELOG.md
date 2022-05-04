@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v1.0.8](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.7...@libp2p/webrtc-star-v1.0.8) (2022-05-04)
+
+
+### Bug Fixes
+
+* update interfaces ([#426](https://github.com/libp2p/js-libp2p-webrtc-star/issues/426)) ([aff0619](https://github.com/libp2p/js-libp2p-webrtc-star/commit/aff0619a2696734b58293b6c58d43a00b1a9541d))
+
 ## [@libp2p/webrtc-star-v1.0.7](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.6...@libp2p/webrtc-star-v1.0.7) (2022-04-08)
 
 
