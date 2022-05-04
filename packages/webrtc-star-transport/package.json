@@ -151,7 +151,8 @@
     "multiformats": "^9.6.3",
     "p-defer": "^4.0.0",
     "p-event": "^5.0.1",
-    "socket.io-client": "^4.1.2"
+    "socket.io-client": "^4.1.2",
+    "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
     "@libp2p/interface-compliance-tests": "^1.1.32",
