@@ -20,6 +20,7 @@ import type { Transport, MultiaddrConnection, Listener, DialOptions, CreateListe
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
 import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
 import { Components, Initializable } from '@libp2p/interfaces/components'
+import { symbol as peerDiscoverySymbol } from '@libp2p/interfaces/peer-discovery'
 
 const webrtcSupport = 'RTCPeerConnection' in globalThis
 const log = logger('libp2p:webrtc-star')
@@ -27,8 +28,15 @@ const log = logger('libp2p:webrtc-star')
 const noop = () => {}
 
 class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
-  public tag = 'webRTCStar'
   private started = false
+
+  get [peerDiscoverySymbol] (): true {
+    return true
+  }
+
+  get [Symbol.toStringTag] () {
+    return '@libp2p/webrtc-star-discovery'
+  }
 
   isStarted () {
     return this.started
