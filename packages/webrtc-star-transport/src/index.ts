@@ -28,7 +28,6 @@ const log = logger('libp2p:webrtc-star')
 const noop = () => {}
 
 class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
-  public tag = 'webRTCStar'
   private started = false
 
   get [peerDiscoverySymbol] (): true {
