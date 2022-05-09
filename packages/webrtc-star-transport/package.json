@@ -163,7 +163,7 @@
     "electron-webrtc": "~0.3.0",
     "it-all": "^1.0.5",
     "p-wait-for": "^4.1.0",
-    "sinon": "^13.0.0",
+    "sinon": "^14.0.0",
     "uint8arrays": "^3.0.0",
     "util": "^0.12.4",
     "wrtc": "^0.4.6"
