@@ -4,10 +4,13 @@ import Inert from '@hapi/inert'
 import { config } from './config.js'
 // @ts-expect-error no types
 import menoetius from 'menoetius'
-import path from 'path'
+import path, { dirname } from 'path'
 import { socketServer } from './socket-server.js'
 import type { WebRTCStarSocket } from '@libp2p/webrtc-star-protocol'
 import type { Server as SocketServer } from 'socket.io'
+import { fileURLToPath } from 'url'
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const log = config.log
 
@@ -52,7 +55,7 @@ export async function sigServer (options: Options = {}) {
   http.route({
     method: 'GET',
     path: '/',
-    handler: (request, reply) => reply.file(path.join(__dirname, 'index.html'), {
+    handler: (request, reply) => reply.file(path.join(currentDir, 'index.html'), {
       confine: false
     })
   })
