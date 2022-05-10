@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v1.0.10](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.9...@libp2p/webrtc-star-v1.0.10) (2022-05-10)
+
+
+### Trivial Changes
+
+* bump sinon from 13.0.2 to 14.0.0 ([#428](https://github.com/libp2p/js-libp2p-webrtc-star/issues/428)) ([70f84b8](https://github.com/libp2p/js-libp2p-webrtc-star/commit/70f84b8a7bf4a493d2187d97ecc11f1bc700b8c1))
+
 ## [@libp2p/webrtc-star-v1.0.9](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.8...@libp2p/webrtc-star-v1.0.9) (2022-05-06)
 
 
