@@ -26,10 +26,10 @@ export function cleanUrlSIO (ma: Multiaddr) {
 }
 
 export function cleanMultiaddr (maStr: string) {
-  const legacy = '/libp2p-webrtc-star'
+  const legacy = '/libp2p-webrtc-star/'
 
   if (maStr.includes(legacy)) {
-    maStr = maStr.substring(legacy.length, maStr.length)
+    maStr = maStr.substring(legacy.length-1, maStr.length)
     let ma = new Multiaddr(maStr)
     const tuppleIPFS = ma.stringTuples().filter((tupple) => {
       return tupple[0] === 421 // ipfs code

@@ -62,11 +62,11 @@ describe('utils', () => {
 
   it('cleanMultiaddr webrtc-star modern', () => {
     const newMultiaddrStringDNS = cleanMultiaddr(modernMultiaddrStringDNS)
-    const newMultiaddrStringDNS2 = cleanMultiaddr(modernMultiaddrStringDNS5) // fix issue #369
+    const newMultiaddrStringDNS5 = cleanMultiaddr(modernMultiaddrStringDNS5) // fix issue #369
     const newMultiaddrStringIP = cleanMultiaddr(modernMultiaddrStringIP)
 
     expect(newMultiaddrStringDNS).to.equal(modernMultiaddrStringDNS)
-    expect(newMultiaddrStringDNS2).to.equal(modernMultiaddrStringDNS5)
+    expect(newMultiaddrStringDNS5).to.equal(modernMultiaddrStringDNS5)
     expect(newMultiaddrStringIP).to.equal(modernMultiaddrStringIP)
   })
 })
