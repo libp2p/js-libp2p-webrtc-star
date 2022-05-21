@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v1.0.11](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.10...@libp2p/webrtc-star-v1.0.11) (2022-05-21)
+
+
+### Bug Fixes
+
+* **webrtc-star-transport/utils:** properly handle legacy protocol edge case [#369](https://github.com/libp2p/js-libp2p-webrtc-star/issues/369) ([#430](https://github.com/libp2p/js-libp2p-webrtc-star/issues/430)) ([4674c1f](https://github.com/libp2p/js-libp2p-webrtc-star/commit/4674c1fb8d949d6762eedc7ac63de20dc8b1219c))
+
 ## [@libp2p/webrtc-star-v1.0.10](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.9...@libp2p/webrtc-star-v1.0.10) (2022-05-10)
 
 
