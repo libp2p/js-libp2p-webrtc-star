@@ -155,7 +155,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@libp2p/interface-compliance-tests": "^1.1.32",
+    "@libp2p/interface-compliance-tests": "^2.0.1",
     "@libp2p/peer-id-factory": "^1.0.9",
     "@libp2p/webrtc-star-signalling-server": "^1.0.0",
     "@mapbox/node-pre-gyp": "^1.0.5",
