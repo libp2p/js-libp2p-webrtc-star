@@ -39,9 +39,6 @@
 
     ```shell
     webrtc-star --port=13579 --host=127.0.0.1
-     
-    > @libp2p/webrtc-star-signalling-server@1.0.5
-    > Listening on: http://127.0.0.1:13579
     ```
 
 ## Contribute
