@@ -15,6 +15,35 @@
 * [`/packages/transport`](./packages/webrtc-star-transport) The webrtc-star transport
 * [`/packages/protocol`](./packages/webrtc-star-protocol) Type definitions used by other packages
 
+## Install
+
+1. Clone the repo:
+
+    ```shell
+    git clone https://github.com/libp2p/js-libp2p-webrtc-star.git
+    ```
+
+1. Move into the directory:
+
+    ```shell
+    cd js-libp2p-webrtc-star
+    ```
+
+1. Install the local `@libp2p` package:
+
+    ```shell
+    npm install -g @libp2p/webrtc-star-signalling-server
+    ```
+
+1. Start the webrtc server:
+
+    ```shell
+    webrtc-star --port=13579 --host=127.0.0.1
+     
+    > @libp2p/webrtc-star-signalling-server@1.0.5
+    > Listening on: http://127.0.0.1:13579
+    ```
+
 ## Contribute
 
 Feel free to join in. All welcome. Open an [issue](https://github.com/libp2p/js-interfaces/issues)!
