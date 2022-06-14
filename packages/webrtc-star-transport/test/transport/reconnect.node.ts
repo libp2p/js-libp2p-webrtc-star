@@ -6,8 +6,8 @@ import { sigServer } from '@libp2p/webrtc-star-signalling-server'
 import { pEvent } from 'p-event'
 import type { SigServer } from '@libp2p/webrtc-star-signalling-server'
 import type { WebRTCStar } from '../../src/index.js'
-import type { Listener } from '@libp2p/interfaces/transport'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
+import type { Listener } from '@libp2p/interface-transport'
+import { mockUpgrader } from '@libp2p/interface-mocks'
 
 const SERVER_PORT = 13580
 

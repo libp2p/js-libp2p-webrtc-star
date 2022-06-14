@@ -7,8 +7,8 @@ import { pipe } from 'it-pipe'
 import pWaitFor from 'p-wait-for'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
-import type { Listener, Upgrader } from '@libp2p/interfaces/transport'
-import { mockRegistrar, mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
+import type { Listener, Upgrader } from '@libp2p/interface-transport'
+import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 
 const protocol = '/echo/1.0.0'
 

@@ -4,8 +4,8 @@ import { expect } from 'aegir/chai'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
 import type { WebRTCStar } from '../../src/index.js'
-import { mockRegistrar, mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
-import type { Upgrader } from '@libp2p/interfaces/transport'
+import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
+import type { Upgrader } from '@libp2p/interface-transport'
 
 const ma1 = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 const ma2 = new Multiaddr('/ip4/127.0.0.1/tcp/15556/ws/p2p-webrtc-star')

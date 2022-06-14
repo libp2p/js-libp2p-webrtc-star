@@ -29,8 +29,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/src/index.js",
-      "types": "./dist/src/index.d.ts"
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
     }
   },
   "eslintConfig": {
@@ -132,6 +132,6 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
-    "aegir": "^37.0.7"
+    "aegir": "^37.2.0"
   }
 }

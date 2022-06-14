@@ -13,7 +13,7 @@ import filterTests from './transport/filter.js'
 import multipleSignalServersTests from './transport/multiple-signal-servers.js'
 import trackTests from './transport/track.js'
 import reconnectTests from './transport/reconnect.node.js'
-import { Components } from '@libp2p/interfaces/components'
+import { Components } from '@libp2p/components'
 
 // TODO: Temporary fix per wrtc issue
 // https://github.com/node-webrtc/node-webrtc/issues/636#issuecomment-774171409

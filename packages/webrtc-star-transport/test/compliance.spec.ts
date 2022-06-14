@@ -4,12 +4,12 @@
 import wrtc from 'wrtc'
 import sinon from 'sinon'
 import { Multiaddr } from '@multiformats/multiaddr'
-import testsTransport from '@libp2p/interface-compliance-tests/transport'
-import testsDiscovery from '@libp2p/interface-compliance-tests/peer-discovery'
+import testsTransport from '@libp2p/interface-transport-compliance-tests'
+import testsDiscovery from '@libp2p/interface-peer-discovery-compliance-tests'
 import { WebRTCStar } from '../src/index.js'
 import pWaitFor from 'p-wait-for'
 import { peerIdFromString } from '@libp2p/peer-id'
-import { Components } from '@libp2p/interfaces/components'
+import { Components } from '@libp2p/components'
 
 describe('interface-transport compliance', function () {
   testsTransport({

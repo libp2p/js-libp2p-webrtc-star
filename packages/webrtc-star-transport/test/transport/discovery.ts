@@ -5,8 +5,8 @@ import { Multiaddr } from '@multiformats/multiaddr'
 import { pEvent } from 'p-event'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
-import type { Listener } from '@libp2p/interfaces/src/transport'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
+import type { Listener } from '@libp2p/interface-transport'
+import { mockUpgrader } from '@libp2p/interface-mocks'
 
 export default (create: () => Promise<WebRTCStar>) => {
   describe('peer discovery', () => {
