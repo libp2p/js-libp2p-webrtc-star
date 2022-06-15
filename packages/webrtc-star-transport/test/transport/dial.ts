@@ -8,10 +8,10 @@ import sinon from 'sinon'
 import { WebRTCReceiver } from '@libp2p/webrtc-peer'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
-import type { Listener, Upgrader } from '@libp2p/interfaces/src/transport'
+import type { Listener, Upgrader } from '@libp2p/interface-transport'
 import pWaitFor from 'p-wait-for'
 import type { HandshakeSignal } from '@libp2p/webrtc-star-protocol'
-import { mockRegistrar, mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
+import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 
 export default (create: () => Promise<WebRTCStar>) => {
   describe('dial', () => {

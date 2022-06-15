@@ -34,8 +34,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/src/index.js",
-      "types": "./dist/src/index.d.ts"
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
     }
   },
   "eslintConfig": {
@@ -150,7 +150,7 @@
   "devDependencies": {
     "@types/hapi__hapi": "^20.0.10",
     "@types/hapi__inert": "^5.2.3",
-    "aegir": "^37.0.7",
+    "aegir": "^37.2.0",
     "p-event": "^5.0.1",
     "p-wait-for": "^4.1.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",

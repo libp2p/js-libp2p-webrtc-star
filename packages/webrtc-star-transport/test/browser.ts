@@ -6,7 +6,7 @@ import dialTests from './transport/dial.js'
 import listenTests from './transport/listen.js'
 import discoveryTests from './transport/discovery.js'
 import filterTests from './transport/filter.js'
-import { Components } from '@libp2p/interfaces/components'
+import { Components } from '@libp2p/components'
 
 describe('browser RTC', () => {
   const create = async () => {

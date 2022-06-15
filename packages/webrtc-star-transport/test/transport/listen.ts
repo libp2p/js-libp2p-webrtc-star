@@ -4,7 +4,7 @@ import { expect } from 'aegir/chai'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { pEvent } from 'p-event'
 import type { WebRTCStar } from '../../src/index.js'
-import { mockUpgrader } from '@libp2p/interface-compliance-tests/mocks'
+import { mockUpgrader } from '@libp2p/interface-mocks'
 
 export default (create: () => Promise<WebRTCStar>) => {
   describe('listen', () => {
