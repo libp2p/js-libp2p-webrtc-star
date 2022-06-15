@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v2.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v2.0.0...@libp2p/webrtc-star-v2.0.1) (2022-06-15)
+
+
+### Trivial Changes
+
+* update deps ([#443](https://github.com/libp2p/js-libp2p-webrtc-star/issues/443)) ([ac7f92d](https://github.com/libp2p/js-libp2p-webrtc-star/commit/ac7f92de776bf798849733e6128823c798a416c0))
+
 ## [@libp2p/webrtc-star-v2.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v1.0.12...@libp2p/webrtc-star-v2.0.0) (2022-06-15)
 
 
