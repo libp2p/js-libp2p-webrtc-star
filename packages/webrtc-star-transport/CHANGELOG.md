@@ -1,3 +1,14 @@
+## [@libp2p/webrtc-star-v3.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v2.0.1...@libp2p/webrtc-star-v3.0.0) (2022-06-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* the registry/connection interfaces have changed
+
+### Trivial Changes
+
+* update deps ([#449](https://github.com/libp2p/js-libp2p-webrtc-star/issues/449)) ([b86c48c](https://github.com/libp2p/js-libp2p-webrtc-star/commit/b86c48c2938a8e8a81ce8b59b43021940db6d8ac))
+
 ## [@libp2p/webrtc-star-v2.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v2.0.0...@libp2p/webrtc-star-v2.0.1) (2022-06-15)
 
 
