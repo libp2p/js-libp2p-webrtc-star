@@ -63,7 +63,7 @@ export default (create: () => Promise<WebRTCStar>) => {
           expect(conn.remoteAddr).to.exist()
 
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -77,7 +77,7 @@ export default (create: () => Promise<WebRTCStar>) => {
           expect(conn.remoteAddr).to.exist()
 
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -100,7 +100,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       const [sigRefs] = ws2.sigServers.values()
 
       const conn = await ws1.dial(sigRefs.signallingAddr, { upgrader })
-      const { stream } = await conn.newStream(['/echo/1.0.0'])
+      const stream = await conn.newStream(['/echo/1.0.0'])
       const data = uint8ArrayFromString('some data')
       const values = await pipe(
         [data],

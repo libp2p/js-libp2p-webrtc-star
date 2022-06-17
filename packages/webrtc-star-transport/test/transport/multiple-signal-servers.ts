@@ -56,7 +56,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -67,7 +67,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -81,7 +81,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -108,7 +108,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -119,7 +119,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -133,7 +133,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
@@ -171,7 +171,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         upgrader,
         handler: (conn) => {
           void conn.newStream([protocol])
-            .then(({ stream }) => {
+            .then((stream) => {
               void pipe(stream, stream)
             })
         }
