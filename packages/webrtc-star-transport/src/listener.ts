@@ -50,12 +50,17 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
 
     let previouslyConnected = false
 
-    this.socket.on('connect_error', (err: Error) => {
-      if (!previouslyConnected) {
-        this.dispatchEvent(new CustomEvent('error', {
-          detail: err
-        }))
+    this.socket.on('connect_error', err => {
+      // @ts-expect-error `.type` is missing from the types
+      if (previouslyConnected && err.type === 'TransportError') {
+        // if we've had an open connection before, and this is a
+        // transport error, let socket.io's reconnect logic take over
+        return
       }
+
+      this.dispatchEvent(new CustomEvent('error', {
+        detail: err
+      }))
     })
     this.socket.on('error', (err: Error) => {
       this.dispatchEvent(new CustomEvent('error', {
