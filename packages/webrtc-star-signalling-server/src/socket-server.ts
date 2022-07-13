@@ -14,7 +14,7 @@ const fake = {
   }
 }
 
-export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: boolean) {
+export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: boolean, refreshPeerListIntervalMS: number) {
   const io = new Server({
     allowEIO3: true // allow socket.io v2 clients to connect
   })
@@ -60,7 +60,7 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
       socket.once('ss-leave', stopSendingPeers)
       socket.once('disconnect', stopSendingPeers)
 
-      let refreshInterval: NodeJS.Timer | undefined = setInterval(sendPeers, config.refreshPeerListIntervalMS)
+      let refreshInterval: NodeJS.Timer | undefined = setInterval(sendPeers, refreshPeerListIntervalMS)
       sendPeers()
 
       function sendPeers () {

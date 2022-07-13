@@ -76,6 +76,8 @@ export interface SignalServerServerEvents {
   'listening': CustomEvent
   'peer': CustomEvent<string>
   'connection': CustomEvent<Connection>
+  'disconnect': CustomEvent
+  'reconnect': CustomEvent
 }
 
 export interface SignalServer extends EventEmitter<SignalServerServerEvents> {

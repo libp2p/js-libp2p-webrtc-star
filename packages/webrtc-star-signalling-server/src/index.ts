@@ -18,6 +18,7 @@ interface Options {
   port?: number
   host?: string
   metrics?: boolean
+  refreshPeerListIntervalMS?: number
 }
 
 export interface SigServer extends Server {
@@ -36,7 +37,11 @@ export async function sigServer (options: Options = {}) {
     host
   }), {
     peers,
-    io: socketServer(peers, options.metrics ?? false)
+    io: socketServer(
+      peers,
+      options.metrics ?? false,
+      options.refreshPeerListIntervalMS ?? config.refreshPeerListIntervalMS
+    )
   })
 
   http.io.attach(http.listener, {
