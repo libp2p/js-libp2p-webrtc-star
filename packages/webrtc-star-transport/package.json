@@ -167,6 +167,7 @@
     "electron-webrtc": "~0.3.0",
     "it-all": "^1.0.5",
     "it-pipe": "^2.0.3",
+    "it-pushable": "^3.0.0",
     "p-event": "^5.0.1",
     "p-wait-for": "^4.1.0",
     "sinon": "^14.0.0",
