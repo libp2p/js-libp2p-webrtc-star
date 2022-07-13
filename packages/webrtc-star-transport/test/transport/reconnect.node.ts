@@ -128,7 +128,7 @@ export default (create: () => Promise<PeerTransport>) => {
       await sigS.stop()
     })
 
-    it.only('does not drop connections when the signalling server disconnects', async () => {
+    it('does not drop connections when the signalling server disconnects', async () => {
       // returns a promise that resolves when peer1 has discovered peer2 and peer3
       async function discoverPeers () {
         const peer2Discovered = pDefer()
