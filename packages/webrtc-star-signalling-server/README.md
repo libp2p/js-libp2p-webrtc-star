@@ -43,9 +43,9 @@ Defaults:
 Or in JavaScript:
 
 ```js
-import { signallingServer } from '@libp2p/webrtc-star-signalling-server'
+import { sigServer } from '@libp2p/webrtc-star-signalling-server'
 
-const server = await signallingServer({
+const server = await sigServer({
   port: 24642,
   host: '0.0.0.0',
   metrics: false
