@@ -141,7 +141,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^20.0.0",
-    "@hapi/inert": "^6.0.3",
+    "@hapi/inert": "^7.0.0",
     "@libp2p/logger": "^2.0.0",
     "@libp2p/webrtc-star-protocol": "^2.0.0",
     "@multiformats/multiaddr": "^11.0.0",
