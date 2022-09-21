@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v3.0.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v3.0.1...@libp2p/webrtc-star-v3.0.2) (2022-09-21)
+
+
+### Bug Fixes
+
+* do not close connections when sigserver goes away ([#456](https://github.com/libp2p/js-libp2p-webrtc-star/issues/456)) ([206bdd5](https://github.com/libp2p/js-libp2p-webrtc-star/commit/206bdd55e84d92929cf4dec6dd98d9bd6b37f650)), closes [#453](https://github.com/libp2p/js-libp2p-webrtc-star/issues/453)
+
 ## [@libp2p/webrtc-star-v3.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v3.0.0...@libp2p/webrtc-star-v3.0.1) (2022-08-10)
 
 
