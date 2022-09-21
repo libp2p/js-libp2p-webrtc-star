@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v3.0.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v3.0.2...@libp2p/webrtc-star-v3.0.3) (2022-09-21)
+
+
+### Dependencies
+
+* update @multiformats/multiaddr to 11.0.0 ([#471](https://github.com/libp2p/js-libp2p-webrtc-star/issues/471)) ([2abc084](https://github.com/libp2p/js-libp2p-webrtc-star/commit/2abc0844537030bd3d248f08e5467f29bba6dec6))
+
 ## [@libp2p/webrtc-star-v3.0.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v3.0.1...@libp2p/webrtc-star-v3.0.2) (2022-09-21)
 
 
