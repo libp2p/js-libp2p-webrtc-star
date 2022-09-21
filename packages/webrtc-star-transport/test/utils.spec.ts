@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import { cleanMultiaddr, cleanUrlSIO } from '../src/utils.js'
 
 describe('utils', () => {
@@ -21,15 +21,15 @@ describe('utils', () => {
   const invalidMultiaddrStringDNS3 = '/dns4/star-signal.cloud.ipfs.team/ws/p2p-webrtc-star/p2p/QmWxLfixekyv6GAzvDEtXfXjj7gb1z3G8i5aQNHLhw1zA1'
 
   // Create actual multiaddrs
-  const modernMultiaddrDNS = new Multiaddr(modernMultiaddrStringDNS)
-  const modernMultiaddrDNS2 = new Multiaddr(modernMultiaddrStringDNS2)
-  const modernMultiaddrDNS3 = new Multiaddr(modernMultiaddrStringDNS3)
-  const modernMultiaddrDNS4 = new Multiaddr(modernMultiaddrStringDNS4)
-  const modernMultiaddrDNS5 = new Multiaddr(modernMultiaddrStringDNS5)
+  const modernMultiaddrDNS = multiaddr(modernMultiaddrStringDNS)
+  const modernMultiaddrDNS2 = multiaddr(modernMultiaddrStringDNS2)
+  const modernMultiaddrDNS3 = multiaddr(modernMultiaddrStringDNS3)
+  const modernMultiaddrDNS4 = multiaddr(modernMultiaddrStringDNS4)
+  const modernMultiaddrDNS5 = multiaddr(modernMultiaddrStringDNS5)
 
-  const invalidMultiaddrDNS = new Multiaddr(invalidMultiaddrStringDNS)
-  const invalidMultiaddrDNS2 = new Multiaddr(invalidMultiaddrStringDNS2)
-  const invalidMultiaddrDNS3 = new Multiaddr(invalidMultiaddrStringDNS3)
+  const invalidMultiaddrDNS = multiaddr(invalidMultiaddrStringDNS)
+  const invalidMultiaddrDNS2 = multiaddr(invalidMultiaddrStringDNS2)
+  const invalidMultiaddrDNS3 = multiaddr(invalidMultiaddrStringDNS3)
 
   it('cleanUrlSIO webrtc-star modern', () => {
     const newUrlSIOStringDNS = cleanUrlSIO(modernMultiaddrDNS)

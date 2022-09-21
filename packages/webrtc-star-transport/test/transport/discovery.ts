@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import { pEvent } from 'p-event'
 import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
@@ -16,7 +17,7 @@ export default (create: () => Promise<PeerTransport>) => {
     let ws3: WebRTCStar
     let ws4: WebRTCStar
     let ws1Listener: Listener
-    const signallerAddr = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+    const signallerAddr = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     after(async () => {
       if (ws1Listener != null) {

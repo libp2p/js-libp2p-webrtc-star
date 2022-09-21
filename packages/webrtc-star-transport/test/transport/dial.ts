@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
 import all from 'it-all'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
@@ -32,9 +33,9 @@ export default (create: () => Promise<PeerTransport>) => {
     let listener2: Listener
     let upgrader: Upgrader
 
-    const maHSDNS = new Multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
-    const maHSIP = new Multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
-    const maLS = new Multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
+    const maHSDNS = multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
+    const maHSIP = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
+    const maLS = multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
 
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS != null) {
       // test with deployed signalling server using DNS
@@ -122,13 +123,13 @@ export default (create: () => Promise<PeerTransport>) => {
     })
 
     it('dial offline / non-exist()ent node on IPv4, check promise rejected', function () {
-      const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
+      const maOffline = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
       return expect(ws1.dial(maOffline, { upgrader })).to.eventually.be.rejected().and.have.property('code', 'ERR_SIGNALLING_FAILED')
     })
 
     it('dial unknown signal server, check promise rejected', function () {
-      const maOffline = new Multiaddr('/ip4/127.0.0.1/tcp/15559/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
+      const maOffline = multiaddr('/ip4/127.0.0.1/tcp/15559/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2f')
 
       return expect(ws1.dial(maOffline, { upgrader })).to.eventually.be.rejected().and.have.property('code', 'ERR_UNKNOWN_SIGNAL_SERVER')
     })

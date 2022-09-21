@@ -1,4 +1,5 @@
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr, isName } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 
 export function cleanUrlSIO (ma: Multiaddr) {
   const maStrSplit = ma.toString().split('/')
@@ -10,7 +11,7 @@ export function cleanUrlSIO (ma: Multiaddr) {
     throw new Error(`invalid multiaddr: ${ma.toString()}`)
   }
 
-  if (!Multiaddr.isName(ma)) {
+  if (!isName(ma)) {
     return `http://${maStrSplit[2]}:${maStrSplit[4]}`
   }
 
@@ -30,7 +31,7 @@ export function cleanMultiaddr (maStr: string) {
 
   if (maStr.startsWith(legacy)) {
     maStr = maStr.substring(legacy.length, maStr.length)
-    let ma = new Multiaddr(maStr)
+    let ma = multiaddr(maStr)
     const tuppleIPFS = ma.stringTuples().filter((tupple) => {
       return tupple[0] === 421 // ipfs code
     })[0]

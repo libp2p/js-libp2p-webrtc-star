@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import { sigServer } from '@libp2p/webrtc-star-signalling-server'
 import type { SigServer } from '@libp2p/webrtc-star-signalling-server'
 import type { Listener } from '@libp2p/interface-transport'
@@ -26,7 +27,7 @@ export default (create: () => Promise<PeerTransport>) => {
     let listener1: Listener
     let listener2: Listener
     let listener3: Listener
-    const signallerAddr = new Multiaddr(`/ip4/127.0.0.1/tcp/${SERVER_PORT}/ws/p2p-webrtc-star`)
+    const signallerAddr = multiaddr(`/ip4/127.0.0.1/tcp/${SERVER_PORT}/ws/p2p-webrtc-star`)
 
     before(async () => {
       sigS = await sigServer({ port: SERVER_PORT })
@@ -103,7 +104,7 @@ export default (create: () => Promise<PeerTransport>) => {
     let listener1: Listener
     let listener2: Listener
     let listener3: Listener
-    const signallerAddr = new Multiaddr(`/ip4/127.0.0.1/tcp/${SERVER_PORT}/ws/p2p-webrtc-star`)
+    const signallerAddr = multiaddr(`/ip4/127.0.0.1/tcp/${SERVER_PORT}/ws/p2p-webrtc-star`)
 
     before(async () => {
       sigS = await sigServer({

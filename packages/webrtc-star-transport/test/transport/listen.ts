@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import { pEvent } from 'p-event'
 import type { WebRTCStar } from '../../src/index.js'
 import { mockUpgrader } from '@libp2p/interface-mocks'
@@ -10,7 +10,7 @@ import type { PeerTransport } from '../index.js'
 export default (create: () => Promise<PeerTransport>) => {
   describe('listen', () => {
     let ws: WebRTCStar
-    const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+    const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     before(async () => {
       ({ transport: ws } = await create())
@@ -45,7 +45,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
     it('should throw an error if it cannot listen on the given multiaddr', async () => {
       const listener = ws.createListener({ upgrader: mockUpgrader() })
-      const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15554/ws/p2p-webrtc-star')
+      const ma = multiaddr('/ip4/127.0.0.1/tcp/15554/ws/p2p-webrtc-star')
 
       await expect(listener.listen(ma))
         .to.eventually.be.rejected()
@@ -53,7 +53,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
     it('getAddrs', async () => {
       const listener = ws.createListener({ upgrader: mockUpgrader() })
-      const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+      const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
       await listener.listen(ma)
 
@@ -65,7 +65,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
     it('getAddrs with peer id', async () => {
       const listener = ws.createListener({ upgrader: mockUpgrader() })
-      const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
+      const ma = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooooA')
 
       await listener.listen(ma)
 
