@@ -1,6 +1,6 @@
 import { logger } from '@libp2p/logger'
 import errCode from 'err-code'
-import { connect } from 'socket.io-client'
+import { connect, ManagerOptions, SocketOptions } from 'socket.io-client'
 import pDefer from 'p-defer'
 import { WebRTCReceiver } from '@libp2p/webrtc-peer'
 import { toMultiaddrConnection } from './socket-to-conn.js'
@@ -17,9 +17,8 @@ import { EventEmitter, CustomEvent } from '@libp2p/interfaces/events'
 
 const log = logger('libp2p:webrtc-star:listener')
 
-const sioOptions = {
+const sioOptions: Partial<ManagerOptions & SocketOptions> = {
   transports: ['websocket'],
-  'force new connection': true,
   path: '/socket.io-next/' // This should be removed when socket.io@2 support is removed
 }
 
@@ -49,26 +48,45 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
 
     this.handleWsHandshake = this.handleWsHandshake.bind(this)
 
-    this.socket.once('connect_error', (err) => {
-      this.dispatchEvent(new CustomEvent('error', {
-        detail: err
-      }))
-    })
-    this.socket.once('error', (err: Error) => {
-      this.dispatchEvent(new CustomEvent('error', {
-        detail: err
-      }))
-    })
+    let previouslyConnected = false
 
+    this.socket.on('connect_error', err => {
+      // @ts-expect-error `.type` is missing from the types
+      if (previouslyConnected && err.type === 'TransportError') {
+        // if we've had an open connection before, and this is a
+        // transport error, let socket.io's reconnect logic take over
+        return
+      }
+
+      this.dispatchEvent(new CustomEvent('error', {
+        detail: err
+      }))
+    })
+    this.socket.on('error', (err: Error) => {
+      this.dispatchEvent(new CustomEvent('error', {
+        detail: err
+      }))
+    })
     this.socket.on('ws-handshake', this.handleWsHandshake)
     this.socket.on('ws-peer', (maStr) => {
       this.dispatchEvent(new CustomEvent('peer', {
         detail: maStr
       }))
     })
-    this.socket.on('connect', () => this.socket.emit('ss-join', signallingAddr.toString()))
+    this.socket.on('connect', () => {
+      this.socket.emit('ss-join', this.signallingAddr.toString())
+
+      if (previouslyConnected) {
+        this.dispatchEvent(new CustomEvent('reconnect'))
+      }
+    })
     this.socket.once('connect', () => {
+      // make sure we can reconnect in future
+      previouslyConnected = true
       this.dispatchEvent(new CustomEvent('listening'))
+    })
+    this.socket.on('disconnect', () => {
+      this.dispatchEvent(new CustomEvent('disconnect'))
     })
   }
 
@@ -242,7 +260,7 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
       signallingAddr = ma
     }
 
-    this.signallingUrl = cleanUrlSIO(ma)
+    const signallingUrl = this.signallingUrl = cleanUrlSIO(ma)
 
     log('connecting to signalling server on: %s', this.signallingUrl)
     const server: SignalServer = new SigServer(this.signallingUrl, signallingAddr, this.upgrader, this.handler, this.options.channelOptions)
@@ -277,6 +295,15 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
       this.dispatchEvent(new CustomEvent('connection', {
         detail: conn
       }))
+    })
+    server.addEventListener('disconnect', () => {
+      // Ensure we error if we try to dial while we are disconnected from
+      // the signalling server
+      this.transport.sigServers.delete(signallingUrl)
+    })
+    server.addEventListener('reconnect', () => {
+      // We can dial via the signalling server again
+      this.transport.sigServers.set(signallingUrl, server)
     })
 
     // Store listen and signal reference addresses

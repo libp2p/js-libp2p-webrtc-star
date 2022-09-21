@@ -6,20 +6,21 @@ import { pipe } from 'it-pipe'
 import type { WebRTCStar } from '../../src/index.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { Upgrader } from '@libp2p/interface-transport'
+import type { PeerTransport } from '../index.js'
 
 const ma1 = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 const ma2 = new Multiaddr('/ip4/127.0.0.1/tcp/15556/ws/p2p-webrtc-star')
 const protocol = '/echo/1.0.0'
 
-export default (create: () => Promise<WebRTCStar>) => {
+export default (create: () => Promise<PeerTransport>) => {
   describe('multiple signal servers', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
     let upgrader: Upgrader
 
     beforeEach(async () => {
-      ws1 = await create()
-      ws2 = await create()
+      ({ transport: ws1 } = await create())
+      ;({ transport: ws2 } = await create())
 
       const registrar = mockRegistrar()
       void registrar.handle(protocol, ({ stream }) => {

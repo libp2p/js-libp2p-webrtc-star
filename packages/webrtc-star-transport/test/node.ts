@@ -14,20 +14,30 @@ import multipleSignalServersTests from './transport/multiple-signal-servers.js'
 import trackTests from './transport/track.js'
 import reconnectTests from './transport/reconnect.node.js'
 import { Components } from '@libp2p/components'
+import type { PeerTransport } from './index.js'
+import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 
 // TODO: Temporary fix per wrtc issue
 // https://github.com/node-webrtc/node-webrtc/issues/636#issuecomment-774171409
 process.on('beforeExit', (code) => process.exit(code))
 
 describe('transport: with wrtc', () => {
-  const create = async () => {
+  const create = async (): Promise<PeerTransport> => {
     const peerId = await createEd25519PeerId()
     const ws = new WebRTCStar({
       wrtc
     })
     ws.init(new Components({ peerId }))
 
-    return ws
+    const registrar = mockRegistrar()
+    const upgrader = mockUpgrader({ registrar })
+
+    return {
+      peerId,
+      transport: ws,
+      registrar,
+      upgrader
+    }
   }
 
   dialTests(create)
@@ -48,7 +58,15 @@ describe.skip('transport: with electron-webrtc', () => {
     })
     ws.init(new Components({ peerId }))
 
-    return ws
+    const registrar = mockRegistrar()
+    const upgrader = mockUpgrader({ registrar })
+
+    return {
+      peerId,
+      transport: ws,
+      registrar,
+      upgrader
+    }
   }
 
   dialTests(create)

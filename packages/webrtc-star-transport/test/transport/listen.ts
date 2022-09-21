@@ -5,14 +5,15 @@ import { Multiaddr } from '@multiformats/multiaddr'
 import { pEvent } from 'p-event'
 import type { WebRTCStar } from '../../src/index.js'
 import { mockUpgrader } from '@libp2p/interface-mocks'
+import type { PeerTransport } from '../index.js'
 
-export default (create: () => Promise<WebRTCStar>) => {
+export default (create: () => Promise<PeerTransport>) => {
   describe('listen', () => {
     let ws: WebRTCStar
     const ma = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 
     before(async () => {
-      ws = await create()
+      ({ transport: ws } = await create())
     })
 
     it('listen, check for promise', async () => {

@@ -7,8 +7,9 @@ import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
 import type { Listener } from '@libp2p/interface-transport'
 import { mockUpgrader } from '@libp2p/interface-mocks'
+import type { PeerTransport } from '../index.js'
 
-export default (create: () => Promise<WebRTCStar>) => {
+export default (create: () => Promise<PeerTransport>) => {
   describe('peer discovery', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -24,7 +25,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     })
 
     it('listen on the first', async () => {
-      ws1 = await create()
+      ({ transport: ws1 } = await create())
       ws1Listener = ws1.createListener({ upgrader: mockUpgrader() })
       await ws1.discovery.start()
 
@@ -32,7 +33,7 @@ export default (create: () => Promise<WebRTCStar>) => {
     })
 
     it('listen on the second, discover the first', async () => {
-      ws2 = await create()
+      ({ transport: ws2 } = await create())
       const listener = ws2.createListener({ upgrader: mockUpgrader() })
       await ws2.discovery.start()
 
@@ -63,7 +64,7 @@ export default (create: () => Promise<WebRTCStar>) => {
         once: true
       })
 
-      ws3 = await create()
+      ;({ transport: ws3 } = await create())
       const listener = ws3.createListener({ upgrader: mockUpgrader() })
       await ws3.discovery.start()
 
@@ -91,7 +92,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       })
 
       void ws1.discovery.stop()
-      ws4 = await create()
+      ;({ transport: ws4 } = await create())
       const listener = ws4.createListener({ upgrader: mockUpgrader() })
       void ws4.discovery.start()
 

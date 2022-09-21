@@ -9,10 +9,11 @@ import { cleanUrlSIO } from '../../src/utils.js'
 import type { WebRTCStar } from '../../src/index.js'
 import type { Listener, Upgrader } from '@libp2p/interface-transport'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
+import type { PeerTransport } from '../index.js'
 
 const protocol = '/echo/1.0.0'
 
-export default (create: () => Promise<WebRTCStar>) => {
+export default (create: () => Promise<PeerTransport>) => {
   describe('track connections', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -50,7 +51,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       })
 
       // first
-      ws1 = await create()
+      ;({ transport: ws1 } = await create())
       listener = ws1.createListener({
         upgrader,
         handler: (conn) => {
@@ -62,7 +63,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       })
 
       // second
-      ws2 = await create()
+      ;({ transport: ws2 } = await create())
       remoteListener = ws2.createListener({
         upgrader,
         handler: (conn) => {

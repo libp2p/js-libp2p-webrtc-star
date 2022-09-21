@@ -12,6 +12,7 @@ import type { Listener, Upgrader } from '@libp2p/interface-transport'
 import pWaitFor from 'p-wait-for'
 import type { HandshakeSignal } from '@libp2p/webrtc-star-protocol'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
+import type { PeerTransport } from '../index.js'
 import type { Source } from 'it-stream-types'
 import type { Uint8ArrayList } from 'uint8arraylist'
 
@@ -21,7 +22,7 @@ async function * toBytes (source: Source<Uint8ArrayList>) {
   }
 }
 
-export default (create: () => Promise<WebRTCStar>) => {
+export default (create: () => Promise<PeerTransport>) => {
   describe('dial', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -64,7 +65,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       })
 
       // first
-      ws1 = await create()
+      ;({ transport: ws1 } = await create())
       listener1 = ws1.createListener({
         upgrader,
         handler: (conn) => {
@@ -78,7 +79,7 @@ export default (create: () => Promise<WebRTCStar>) => {
       })
 
       // second
-      ws2 = await create()
+      ;({ transport: ws2 } = await create())
       listener2 = ws2.createListener({
         upgrader,
         handler: (conn) => {
