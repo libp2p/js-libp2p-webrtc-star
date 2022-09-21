@@ -1,3 +1,15 @@
+## [@libp2p/webrtc-star-protocol-v2.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-protocol-v2.0.0...@libp2p/webrtc-star-protocol-v2.0.1) (2022-09-21)
+
+
+### Trivial Changes
+
+* update project config ([#460](https://github.com/libp2p/js-libp2p-webrtc-star/issues/460)) ([02197df](https://github.com/libp2p/js-libp2p-webrtc-star/commit/02197df3f7e65cd8d6cdea81efa137035aa8228e))
+
+
+### Dependencies
+
+* update @multiformats/multiaddr to 11.0.0 ([#471](https://github.com/libp2p/js-libp2p-webrtc-star/issues/471)) ([2abc084](https://github.com/libp2p/js-libp2p-webrtc-star/commit/2abc0844537030bd3d248f08e5467f29bba6dec6))
+
 ## [@libp2p/webrtc-star-protocol-v2.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-protocol-v1.0.2...@libp2p/webrtc-star-protocol-v2.0.0) (2022-06-15)
 
 
