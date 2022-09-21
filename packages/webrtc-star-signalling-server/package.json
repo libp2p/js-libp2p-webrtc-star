@@ -133,10 +133,10 @@
     "clean": "aegir clean",
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
-    "build": "aegir build",
+    "build": "aegir build && cp src/index.html dist/src",
     "test": "aegir test -t node",
     "test:node": "aegir test -t node --cov",
-    "start": "node src/sig-server/bin.js",
+    "start": "node bin/index.js",
     "release": "aegir release"
   },
   "dependencies": {
