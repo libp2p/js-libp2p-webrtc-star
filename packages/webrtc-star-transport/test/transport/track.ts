@@ -2,7 +2,8 @@
 /* eslint-disable no-console */
 
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
 import pWaitFor from 'p-wait-for'
 import { cleanUrlSIO } from '../../src/utils.js'
@@ -22,9 +23,9 @@ export default (create: () => Promise<PeerTransport>) => {
     let remoteListener: Listener
     let upgrader: Upgrader
 
-    const maHSDNS = new Multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
-    const maHSIP = new Multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
-    const maLS = new Multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
+    const maHSDNS = multiaddr('/dns/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star')
+    const maHSIP = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star')
+    const maLS = multiaddr('/ip4/127.0.0.1/tcp/15555/wss/p2p-webrtc-star')
 
     if (process.env.WEBRTC_STAR_REMOTE_SIGNAL_DNS != null) {
       // test with deployed signalling server using DNS

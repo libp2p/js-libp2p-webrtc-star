@@ -3,7 +3,7 @@
 // @ts-expect-error no types
 import wrtc from 'wrtc'
 import sinon from 'sinon'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import testsTransport from '@libp2p/interface-transport-compliance-tests'
 import testsDiscovery from '@libp2p/interface-peer-discovery-compliance-tests'
 import { WebRTCStar } from '../src/index.js'
@@ -23,9 +23,9 @@ describe('interface-transport compliance', function () {
       }
 
       const addrs = [
-        new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')),
-        new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')),
-        new Multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2c'))
+        multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')),
+        multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2b')),
+        multiaddr(base('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2c'))
       ]
 
       // Used by the dial tests to simulate a delayed connect

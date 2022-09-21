@@ -1,7 +1,8 @@
 import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { AbortError } from 'abortable-iterator'
-import { Multiaddr } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import * as mafmt from '@multiformats/mafmt'
 import { CODE_CIRCUIT } from './constants.js'
 import { createListener } from './listener.js'
@@ -269,7 +270,7 @@ export class WebRTCStar implements Transport, Initializable {
     log('peer discovered: %s', maStr)
     maStr = cleanMultiaddr(maStr)
 
-    const ma = new Multiaddr(maStr)
+    const ma = multiaddr(maStr)
     const peerIdStr = ma.getPeerId()
 
     if (peerIdStr == null) {

@@ -1,15 +1,15 @@
 /* eslint-env mocha */
 
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
 import type { WebRTCStar } from '../../src/index.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { Upgrader } from '@libp2p/interface-transport'
 import type { PeerTransport } from '../index.js'
 
-const ma1 = new Multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
-const ma2 = new Multiaddr('/ip4/127.0.0.1/tcp/15556/ws/p2p-webrtc-star')
+const ma1 = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
+const ma2 = multiaddr('/ip4/127.0.0.1/tcp/15556/ws/p2p-webrtc-star')
 const protocol = '/echo/1.0.0'
 
 export default (create: () => Promise<PeerTransport>) => {
