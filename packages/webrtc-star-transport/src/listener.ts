@@ -74,7 +74,7 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
       }))
     })
     this.socket.on('connect', () => {
-      this.socket.emit('ss-join', signallingAddr.toString())
+      this.socket.emit('ss-join', this.signallingAddr.toString())
 
       if (previouslyConnected) {
         this.dispatchEvent(new CustomEvent('reconnect'))
