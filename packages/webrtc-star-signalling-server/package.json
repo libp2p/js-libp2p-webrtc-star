@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/webrtc-star-signalling-server",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "signalling server to use with the libp2p WebRTC transport",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-webrtc-star/tree/master/packages/webrtc-star-signalling-server#readme",
@@ -71,15 +71,15 @@
               "release": "patch"
             },
             {
-              "type": "chore",
-              "release": "patch"
-            },
-            {
               "type": "docs",
               "release": "patch"
             },
             {
               "type": "test",
+              "release": "patch"
+            },
+            {
+              "type": "deps",
               "release": "patch"
             },
             {
@@ -109,7 +109,11 @@
               },
               {
                 "type": "docs",
-                "section": "Trivial Changes"
+                "section": "Documentation"
+              },
+              {
+                "type": "deps",
+                "section": "Dependencies"
               },
               {
                 "type": "test",
@@ -129,10 +133,10 @@
     "clean": "aegir clean",
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
-    "build": "aegir build",
+    "build": "aegir build && cp src/index.html dist/src",
     "test": "aegir test -t node",
     "test:node": "aegir test -t node --cov",
-    "start": "node src/sig-server/bin.js",
+    "start": "node bin/index.js",
     "release": "aegir release"
   },
   "dependencies": {
@@ -152,7 +156,7 @@
     "@types/hapi__inert": "^5.2.3",
     "aegir": "^37.2.0",
     "p-event": "^5.0.1",
-    "p-wait-for": "^4.1.0",
+    "p-wait-for": "^5.0.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
     "socket.io-client-v3": "npm:socket.io-client@^3.1.2"
   }

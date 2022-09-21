@@ -170,7 +170,7 @@ export default (create: () => Promise<PeerTransport>) => {
       void peer2.registrar.handle(protocol, ({ stream }) => {
         void Promise.resolve().then(async () => {
           for await (const data of stream.source) {
-            received.push(data)
+            received.push(data.subarray())
           }
         })
       })

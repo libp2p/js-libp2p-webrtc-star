@@ -13,6 +13,14 @@ import pWaitFor from 'p-wait-for'
 import type { HandshakeSignal } from '@libp2p/webrtc-star-protocol'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { PeerTransport } from '../index.js'
+import type { Source } from 'it-stream-types'
+import type { Uint8ArrayList } from 'uint8arraylist'
+
+async function * toBytes (source: Source<Uint8ArrayList>) {
+  for await (const list of source) {
+    yield * list
+  }
+}
 
 export default (create: () => Promise<PeerTransport>) => {
   describe('dial', () => {
@@ -106,6 +114,7 @@ export default (create: () => Promise<PeerTransport>) => {
       const values = await pipe(
         [data],
         stream,
+        toBytes,
         async (source) => await all(source)
       )
 

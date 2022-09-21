@@ -26,6 +26,7 @@
     "test:firefox-webworker": "lerna run --concurrency 1 test:firefox-webworker -- --",
     "test:electron-main": "lerna run --concurrency 1 test:electron-main -- --",
     "test:electron-renderer": "lerna run --concurrency 1 test:electron-renderer -- --",
+    "clean": "lerna run clean",
     "build": "lerna run build",
     "lint": "lerna run lint",
     "dep-check": "lerna run dep-check",
