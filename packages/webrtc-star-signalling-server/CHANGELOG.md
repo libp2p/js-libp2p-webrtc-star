@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-signalling-server-v2.0.3](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v2.0.2...@libp2p/webrtc-star-signalling-server-v2.0.3) (2022-09-21)
+
+
+### Bug Fixes
+
+* copy index file to dist on build ([#470](https://github.com/libp2p/js-libp2p-webrtc-star/issues/470)) ([31e307e](https://github.com/libp2p/js-libp2p-webrtc-star/commit/31e307ebec5cf022cde999a29e5afde48d93c95f)), closes [#468](https://github.com/libp2p/js-libp2p-webrtc-star/issues/468)
+
 ## [@libp2p/webrtc-star-signalling-server-v2.0.2](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v2.0.1...@libp2p/webrtc-star-signalling-server-v2.0.2) (2022-08-10)
 
 
