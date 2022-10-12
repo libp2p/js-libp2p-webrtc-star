@@ -50,7 +50,7 @@ describe('interface-discovery compliance', () => {
       const ws = webRTCStar({ wrtc })({ peerId })
       const maStr = '/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2d'
 
-      const discovery = ws.discovery
+      const discovery = ws.discovery()
       running = true
 
       // only discover peers while the test is running and after discovery has been started
@@ -71,7 +71,7 @@ describe('interface-discovery compliance', () => {
           }
         })
 
-      return ws.discovery
+      return discovery
     },
     async teardown () {
       running = false

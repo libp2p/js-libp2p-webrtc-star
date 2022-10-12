@@ -99,9 +99,18 @@ export interface WebRTCStarComponents {
  */
 export class WebRTCStar implements Transport {
   public wrtc?: WRTC
-  public discovery: PeerDiscovery & Startable
+  public discovery: () => PeerDiscovery & Startable
   public sigServers: Map<string, SignalServer>
+<<<<<<< Updated upstream
   private readonly components: WebRTCStarComponents
+=======
+<<<<<<< Updated upstream
+  private components: Components = new Components()
+=======
+  private readonly components: WebRTCStarComponents
+  private readonly _discovery: WebRTCStarDiscovery
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
   constructor (components: WebRTCStarComponents, init?: WebRTCStarInit) {
     if (init?.wrtc != null) {
@@ -114,7 +123,8 @@ export class WebRTCStar implements Transport {
     this.sigServers = new Map()
 
     // Discovery
-    this.discovery = new WebRTCStarDiscovery()
+    this._discovery = new WebRTCStarDiscovery()
+    this.discovery = () => this._discovery
     this.peerDiscovered = this.peerDiscovered.bind(this)
   }
 
@@ -281,7 +291,7 @@ export class WebRTCStar implements Transport {
 
     const peerId = peerIdFromString(peerIdStr)
 
-    this.discovery.dispatchEvent(new CustomEvent('peer', {
+    this._discovery.dispatchEvent(new CustomEvent('peer', {
       detail: {
         id: peerId,
         multiaddrs: [ma],

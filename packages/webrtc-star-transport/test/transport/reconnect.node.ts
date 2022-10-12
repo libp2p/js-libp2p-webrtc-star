@@ -53,7 +53,7 @@ export default (create: () => Promise<PeerTransport>) => {
       ({ transport: ws1 } = await create())
 
       listener1 = ws1.createListener({ upgrader: mockUpgrader() })
-      await ws1.discovery.start()
+      await ws1.discovery().start()
 
       await listener1.listen(signallerAddr)
     })
@@ -64,7 +64,7 @@ export default (create: () => Promise<PeerTransport>) => {
       listener2 = ws2.createListener({ upgrader: mockUpgrader() })
 
       await listener2.listen(signallerAddr)
-      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')
+      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery(), 'peer')
 
       // Check first of the signal addresses
       const [sigRefs] = ws2.sigServers.values()
@@ -90,7 +90,7 @@ export default (create: () => Promise<PeerTransport>) => {
       listener3 = ws3.createListener({ upgrader: mockUpgrader() })
       await listener3.listen(signallerAddr)
 
-      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')
+      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery(), 'peer')
 
       // Check first of the signal addresses
       const [sigRefs] = ws3.sigServers.values()
@@ -135,7 +135,7 @@ export default (create: () => Promise<PeerTransport>) => {
         const peer2Discovered = pDefer()
         const peer3Discovered = pDefer()
 
-        peer1.transport.discovery.addEventListener('peer', event => {
+        peer1.transport.discovery().addEventListener('peer', event => {
           const discoveredPeer = event.detail.id
 
           if (discoveredPeer.equals(peer2.peerId)) {
@@ -159,7 +159,7 @@ export default (create: () => Promise<PeerTransport>) => {
       // listen on the first
       const peer1 = await create()
       listener1 = peer1.transport.createListener({ upgrader: mockUpgrader() })
-      await peer1.transport.discovery.start()
+      await peer1.transport.discovery().start()
       await listener1.listen(signallerAddr)
 
       // wait for peer discovery
