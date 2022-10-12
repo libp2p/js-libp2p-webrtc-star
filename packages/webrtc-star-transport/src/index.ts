@@ -101,16 +101,8 @@ export class WebRTCStar implements Transport {
   public wrtc?: WRTC
   public discovery: () => PeerDiscovery & Startable
   public sigServers: Map<string, SignalServer>
-<<<<<<< Updated upstream
-  private readonly components: WebRTCStarComponents
-=======
-<<<<<<< Updated upstream
-  private components: Components = new Components()
-=======
   private readonly components: WebRTCStarComponents
   private readonly _discovery: WebRTCStarDiscovery
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
   constructor (components: WebRTCStarComponents, init?: WebRTCStarInit) {
     if (init?.wrtc != null) {
