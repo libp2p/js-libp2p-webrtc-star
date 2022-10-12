@@ -46,46 +46,59 @@ To use this module in Node.js, you have to BYOI of WebRTC, there are multiple op
 Instead of just creating the WebRTCStar instance without arguments, you need to pass an options object with the WebRTC implementation:
 
 ```JavaScript
+import { createLibp2pNode } from 'libp2p'
+import { webRTCStar } from '@libp2p/webrtc-star'
 import wrtc from 'wrtc'
 import electronWebRTC from 'electron-webrtc'
-import { WebRTCStar } from '@libp2p/webrtc-star'
 
-// Using wrtc
-const ws1 = new WebRTCStar({ wrtc: wrtc })
+// Using wrtc in node
+const transport = webRTCStar({ wrtc })
 
-// Using electron-webrtc
-const ws2 = new WebRTCStar({ wrtc: electronWebRTC() })
+// Using electron-webrtc in electron
+const transport = webRTCStar({ wrtc: electronWebRTC() })
+
+const node = await createLibp2pNode({
+  addresses: {
+    listen: [
+      '/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star'
+    ]
+  },
+  transports: [
+    transport
+  ],
+  peerDiscovery: [
+    transport.discovery
+  ]
+})
+await node.start()
+
+await node.dial('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
 ```
 
 ### Using this module in the Browser
 
 ```JavaScript
-import { WebRTCStar } from '@libp2p/webrtc-star'
-import { Multiaddr } from '@multiformats/multiaddr'
-import all from 'it-all'
+import { createLibp2pNode } from 'libp2p'
+import { webRTCStar } from '@libp2p/webrtc-star'
 
-const addr = multiaddr('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
+const transport = webRTCStar()
 
-const ws = new WebRTCStar({ upgrader })
-
-const listener = ws.createListener((socket) => {
-  console.log('new connection opened')
-  pipe(
-    ['hello'],
-    socket
-  )
+const node = await createLibp2pNode({
+  addresses: {
+    listen: [
+      '/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star'
+    ]
+  },
+  transports: [
+    transport
+  ],
+  peerDiscovery: [
+    transport.discovery
+  ]
 })
+await node.start()
 
-await listener.listen(addr)
-console.log('listening')
-
-const socket = await ws.dial(addr)
-const values = await all(socket)
-
-console.log(`Value: ${values.toString()}`)
-
-// Close connection after reading
-await listener.close()
+await node.dial('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
 ```
 
 ## Signalling server

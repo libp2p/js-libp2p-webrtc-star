@@ -28,7 +28,7 @@ export default (create: () => Promise<PeerTransport>) => {
     it('listen on the first', async () => {
       ({ transport: ws1 } = await create())
       ws1Listener = ws1.createListener({ upgrader: mockUpgrader() })
-      await ws1.discovery.start()
+      await ws1.discovery().start()
 
       await ws1Listener.listen(signallerAddr)
     })
@@ -36,10 +36,10 @@ export default (create: () => Promise<PeerTransport>) => {
     it('listen on the second, discover the first', async () => {
       ({ transport: ws2 } = await create())
       const listener = ws2.createListener({ upgrader: mockUpgrader() })
-      await ws2.discovery.start()
+      await ws2.discovery().start()
 
       await listener.listen(signallerAddr)
-      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery, 'peer')
+      const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery(), 'peer')
 
       // Check first of the signal addresses
       const [sigRefs] = ws2.sigServers.values()
@@ -59,7 +59,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
       let discoveredPeer = false
 
-      ws1.discovery.addEventListener('peer', () => {
+      ws1.discovery().addEventListener('peer', () => {
         discoveredPeer = true
       }, {
         once: true
@@ -67,7 +67,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
       ;({ transport: ws3 } = await create())
       const listener = ws3.createListener({ upgrader: mockUpgrader() })
-      await ws3.discovery.start()
+      await ws3.discovery().start()
 
       await listener.listen(signallerAddr)
       await pEvent(server.socket, 'ws-peer')
@@ -86,16 +86,16 @@ export default (create: () => Promise<PeerTransport>) => {
 
       let discoveredPeer = false
 
-      ws1.discovery.addEventListener('peer', () => {
+      ws1.discovery().addEventListener('peer', () => {
         discoveredPeer = true
       }, {
         once: true
       })
 
-      void ws1.discovery.stop()
+      void ws1.discovery().stop()
       ;({ transport: ws4 } = await create())
       const listener = ws4.createListener({ upgrader: mockUpgrader() })
-      void ws4.discovery.start()
+      void ws4.discovery().start()
 
       await listener.listen(signallerAddr)
       await pEvent(server.socket, 'ws-peer')
