@@ -155,7 +155,7 @@
     "delay": "^5.0.0",
     "err-code": "^3.0.1",
     "iso-random-stream": "^2.0.2",
-    "multiformats": "^9.6.3",
+    "multiformats": "^10.0.0",
     "p-defer": "^4.0.0",
     "socket.io-client": "^4.1.2",
     "uint8arrays": "^3.0.0"
