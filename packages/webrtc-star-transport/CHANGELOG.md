@@ -1,3 +1,10 @@
+## [@libp2p/webrtc-star-v5.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v5.0.0...@libp2p/webrtc-star-v5.0.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* expose discovery as factory ([#478](https://github.com/libp2p/js-libp2p-webrtc-star/issues/478)) ([63c7006](https://github.com/libp2p/js-libp2p-webrtc-star/commit/63c70067b8479d7877264512b66c276d9aa97745))
+
 ## [@libp2p/webrtc-star-v5.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v4.0.1...@libp2p/webrtc-star-v5.0.0) (2022-10-12)
 
 
