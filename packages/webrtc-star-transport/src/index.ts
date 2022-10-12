@@ -20,8 +20,8 @@ import type { Connection, MultiaddrConnection } from '@libp2p/interface-connecti
 import type { Transport, Listener, DialOptions, CreateListenerOptions } from '@libp2p/interface-transport'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface-peer-discovery'
 import type { WebRTCStarSocket, HandshakeSignal } from '@libp2p/webrtc-star-protocol'
-import { Components, Initializable } from '@libp2p/components'
 import { symbol as peerDiscoverySymbol } from '@libp2p/interface-peer-discovery'
+import type { PeerId } from '@libp2p/interface-peer-id'
 
 const webrtcSupport = 'RTCPeerConnection' in globalThis
 const log = logger('libp2p:webrtc-star')
@@ -90,19 +90,25 @@ export interface SignalServer extends EventEmitter<SignalServerServerEvents> {
   close: () => Promise<void>
 }
 
+export interface WebRTCStarComponents {
+  peerId: PeerId
+}
+
 /**
  * @class WebRTCStar
  */
-export class WebRTCStar implements Transport, Initializable {
+export class WebRTCStar implements Transport {
   public wrtc?: WRTC
   public discovery: PeerDiscovery & Startable
   public sigServers: Map<string, SignalServer>
-  private components: Components = new Components()
+  private readonly components: WebRTCStarComponents
 
-  constructor (options?: WebRTCStarInit) {
-    if (options?.wrtc != null) {
-      this.wrtc = options.wrtc
+  constructor (components: WebRTCStarComponents, init?: WebRTCStarInit) {
+    if (init?.wrtc != null) {
+      this.wrtc = init.wrtc
     }
+
+    this.components = components
 
     // Keep Signalling references
     this.sigServers = new Map()
@@ -118,10 +124,6 @@ export class WebRTCStar implements Transport, Initializable {
 
   get [Symbol.toStringTag] () {
     return '@libp2p/webrtc-star'
-  }
-
-  init (components: Components) {
-    this.components = components
   }
 
   async dial (ma: Multiaddr, options: WebRTCStarDialOptions) {
@@ -248,7 +250,7 @@ export class WebRTCStar implements Transport, Initializable {
       options.channelOptions.wrtc = this.wrtc
     }
 
-    return createListener(options.upgrader, options.handler ?? noop, this.components.getPeerId(), this, options)
+    return createListener(options.upgrader, options.handler ?? noop, this.components.peerId, this, options)
   }
 
   /**
@@ -287,4 +289,8 @@ export class WebRTCStar implements Transport, Initializable {
       }
     }))
   }
+}
+
+export function webRTCStar (init: WebRTCStarInit = {}): (components: WebRTCStarComponents) => WebRTCStar {
+  return (components: WebRTCStarComponents) => new WebRTCStar(components, init)
 }

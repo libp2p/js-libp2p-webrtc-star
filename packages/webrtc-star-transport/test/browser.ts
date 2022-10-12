@@ -1,19 +1,17 @@
 /* eslint-env mocha */
 
-import { WebRTCStar } from '../src/index.js'
+import { webRTCStar } from '../src/index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import dialTests from './transport/dial.js'
 import listenTests from './transport/listen.js'
 import discoveryTests from './transport/discovery.js'
 import filterTests from './transport/filter.js'
-import { Components } from '@libp2p/components'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 
 describe('browser RTC', () => {
   const create = async () => {
     const peerId = await createEd25519PeerId()
-    const ws = new WebRTCStar()
-    ws.init(new Components({ peerId }))
+    const ws = webRTCStar()({ peerId })
 
     const registrar = mockRegistrar()
     const upgrader = mockUpgrader({ registrar })
