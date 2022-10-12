@@ -5,7 +5,7 @@ import wrtc from 'wrtc'
 // @ts-expect-error no types
 import electronWebRTC from 'electron-webrtc'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { WebRTCStar } from '../src/index.js'
+import { webRTCStar } from '../src/index.js'
 import dialTests from './transport/dial.js'
 import listenTests from './transport/listen.js'
 import discoveryTests from './transport/discovery.js'
@@ -13,7 +13,6 @@ import filterTests from './transport/filter.js'
 import multipleSignalServersTests from './transport/multiple-signal-servers.js'
 import trackTests from './transport/track.js'
 import reconnectTests from './transport/reconnect.node.js'
-import { Components } from '@libp2p/components'
 import type { PeerTransport } from './index.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 
@@ -24,10 +23,9 @@ process.on('beforeExit', (code) => process.exit(code))
 describe('transport: with wrtc', () => {
   const create = async (): Promise<PeerTransport> => {
     const peerId = await createEd25519PeerId()
-    const ws = new WebRTCStar({
+    const ws = webRTCStar({
       wrtc
-    })
-    ws.init(new Components({ peerId }))
+    })({ peerId })
 
     const registrar = mockRegistrar()
     const upgrader = mockUpgrader({ registrar })
@@ -53,10 +51,9 @@ describe('transport: with wrtc', () => {
 describe.skip('transport: with electron-webrtc', () => {
   const create = async () => {
     const peerId = await createEd25519PeerId()
-    const ws = new WebRTCStar({
+    const ws = webRTCStar({
       wrtc: electronWebRTC()
-    })
-    ws.init(new Components({ peerId }))
+    })({ peerId })
 
     const registrar = mockRegistrar()
     const upgrader = mockUpgrader({ registrar })
