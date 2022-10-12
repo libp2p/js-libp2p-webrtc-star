@@ -1,3 +1,14 @@
+## [@libp2p/webrtc-star-v5.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v4.0.1...@libp2p/webrtc-star-v5.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* modules no longer implement `Initializable` instead switching to constructor injection
+
+### Bug Fixes
+
+* remove @libp2p/components ([#477](https://github.com/libp2p/js-libp2p-webrtc-star/issues/477)) ([efbcd99](https://github.com/libp2p/js-libp2p-webrtc-star/commit/efbcd99086dcde17c476ecc2e255edbde467599c))
+
 ## [@libp2p/webrtc-star-v4.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v4.0.0...@libp2p/webrtc-star-v4.0.1) (2022-10-07)
 
 
