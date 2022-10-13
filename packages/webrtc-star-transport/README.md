@@ -52,10 +52,10 @@ import wrtc from 'wrtc'
 import electronWebRTC from 'electron-webrtc'
 
 // Using wrtc in node
-const transport = webRTCStar({ wrtc })
+const star = webRTCStar({ wrtc })
 
 // Using electron-webrtc in electron
-const transport = webRTCStar({ wrtc: electronWebRTC() })
+const star = webRTCStar({ wrtc: electronWebRTC() })
 
 const node = await createLibp2pNode({
   addresses: {
@@ -64,10 +64,10 @@ const node = await createLibp2pNode({
     ]
   },
   transports: [
-    transport
+    star.transport
   ],
   peerDiscovery: [
-    transport.discovery
+    star.discovery
   ]
 })
 await node.start()
@@ -81,7 +81,7 @@ await node.dial('/ip4/188.166.203.82/tcp/20000/wss/p2p-webrtc-star/p2p/QmcgpsyWg
 import { createLibp2pNode } from 'libp2p'
 import { webRTCStar } from '@libp2p/webrtc-star'
 
-const transport = webRTCStar()
+const star = webRTCStar()
 
 const node = await createLibp2pNode({
   addresses: {
@@ -90,10 +90,10 @@ const node = await createLibp2pNode({
     ]
   },
   transports: [
-    transport
+    star.transport
   ],
   peerDiscovery: [
-    transport.discovery
+    star.discovery
   ]
 })
 await node.start()

@@ -3,7 +3,7 @@
 import { expect } from 'aegir/chai'
 import { multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
-import type { WebRTCStar } from '../../src/index.js'
+import type { WebRTCStar } from '../../src/transport.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { Upgrader } from '@libp2p/interface-transport'
 import type { PeerTransport } from '../index.js'

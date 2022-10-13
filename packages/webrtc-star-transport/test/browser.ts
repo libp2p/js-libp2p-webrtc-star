@@ -7,21 +7,28 @@ import listenTests from './transport/listen.js'
 import discoveryTests from './transport/discovery.js'
 import filterTests from './transport/filter.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
+import type { PeerTransport } from './index.js'
+import type { WebRTCStar, WebRTCStarDiscovery } from '../src/transport.js'
 
 describe('browser RTC', () => {
   const create = async () => {
     const peerId = await createEd25519PeerId()
-    const ws = webRTCStar()({ peerId })
+    const wrtcStar = webRTCStar()
+    const transport = wrtcStar.transport({ peerId }) as WebRTCStar
+    const discovery = wrtcStar.discovery() as WebRTCStarDiscovery
 
     const registrar = mockRegistrar()
     const upgrader = mockUpgrader({ registrar })
 
-    return {
+    const peerTransport: PeerTransport = {
       peerId,
-      transport: ws,
+      transport,
+      discovery,
       registrar,
       upgrader
     }
+
+    return peerTransport
   }
 
   dialTests(create)

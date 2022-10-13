@@ -13,7 +13,7 @@ import pWaitFor from 'p-wait-for'
 import type { PeerTransport } from '../index.js'
 import pDefer from 'p-defer'
 import delay from 'delay'
-import type { WebRTCStar } from '../../src/index.js'
+import type { WebRTCStar } from '../../src/transport.js'
 import { pEvent } from 'p-event'
 
 const SERVER_PORT = 13580
