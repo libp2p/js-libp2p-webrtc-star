@@ -33,7 +33,7 @@
     "release": "lerna run --concurrency 1 release -- --"
   },
   "dependencies": {
-    "lerna": "^5.1.2",
+    "lerna": "^6.0.1",
     "rimraf": "^3.0.2"
   },
   "workspaces": [
