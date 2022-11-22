@@ -1,3 +1,23 @@
+# ⚠️⚠️⚠️⚠️⚠️⚠️
+**Status:**
+
+[Archived](https://github.com/libp2p/github-mgmt/pull/80) and not maintained
+
+**Alternatives:**
+
+WebRTC Browser-to-Server is being implemented in js-libp2p and tracked here https://github.com/libp2p/js-libp2p/issues/1478 per the specification: https://github.com/libp2p/specs/pull/412
+
+WebRTC Browser-to-Browser is being tracked here: https://github.com/libp2p/js-libp2p/issues/1462
+
+**Questions:**
+
+Please direct any questions about the specification to: https://github.com/libp2p/specs/issues
+
+Please direct any questions about the js-libp2p WebRTC implementations to:
+https://github.com/libp2p/js-libp2p/issues/1478 or
+https://github.com/libp2p/js-libp2p/issues/1462
+# ⚠️⚠️⚠️⚠️⚠️⚠️
+
 # libp2p-webrtc-star <!-- omit in toc -->
 
 [![libp2p.io](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
@@ -10,10 +30,12 @@
 
 ## Table of contents <!-- omit in toc -->
 
-- [Structure](#structure)
-- [Contribute](#contribute)
-- [License](#license)
-- [Contribution](#contribution)
+- [⚠️⚠️⚠️⚠️⚠️⚠️](#️️️️️️)
+- [⚠️⚠️⚠️⚠️⚠️⚠️](#️️️️️️-1)
+  - [Structure](#structure)
+  - [Contribute](#contribute)
+  - [License](#license)
+  - [Contribution](#contribution)
 
 ## Structure
 
