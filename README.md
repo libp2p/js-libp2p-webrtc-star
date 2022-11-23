@@ -1,4 +1,4 @@
-# ⚠️⚠️⚠️⚠️⚠️⚠️
+# ⚠️⚠️⚠️⚠️⚠️⚠️ <!-- omit in toc -->
 **Status:**
 
 [Archived](https://github.com/libp2p/github-mgmt/pull/80) and not maintained
@@ -16,7 +16,7 @@ Please direct any questions about the specification to: https://github.com/libp2
 Please direct any questions about the js-libp2p WebRTC implementations to:
 https://github.com/libp2p/js-libp2p/issues/1478 or
 https://github.com/libp2p/js-libp2p/issues/1462
-# ⚠️⚠️⚠️⚠️⚠️⚠️
+# ⚠️⚠️⚠️⚠️⚠️⚠️ <!-- omit in toc -->
 
 # libp2p-webrtc-star <!-- omit in toc -->
 
