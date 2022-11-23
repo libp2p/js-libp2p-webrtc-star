@@ -30,12 +30,10 @@ https://github.com/libp2p/js-libp2p/issues/1462
 
 ## Table of contents <!-- omit in toc -->
 
-- [⚠️⚠️⚠️⚠️⚠️⚠️](#️️️️️️)
-- [⚠️⚠️⚠️⚠️⚠️⚠️](#️️️️️️-1)
-  - [Structure](#structure)
-  - [Contribute](#contribute)
-  - [License](#license)
-  - [Contribution](#contribution)
+- [Structure](#structure)
+- [Contribute](#contribute)
+- [License](#license)
+- [Contribution](#contribution)
 
 ## Structure
 
