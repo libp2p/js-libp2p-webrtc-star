@@ -28,7 +28,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -140,8 +140,8 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "@hapi/hapi": "^20.0.0",
-    "@hapi/inert": "^6.0.3",
+    "@hapi/hapi": "^21.1.0",
+    "@hapi/inert": "^7.0.0",
     "@libp2p/logger": "^2.0.0",
     "@libp2p/webrtc-star-protocol": "^2.0.0",
     "@multiformats/multiaddr": "^11.0.0",
@@ -152,9 +152,8 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
-    "@types/hapi__hapi": "^20.0.10",
     "@types/hapi__inert": "^5.2.3",
-    "aegir": "^37.2.0",
+    "aegir": "^37.9.1",
     "p-event": "^5.0.1",
     "p-wait-for": "^5.0.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",

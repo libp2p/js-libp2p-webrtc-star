@@ -23,7 +23,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -136,6 +136,6 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
-    "aegir": "^37.2.0"
+    "aegir": "^37.9.1"
   }
 }

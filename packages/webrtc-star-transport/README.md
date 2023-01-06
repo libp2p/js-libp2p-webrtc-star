@@ -1,16 +1,16 @@
 # @libp2p/webrtc-star <!-- omit in toc -->
 
 [![libp2p.io](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![IRC](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
 [![Discuss](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg?style=flat-square)](https://discuss.libp2p.io)
 [![codecov](https://img.shields.io/codecov/c/github/libp2p/js-libp2p-webrtc-star.svg?style=flat-square)](https://codecov.io/gh/libp2p/js-libp2p-webrtc-star)
-[![CI](https://img.shields.io/github/workflow/status/libp2p/js-libp2p-interfaces/test%20&%20maybe%20release/master?style=flat-square)](https://github.com/libp2p/js-libp2p-webrtc-star/actions/workflows/js-test-and-release.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/libp2p/js-libp2p-webrtc-star/js-test-and-release.yml?branch=master\&style=flat-square)](https://github.com/libp2p/js-libp2p-webrtc-star/actions/workflows/js-test-and-release.yml?query=branch%3Amaster)
 
 > libp2p WebRTC transport that includes a discovery mechanism provided by the signalling-star
 
 ## Table of contents <!-- omit in toc -->
 
 - [Install](#install)
+  - [Browser `<script>` tag](#browser-script-tag)
 - [Description](#description)
 - [Usage](#usage)
   - [Using this module in Node.js (read: not in the browser)](#using-this-module-in-nodejs-read-not-in-the-browser)
@@ -27,6 +27,14 @@
 
 ```console
 $ npm i @libp2p/webrtc-star
+```
+
+### Browser `<script>` tag
+
+Loading this module through a script tag will make it's exports available as `Libp2pWebrtcStar` in the global namespace.
+
+```html
+<script src="https://unpkg.com/@libp2p/webrtc-star/dist/index.min.js"></script>
 ```
 
 [![](https://raw.githubusercontent.com/libp2p/interface-transport/master/img/badge.png)](https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/libp2p-interfaces/src/transport/README.md)
