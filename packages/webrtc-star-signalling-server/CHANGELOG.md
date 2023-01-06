@@ -1,3 +1,19 @@
+## [@libp2p/webrtc-star-signalling-server-v3.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v2.0.5...@libp2p/webrtc-star-signalling-server-v3.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* update multiformats deps (#490)
+
+### Bug Fixes
+
+* update multiformats deps ([#490](https://github.com/libp2p/js-libp2p-webrtc-star/issues/490)) ([f1acfea](https://github.com/libp2p/js-libp2p-webrtc-star/commit/f1acfeaea8744c392912c837fda504f3a192d970))
+
+
+### Dependencies
+
+* update sibling dependencies ([93e035d](https://github.com/libp2p/js-libp2p-webrtc-star/commit/93e035da84643ab0f7379fe336f2051e5c50edf1))
+
 ## [@libp2p/webrtc-star-signalling-server-v2.0.5](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-signalling-server-v2.0.4...@libp2p/webrtc-star-signalling-server-v2.0.5) (2022-09-21)
 
 
