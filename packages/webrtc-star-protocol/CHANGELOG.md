@@ -1,3 +1,14 @@
+## [@libp2p/webrtc-star-protocol-v3.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-protocol-v2.0.1...@libp2p/webrtc-star-protocol-v3.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* update multiformats deps (#490)
+
+### Bug Fixes
+
+* update multiformats deps ([#490](https://github.com/libp2p/js-libp2p-webrtc-star/issues/490)) ([f1acfea](https://github.com/libp2p/js-libp2p-webrtc-star/commit/f1acfeaea8744c392912c837fda504f3a192d970))
+
 ## [@libp2p/webrtc-star-protocol-v2.0.1](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-protocol-v2.0.0...@libp2p/webrtc-star-protocol-v2.0.1) (2022-09-21)
 
 
