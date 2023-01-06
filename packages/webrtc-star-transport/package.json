@@ -147,7 +147,7 @@
     "@libp2p/peer-id": "^2.0.0",
     "@libp2p/utils": "^3.0.1",
     "@libp2p/webrtc-peer": "^2.0.0",
-    "@libp2p/webrtc-star-protocol": "^2.0.0",
+    "@libp2p/webrtc-star-protocol": "^3.0.0",
     "@multiformats/mafmt": "^11.0.2",
     "@multiformats/multiaddr": "^11.0.0",
     "abortable-iterator": "^4.0.2",

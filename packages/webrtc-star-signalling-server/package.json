@@ -143,7 +143,7 @@
     "@hapi/hapi": "^21.1.0",
     "@hapi/inert": "^7.0.0",
     "@libp2p/logger": "^2.0.0",
-    "@libp2p/webrtc-star-protocol": "^2.0.0",
+    "@libp2p/webrtc-star-protocol": "^3.0.0",
     "@multiformats/multiaddr": "^11.0.0",
     "menoetius": "0.0.3",
     "minimist": "^1.2.5",
