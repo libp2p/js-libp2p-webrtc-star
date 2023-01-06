@@ -28,7 +28,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -154,7 +154,7 @@
   "devDependencies": {
     "@types/hapi__hapi": "^20.0.10",
     "@types/hapi__inert": "^5.2.3",
-    "aegir": "^37.2.0",
+    "aegir": "^37.9.1",
     "p-event": "^5.0.1",
     "p-wait-for": "^5.0.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
