@@ -174,7 +174,7 @@
     "it-stream-types": "^1.0.4",
     "p-event": "^5.0.1",
     "p-wait-for": "^5.0.0",
-    "sinon": "^14.0.0",
+    "sinon": "^15.0.1",
     "uint8arraylist": "^2.3.2",
     "util": "^0.12.4",
     "wrtc": "^0.4.6"
