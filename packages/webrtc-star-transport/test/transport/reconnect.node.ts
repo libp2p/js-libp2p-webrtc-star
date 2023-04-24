@@ -143,6 +143,10 @@ export default (create: () => Promise<PeerTransport>): void => {
     })
 
     it('does not drop connections when the signalling server disconnects', async () => {
+      const peer1 = await create()
+      const peer2 = await create()
+      const peer3 = await create()
+
       // returns a promise that resolves when peer1 has discovered peer2 and peer3
       async function discoverPeers (): Promise<void> {
         const peer2Discovered = pDefer()
@@ -169,8 +173,6 @@ export default (create: () => Promise<PeerTransport>): void => {
       const protocol = '/test/protocol/1.0.0'
       const received: Uint8Array[] = []
 
-      // listen on the first
-      const peer1 = await create()
       listener1 = peer1.transport.createListener({
         upgrader: mockUpgrader({
           events: new EventEmitter()
@@ -182,8 +184,6 @@ export default (create: () => Promise<PeerTransport>): void => {
       // wait for peer discovery
       let discover = discoverPeers()
 
-      // create the second
-      const peer2 = await create()
       // collect messages sent from peer 1 -> peer 2
       void peer2.registrar.handle(protocol, ({ stream }) => {
         void Promise.resolve().then(async () => {
@@ -195,7 +195,6 @@ export default (create: () => Promise<PeerTransport>): void => {
       listener2 = peer2.transport.createListener({ upgrader: peer2.upgrader })
       await listener2.listen(signallerAddr)
 
-      const peer3 = await create()
       listener3 = peer3.transport.createListener({ upgrader: peer3.upgrader })
       await listener3.listen(signallerAddr)
 
