@@ -163,7 +163,7 @@
     "@libp2p/interface-registrar": "^2.0.10",
     "@libp2p/interface-transport-compliance-tests": "^4.0.0",
     "@libp2p/peer-id-factory": "^2.0.0",
-    "@libp2p/webrtc-star-signalling-server": "^3.0.0",
+    "@libp2p/webrtc-star-signalling-server": "^4.0.0",
     "@mapbox/node-pre-gyp": "^1.0.5",
     "aegir": "^38.1.8",
     "electron-webrtc": "~0.3.0",
