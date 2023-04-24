@@ -1,7 +1,7 @@
 import { multiaddr, isName } from '@multiformats/multiaddr'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
-export function cleanUrlSIO (ma: Multiaddr) {
+export function cleanUrlSIO (ma: Multiaddr): string {
   const maStrSplit = ma.toString().split('/')
   const tcpProto = ma.protos()[1].name
   const wsProto = ma.protos()[2].name
@@ -26,7 +26,7 @@ export function cleanUrlSIO (ma: Multiaddr) {
   throw new Error('invalid multiaddr: ' + ma.toString())
 }
 
-export function cleanMultiaddr (maStr: string) {
+export function cleanMultiaddr (maStr: string): string {
   const legacy = '/libp2p-webrtc-star'
 
   if (maStr.startsWith(legacy)) {

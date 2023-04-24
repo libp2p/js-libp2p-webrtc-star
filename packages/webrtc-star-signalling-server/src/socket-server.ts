@@ -14,12 +14,12 @@ const fake = {
   }
 }
 
-export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: boolean, refreshPeerListIntervalMS: number) {
+export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: boolean, refreshPeerListIntervalMS: number): Server {
   const io = new Server({
     allowEIO3: true // allow socket.io v2 clients to connect
   })
   // @ts-expect-error types are different?
-  io.on('connection', (socket) => handle(socket))
+  io.on('connection', (socket) => { handle(socket) })
 
   const peersMetric = hasMetrics ? new client.Gauge({ name: 'webrtc_star_peers', help: 'peers online now' }) : fake.gauge
   const dialsSuccessTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_dials_total_success', help: 'successfully completed dials since server started' }) : fake.counter
@@ -29,9 +29,9 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
   const joinsFailureTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total_failure', help: 'failed joins since server started' }) : fake.counter
   const joinsTotal = hasMetrics ? new client.Counter({ name: 'webrtc_star_joins_total', help: 'all joins since server started' }) : fake.counter
 
-  const refreshMetrics = () => peersMetric.set(peers.size)
+  const refreshMetrics = (): void => { peersMetric.set(peers.size) }
 
-  function safeEmit (maStr: string, event: any, arg: any) {
+  function safeEmit (maStr: string, event: any, arg: any): void {
     const peer = peers.get(maStr)
 
     if (peer == null) {
@@ -42,7 +42,7 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
     peer.emit(event, arg)
   }
 
-  function handle (socket: WebRTCStarSocket) {
+  function handle (socket: WebRTCStarSocket): void {
     let multiaddr: string
 
     // join this signaling server network
@@ -50,7 +50,7 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
       joinsTotal.inc()
 
       if (maStr == null) {
-        return joinsFailureTotal.inc()
+        joinsFailureTotal.inc(); return
       }
 
       multiaddr = maStr
@@ -63,7 +63,7 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
       let refreshInterval: NodeJS.Timer | undefined = setInterval(sendPeers, refreshPeerListIntervalMS)
       sendPeers()
 
-      function sendPeers () {
+      function sendPeers (): void {
         for (const mh of peers.keys()) {
           if (mh === multiaddr) {
             continue
@@ -73,7 +73,7 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
         }
       }
 
-      function stopSendingPeers () {
+      function stopSendingPeers (): void {
         if (refreshInterval != null) {
           clearInterval(refreshInterval)
           refreshInterval = undefined
@@ -101,7 +101,7 @@ export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: 
       dialsTotal.inc()
 
       if (offer == null || typeof offer !== 'object' || offer.srcMultiaddr == null || offer.dstMultiaddr == null) {
-        return dialsFailureTotal.inc()
+        dialsFailureTotal.inc(); return
       }
 
       if (offer.answer === true) {

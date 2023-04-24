@@ -15,10 +15,11 @@ import pDefer from 'p-defer'
 import delay from 'delay'
 import type { WebRTCStar } from '../../src/transport.js'
 import { pEvent } from 'p-event'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
 const SERVER_PORT = 13580
 
-export default (create: () => Promise<PeerTransport>) => {
+export default (create: () => Promise<PeerTransport>): void => {
   describe('reconnect to signaling server', () => {
     let sigS: SigServer
     let ws1: WebRTCStar
@@ -52,7 +53,11 @@ export default (create: () => Promise<PeerTransport>) => {
     it('listen on the first', async () => {
       ({ transport: ws1 } = await create())
 
-      listener1 = ws1.createListener({ upgrader: mockUpgrader() })
+      listener1 = ws1.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       await ws1.discovery().start()
 
       await listener1.listen(signallerAddr)
@@ -61,7 +66,11 @@ export default (create: () => Promise<PeerTransport>) => {
     it('listen on the second, discover the first', async () => {
       ({ transport: ws2 } = await create())
 
-      listener2 = ws2.createListener({ upgrader: mockUpgrader() })
+      listener2 = ws2.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
 
       await listener2.listen(signallerAddr)
       const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery(), 'peer')
@@ -87,7 +96,11 @@ export default (create: () => Promise<PeerTransport>) => {
     it('listen on the third, first discovers it', async () => {
       ({ transport: ws3 } = await create())
 
-      listener3 = ws3.createListener({ upgrader: mockUpgrader() })
+      listener3 = ws3.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       await listener3.listen(signallerAddr)
 
       const { detail: { multiaddrs } } = await pEvent<'peer', { detail: { multiaddrs: Multiaddr[] } }>(ws1.discovery(), 'peer')
@@ -131,7 +144,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
     it('does not drop connections when the signalling server disconnects', async () => {
       // returns a promise that resolves when peer1 has discovered peer2 and peer3
-      async function discoverPeers () {
+      async function discoverPeers (): Promise<void> {
         const peer2Discovered = pDefer()
         const peer3Discovered = pDefer()
 
@@ -158,7 +171,11 @@ export default (create: () => Promise<PeerTransport>) => {
 
       // listen on the first
       const peer1 = await create()
-      listener1 = peer1.transport.createListener({ upgrader: mockUpgrader() })
+      listener1 = peer1.transport.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       await peer1.transport.discovery().start()
       await listener1.listen(signallerAddr)
 

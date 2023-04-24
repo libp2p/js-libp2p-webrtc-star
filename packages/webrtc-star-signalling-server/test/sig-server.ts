@@ -7,7 +7,7 @@ import pWaitFor from 'p-wait-for'
 import { pEvent } from 'p-event'
 import type { WebRTCStarSocket } from '@libp2p/webrtc-star-protocol'
 
-export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSocket, sioOptions: any) => {
+export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSocket, sioOptions: any): void => {
   describe(`signalling ${clientName}`, () => {
     let sioUrl: string
     let sigS: SigServer
@@ -16,7 +16,7 @@ export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSo
     let c3: WebRTCStarSocket
     let c4: WebRTCStarSocket
 
-    const base = (id: string) => {
+    const base = (id: string): string => {
       return `/ip4/127.0.0.1/tcp/9090/ws/p2p-webrtc-star/ipfs/${id}`
     }
 
@@ -110,7 +110,7 @@ export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSo
       c3.on('connect', connected)
       c4.on('connect', connected)
 
-      function connected () {
+      function connected (): void {
         if (++count === 3) { done() }
       }
     })
@@ -209,7 +209,7 @@ export default (clientName: string, io: (url: string, opts: any) => WebRTCStarSo
         check()
       })
 
-      function check () {
+      function check (): void {
         if (++peersEmitted === 2) {
           done()
         }

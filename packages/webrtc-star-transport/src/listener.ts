@@ -90,14 +90,14 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
     })
   }
 
-  _createChannel (intentId: string, srcMultiaddr: string, dstMultiaddr: string) {
+  _createChannel (intentId: string, srcMultiaddr: string, dstMultiaddr: string): WebRTCReceiver {
     const channelOptions: WebRTCReceiverInit = {
       ...this.channelOptions
     }
 
     const channel = new WebRTCReceiver(channelOptions)
 
-    const onError = (evt: CustomEvent<Error>) => {
+    const onError = (evt: CustomEvent<Error>): void => {
       const err = evt.detail
 
       log.error('incoming connection errored', err)
@@ -133,7 +133,7 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
 
             this.connections.push(maConn)
 
-            const untrackConn = () => {
+            const untrackConn = (): void => {
               this.connections = this.connections.filter(c => c !== maConn)
               this.channels.delete(intentId)
               this.pendingSignals.delete(intentId)
@@ -167,7 +167,7 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
     return channel
   }
 
-  handleWsHandshake (offer: HandshakeSignal) {
+  handleWsHandshake (offer: HandshakeSignal): void {
     log('incoming handshake. signal type "%s" is answer %s', offer.signal.type, offer.answer)
 
     if (offer.answer === true || offer.err != null || offer.intentId == null) {
@@ -208,15 +208,15 @@ class SigServer extends EventEmitter<SignalServerServerEvents> implements Signal
     }
   }
 
-  async close () {
+  async close (): Promise<void> {
     // Close listener
     this.socket.emit('ss-leave', this.signallingAddr.toString())
     this.socket.removeAllListeners()
     this.socket.close()
 
     await Promise.all([
-      ...this.connections.map(async maConn => await maConn.close()),
-      ...Array.from(this.channels.values()).map(async channel => await channel.close())
+      ...this.connections.map(async maConn => { await maConn.close() }),
+      ...Array.from(this.channels.values()).map(async channel => { await channel.close() })
     ])
 
     this.dispatchEvent(new CustomEvent('close'))
@@ -242,7 +242,7 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
     this.options = options
   }
 
-  async listen (ma: Multiaddr) {
+  async listen (ma: Multiaddr): Promise<void> {
     // Should only be used if not already listening
     if (this.listeningAddr != null) {
       throw errCode(new Error('listener already in use'), 'ERR_ALREADY_LISTENING')
@@ -309,10 +309,10 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
     // Store listen and signal reference addresses
     this.transport.sigServers.set(this.signallingUrl, server)
 
-    return await defer.promise
+    await defer.promise
   }
 
-  async close () {
+  async close (): Promise<void> {
     if (this.signallingUrl != null) {
       const server = this.transport.sigServers.get(this.signallingUrl)
 
@@ -328,7 +328,7 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
     this.listeningAddr = undefined
   }
 
-  getAddrs () {
+  getAddrs (): Multiaddr[] {
     if (this.listeningAddr != null) {
       return [
         this.listeningAddr
@@ -339,6 +339,6 @@ class WebRTCListener extends EventEmitter<ListenerEvents> implements Listener {
   }
 }
 
-export function createListener (upgrader: Upgrader, handler: ConnectionHandler, peerId: PeerId, transport: WebRTCStar, options: WebRTCStarListenerOptions) {
+export function createListener (upgrader: Upgrader, handler: ConnectionHandler, peerId: PeerId, transport: WebRTCStar, options: WebRTCStarListenerOptions): Listener {
   return new WebRTCListener(upgrader, handler, peerId, transport, options)
 }
