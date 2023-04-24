@@ -1,3 +1,21 @@
+## [@libp2p/webrtc-star-v7.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v6.0.0...@libp2p/webrtc-star-v7.0.0) (2023-04-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all dependencies (#506)
+
+### Trivial Changes
+
+* fix tests ([3c4b6f5](https://github.com/libp2p/js-libp2p-webrtc-star/commit/3c4b6f5e9c58c1be16105e8bb4fe69a3092073b4))
+
+
+### Dependencies
+
+* update all dependencies ([#506](https://github.com/libp2p/js-libp2p-webrtc-star/issues/506)) ([417c05f](https://github.com/libp2p/js-libp2p-webrtc-star/commit/417c05f5a85f585699e09ed5d84ee51391697d5e))
+* update sibling dependencies ([b7b011e](https://github.com/libp2p/js-libp2p-webrtc-star/commit/b7b011ef588cafd3db0b60cb4fbf0f13fff05fc0))
+* update sibling dependencies ([ee00041](https://github.com/libp2p/js-libp2p-webrtc-star/commit/ee00041eb262cc79c05644c51688330ea15e9489))
+
 ## [@libp2p/webrtc-star-v6.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-v5.0.3...@libp2p/webrtc-star-v6.0.0) (2023-01-06)
 
 
