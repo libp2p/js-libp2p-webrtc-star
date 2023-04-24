@@ -160,7 +160,7 @@
     "uint8arrays": "^4.0.2"
   },
   "devDependencies": {
-    "@libp2p/interface-mocks": "^9.0.0",
+    "@libp2p/interface-mocks": "^11.0.0",
     "@libp2p/interface-peer-discovery-compliance-tests": "^2.0.0",
     "@libp2p/interface-transport-compliance-tests": "^3.0.0",
     "@libp2p/peer-id-factory": "^2.0.0",
