@@ -33,7 +33,7 @@
     "release": "aegir run release"
   },
   "dependencies": {
-    "aegir": "^37.9.1"
+    "aegir": "^38.1.8"
   },
   "workspaces": [
     "packages/*"

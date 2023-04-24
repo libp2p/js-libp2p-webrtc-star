@@ -136,6 +136,6 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
-    "aegir": "^37.9.1"
+    "aegir": "^38.1.8"
   }
 }

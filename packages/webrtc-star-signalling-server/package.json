@@ -153,7 +153,7 @@
   },
   "devDependencies": {
     "@types/hapi__inert": "^5.2.3",
-    "aegir": "^37.9.1",
+    "aegir": "^38.1.8",
     "p-event": "^5.0.1",
     "p-wait-for": "^5.0.0",
     "socket.io-client-v2": "npm:socket.io-client@^2.3.0",
