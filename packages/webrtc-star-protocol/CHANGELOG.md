@@ -1,3 +1,14 @@
+## [@libp2p/webrtc-star-protocol-v4.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-protocol-v3.0.0...@libp2p/webrtc-star-protocol-v4.0.0) (2023-04-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all dependencies (#506)
+
+### Dependencies
+
+* update all dependencies ([#506](https://github.com/libp2p/js-libp2p-webrtc-star/issues/506)) ([417c05f](https://github.com/libp2p/js-libp2p-webrtc-star/commit/417c05f5a85f585699e09ed5d84ee51391697d5e))
+
 ## [@libp2p/webrtc-star-protocol-v3.0.0](https://github.com/libp2p/js-libp2p-webrtc-star/compare/@libp2p/webrtc-star-protocol-v2.0.1...@libp2p/webrtc-star-protocol-v3.0.0) (2023-01-06)
 
 
