@@ -1,4 +1,5 @@
 import { Server } from '@hapi/hapi'
+import type { ServerOptions } from '@hapi/hapi'
 import Inert from '@hapi/inert'
 
 import { config } from './config.js'
@@ -19,6 +20,8 @@ interface Options {
   host?: string
   metrics?: boolean
   refreshPeerListIntervalMS?: number
+  noDefaultRoute?: boolean
+  hapi?: ServerOptions
 }
 
 export interface SigServer extends Server {
@@ -33,6 +36,7 @@ export async function sigServer (options: Options = {}): Promise<SigServer> {
 
   const http: SigServer = Object.assign(new Server({
     ...config.hapi.options,
+    ...options.hapi ?? {},
     port,
     host
   }), {
@@ -57,13 +61,15 @@ export async function sigServer (options: Options = {}): Promise<SigServer> {
 
   log('signaling server has started on: ' + http.info.uri)
 
-  http.route({
-    method: 'GET',
-    path: '/',
-    handler: (request, reply) => reply.file(path.join(currentDir, 'index.html'), {
-      confine: false
+  if (options.noDefaultRoute == null) {
+    http.route({
+      method: 'GET',
+      path: '/',
+      handler: (_, reply) => reply.file(path.join(currentDir, 'index.html'), {
+        confine: false
+      })
     })
-  })
+  }
 
   if (options.metrics === true) {
     log('enabling metrics')

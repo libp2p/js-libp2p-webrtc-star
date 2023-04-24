@@ -7,6 +7,7 @@ let firstRun = true
 /** @type {import('aegir').PartialOptions} */
 export default {
   test: {
+    target: ["node", "browser", "electron-main"],
     async before () {
       const { sigServer } = await import('@libp2p/webrtc-star-signalling-server')
 
