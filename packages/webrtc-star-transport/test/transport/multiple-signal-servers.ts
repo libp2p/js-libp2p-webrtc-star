@@ -7,12 +7,13 @@ import type { WebRTCStar } from '../../src/transport.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { Upgrader } from '@libp2p/interface-transport'
 import type { PeerTransport } from '../index.js'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
 const ma1 = multiaddr('/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star')
 const ma2 = multiaddr('/ip4/127.0.0.1/tcp/15556/ws/p2p-webrtc-star')
 const protocol = '/echo/1.0.0'
 
-export default (create: () => Promise<PeerTransport>) => {
+export default (create: () => Promise<PeerTransport>): void => {
   describe('multiple signal servers', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -30,7 +31,8 @@ export default (create: () => Promise<PeerTransport>) => {
         )
       })
       upgrader = mockUpgrader({
-        registrar
+        registrar,
+        events: new EventEmitter()
       })
     })
 

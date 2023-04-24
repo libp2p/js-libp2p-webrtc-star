@@ -16,6 +16,7 @@ import reconnectTests from './transport/reconnect.node.js'
 import type { PeerTransport } from './index.js'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { WebRTCStar, WebRTCStarDiscovery } from '../src/transport.js'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
 // TODO: Temporary fix per wrtc issue
 // https://github.com/node-webrtc/node-webrtc/issues/636#issuecomment-774171409
@@ -29,7 +30,10 @@ describe('transport: with wrtc', () => {
     const discovery = wrtcStar.discovery() as WebRTCStarDiscovery
 
     const registrar = mockRegistrar()
-    const upgrader = mockUpgrader({ registrar })
+    const upgrader = mockUpgrader({
+      registrar,
+      events: new EventEmitter()
+    })
 
     const peerTransport: PeerTransport = {
       peerId,
@@ -53,14 +57,17 @@ describe('transport: with wrtc', () => {
 
 // TODO: Electron-webrtc is currently unreliable on linux
 describe.skip('transport: with electron-webrtc', () => {
-  const create = async () => {
+  const create = async (): Promise<PeerTransport> => {
     const peerId = await createEd25519PeerId()
     const wrtcStar = webRTCStar({ wrtc: electronWebRTC() })
     const transport = wrtcStar.transport({ peerId }) as WebRTCStar
     const discovery = wrtcStar.discovery() as WebRTCStarDiscovery
 
     const registrar = mockRegistrar()
-    const upgrader = mockUpgrader({ registrar })
+    const upgrader = mockUpgrader({
+      registrar,
+      events: new EventEmitter()
+    })
 
     const peerTransport: PeerTransport = {
       peerId,

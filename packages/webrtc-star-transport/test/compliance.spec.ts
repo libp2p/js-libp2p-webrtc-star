@@ -17,7 +17,7 @@ describe('interface-transport compliance', function () {
       const peerId = peerIdFromString('QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSooo2a')
       const ws = webRTCStar({ wrtc }).transport({ peerId })
 
-      const base = (id: string) => {
+      const base = (id: string): string => {
         return `/ip4/127.0.0.1/tcp/15555/ws/p2p-webrtc-star/p2p/${id}`
       }
 

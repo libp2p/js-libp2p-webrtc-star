@@ -26,7 +26,7 @@ export interface SigServer extends Server {
   io: SocketServer
 }
 
-export async function sigServer (options: Options = {}) {
+export async function sigServer (options: Options = {}): Promise<SigServer> {
   const port = options.port ?? config.hapi.port
   const host = options.host ?? config.hapi.host
   const peers = new Map<string, WebRTCStarSocket>()
@@ -50,7 +50,7 @@ export async function sigServer (options: Options = {}) {
   http.io.attach(http.listener, {
     path: '/socket.io-next' // v3/v4 clients might be using this path
   })
-  http.events.on('stop', () => http.io.close())
+  http.events.on('stop', () => { http.io.close() })
 
   await http.register(Inert)
   await http.start()

@@ -26,7 +26,7 @@ import type { PeerId } from '@libp2p/interface-peer-id'
 const webrtcSupport = 'RTCPeerConnection' in globalThis
 const log = logger('libp2p:webrtc-star')
 
-const noop = () => {}
+const noop = (): void => {}
 
 export class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
   private started = false
@@ -35,23 +35,23 @@ export class WebRTCStarDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     return true
   }
 
-  get [Symbol.toStringTag] () {
+  get [Symbol.toStringTag] (): string {
     return '@libp2p/webrtc-star-discovery'
   }
 
-  isStarted () {
+  isStarted (): boolean {
     return this.started
   }
 
-  async start () {
+  async start (): Promise<void> {
     this.started = true
   }
 
-  async stop () {
+  async stop (): Promise<void> {
     this.started = false
   }
 
-  dispatchEvent (event: CustomEvent) {
+  dispatchEvent (event: CustomEvent): boolean {
     if (!this.isStarted()) {
       return false
     }
@@ -122,11 +122,11 @@ export class WebRTCStar implements Transport {
     return true
   }
 
-  get [Symbol.toStringTag] () {
+  get [Symbol.toStringTag] (): string {
     return '@libp2p/webrtc-star'
   }
 
-  async dial (ma: Multiaddr, options: WebRTCStarDialOptions) {
+  async dial (ma: Multiaddr, options: WebRTCStarDialOptions): Promise<Connection> {
     const rawConn = await this._connect(ma, options)
     const maConn = toMultiaddrConnection(rawConn, { remoteAddr: ma, signal: options.signal })
     log('new outbound connection %s', maConn.remoteAddr)
@@ -135,7 +135,7 @@ export class WebRTCStar implements Transport {
     return conn
   }
 
-  async _connect (ma: Multiaddr, options: WebRTCStarDialOptions) {
+  async _connect (ma: Multiaddr, options: WebRTCStarDialOptions): Promise<WebRTCInitiator> {
     if (options.signal?.aborted === true) {
       throw new AbortError()
     }
@@ -156,7 +156,7 @@ export class WebRTCStar implements Transport {
       const sio = this.sigServers.get(cleanUrlSIO(ma))
 
       if (sio?.socket == null) {
-        return reject(errcode(new Error('unknown signal server to use'), 'ERR_UNKNOWN_SIGNAL_SERVER'))
+        reject(errcode(new Error('unknown signal server to use'), 'ERR_UNKNOWN_SIGNAL_SERVER')); return
       }
 
       let connected: boolean = false
@@ -164,7 +164,7 @@ export class WebRTCStar implements Transport {
       log('dialing %s:%s', cOpts.host, cOpts.port)
       const channel = new WebRTCInitiator(channelOptions)
 
-      const onError = (evt: CustomEvent<Error>) => {
+      const onError = (evt: CustomEvent<Error>): void => {
         const err = evt.detail
 
         if (!connected) {
@@ -174,21 +174,21 @@ export class WebRTCStar implements Transport {
         }
       }
 
-      const onReady = () => {
+      const onReady = (): void => {
         connected = true
 
         log('connection opened %s:%s', cOpts.host, cOpts.port)
         done()
       }
 
-      const onAbort = () => {
+      const onAbort = (): void => {
         log.error('connection aborted %s:%s', cOpts.host, cOpts.port)
         channel.close().finally(() => {
           done(new AbortError())
         })
       }
 
-      const done = (err?: Error) => {
+      const done = (err?: Error): void => {
         channel.removeEventListener('ready', onReady)
         options.signal?.removeEventListener('abort', onAbort)
 
@@ -211,10 +211,10 @@ export class WebRTCStar implements Transport {
         const signal = evt.detail
 
         sio.socket.emit('ss-handshake', {
-          intentId: intentId,
+          intentId,
           srcMultiaddr: sio.signallingAddr.toString(),
           dstMultiaddr: ma.toString(),
-          signal: signal
+          signal
         })
       })
 
@@ -260,7 +260,7 @@ export class WebRTCStar implements Transport {
   /**
    * Takes a list of `Multiaddr`s and returns only valid TCP addresses
    */
-  filter (multiaddrs: Multiaddr[]) {
+  filter (multiaddrs: Multiaddr[]): Multiaddr[] {
     multiaddrs = Array.isArray(multiaddrs) ? multiaddrs : [multiaddrs]
 
     return multiaddrs.filter((ma) => {
@@ -268,11 +268,11 @@ export class WebRTCStar implements Transport {
         return false
       }
 
-      return mafmt.WebRTCStar.matches(ma)
+      return mafmt.P2PWebRTCStar.matches(ma)
     })
   }
 
-  peerDiscovered (maStr: string) {
+  peerDiscovered (maStr: string): void {
     log('peer discovered: %s', maStr)
     maStr = cleanMultiaddr(maStr)
 

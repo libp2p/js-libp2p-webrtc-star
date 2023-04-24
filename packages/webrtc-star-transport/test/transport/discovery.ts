@@ -9,8 +9,9 @@ import type { WebRTCStar } from '../../src/transport.js'
 import type { Listener } from '@libp2p/interface-transport'
 import { mockUpgrader } from '@libp2p/interface-mocks'
 import type { PeerTransport } from '../index.js'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
-export default (create: () => Promise<PeerTransport>) => {
+export default (create: () => Promise<PeerTransport>): void => {
   describe('peer discovery', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -27,7 +28,11 @@ export default (create: () => Promise<PeerTransport>) => {
 
     it('listen on the first', async () => {
       ({ transport: ws1 } = await create())
-      ws1Listener = ws1.createListener({ upgrader: mockUpgrader() })
+      ws1Listener = ws1.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       await ws1.discovery().start()
 
       await ws1Listener.listen(signallerAddr)
@@ -35,7 +40,11 @@ export default (create: () => Promise<PeerTransport>) => {
 
     it('listen on the second, discover the first', async () => {
       ({ transport: ws2 } = await create())
-      const listener = ws2.createListener({ upgrader: mockUpgrader() })
+      const listener = ws2.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       await ws2.discovery().start()
 
       await listener.listen(signallerAddr)
@@ -66,7 +75,11 @@ export default (create: () => Promise<PeerTransport>) => {
       })
 
       ;({ transport: ws3 } = await create())
-      const listener = ws3.createListener({ upgrader: mockUpgrader() })
+      const listener = ws3.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       await ws3.discovery().start()
 
       await listener.listen(signallerAddr)
@@ -94,7 +107,11 @@ export default (create: () => Promise<PeerTransport>) => {
 
       void ws1.discovery().stop()
       ;({ transport: ws4 } = await create())
-      const listener = ws4.createListener({ upgrader: mockUpgrader() })
+      const listener = ws4.createListener({
+        upgrader: mockUpgrader({
+          events: new EventEmitter()
+        })
+      })
       void ws4.discovery().start()
 
       await listener.listen(signallerAddr)

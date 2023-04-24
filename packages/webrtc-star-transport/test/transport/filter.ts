@@ -4,7 +4,7 @@ import { expect } from 'aegir/chai'
 import { multiaddr } from '@multiformats/multiaddr'
 import type { PeerTransport } from '../index.js'
 
-export default (create: () => Promise<PeerTransport>) => {
+export default (create: () => Promise<PeerTransport>): void => {
   describe('filter', () => {
     it('filters non valid webrtc-star multiaddrs', async () => {
       const peer = await create()

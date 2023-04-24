@@ -16,14 +16,15 @@ import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { PeerTransport } from '../index.js'
 import type { Source } from 'it-stream-types'
 import type { Uint8ArrayList } from 'uint8arraylist'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
-async function * toBytes (source: Source<Uint8ArrayList>) {
+async function * toBytes (source: Source<Uint8ArrayList>): AsyncGenerator<Uint8Array, void, undefined> {
   for await (const list of source) {
     yield * list
   }
 }
 
-export default (create: () => Promise<PeerTransport>) => {
+export default (create: () => Promise<PeerTransport>): void => {
   describe('dial', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -62,7 +63,8 @@ export default (create: () => Promise<PeerTransport>) => {
         )
       })
       upgrader = mockUpgrader({
-        registrar
+        registrar,
+        events: new EventEmitter()
       })
 
       // first
@@ -101,7 +103,7 @@ export default (create: () => Promise<PeerTransport>) => {
 
     afterEach(async () => {
       await Promise.all(
-        [listener1, listener2].map(async l => await l.close())
+        [listener1, listener2].map(async l => { await l.close() })
       )
     })
 

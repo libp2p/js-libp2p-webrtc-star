@@ -11,10 +11,11 @@ import type { WebRTCStar } from '../../src/transport.js'
 import type { Listener, Upgrader } from '@libp2p/interface-transport'
 import { mockRegistrar, mockUpgrader } from '@libp2p/interface-mocks'
 import type { PeerTransport } from '../index.js'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
 const protocol = '/echo/1.0.0'
 
-export default (create: () => Promise<PeerTransport>) => {
+export default (create: () => Promise<PeerTransport>): void => {
   describe('track connections', () => {
     let ws1: WebRTCStar
     let ws2: WebRTCStar
@@ -48,7 +49,8 @@ export default (create: () => Promise<PeerTransport>) => {
         )
       })
       upgrader = mockUpgrader({
-        registrar
+        registrar,
+        events: new EventEmitter()
       })
 
       // first
@@ -79,7 +81,7 @@ export default (create: () => Promise<PeerTransport>) => {
     })
 
     afterEach(async () => {
-      await Promise.all([listener, remoteListener].map(async l => await l.close()))
+      await Promise.all([listener, remoteListener].map(async l => { await l.close() }))
     })
 
     it('should untrack conn after being closed', async function () {
