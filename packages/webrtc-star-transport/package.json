@@ -168,7 +168,7 @@
     "@mapbox/node-pre-gyp": "^1.0.5",
     "aegir": "^37.9.1",
     "electron-webrtc": "~0.3.0",
-    "it-all": "^2.0.0",
+    "it-all": "^3.0.1",
     "it-pipe": "^2.0.3",
     "it-pushable": "^3.0.0",
     "it-stream-types": "^1.0.4",
