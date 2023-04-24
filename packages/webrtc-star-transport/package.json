@@ -150,7 +150,7 @@
     "@libp2p/webrtc-star-protocol": "^3.0.0",
     "@multiformats/mafmt": "^11.0.2",
     "@multiformats/multiaddr": "^11.0.0",
-    "abortable-iterator": "^4.0.2",
+    "abortable-iterator": "^5.0.1",
     "delay": "^5.0.0",
     "err-code": "^3.0.1",
     "iso-random-stream": "^2.0.2",
